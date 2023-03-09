@@ -557,35 +557,135 @@ function hmrAccept(bundle, id) {
 }
 
 },{}],"kuM8f":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _keyControls = require("./lib/KeyControls");
+var _keyControlsDefault = parcelHelpers.interopDefault(_keyControls);
+const controls = new (0, _keyControlsDefault.default)();
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const { width: w , height: h  } = canvas;
+const stats = document.querySelector("p");
 let start = 0;
 let lastTimeStamp = 0;
 let delta = 0;
 let ball = {
-    x: 0,
-    y: 64,
-    size: 64,
+    x: 50,
+    y: h - 50,
+    size: 40,
     last: 0
 };
+class Ball {
+    speed = 100;
+    constructor(x, y, size){
+        this.x = x;
+        this.y = y;
+        this.size = size;
+    }
+}
+const balls = [];
 function loop(ellapsedTime) {
     delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
     lastTimeStamp = ellapsedTime;
     /**
    * Game Logic Will be here
-   */ context.fillStyle = "pink";
+   */ context.fillStyle = "black";
     context.fillRect(0, 0, w, h);
     context.save();
-    const speed = 128 * delta; // ball.x will be 128px after 1s because the loop run 60times in 1s
-    ball.x = ball.x >= w ? 0 : ball.x + speed;
-    context.fillStyle = "white";
-    context.fillRect(ball.x, ball.y, ball.size, ball.size);
+    /** Global Settings */ const speed = 1000 * delta; // ball.x will be 128px after 1s because the loop run 60times in 1s
+    ball.x += controls.x * speed;
+    ball.y += controls.y * speed;
+    context.fillStyle = `white`;
+    context.globalAlpha = 0.5;
+    context.beginPath();
+    context.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2, false);
+    context.fill();
     context.restore();
+    stats.textContent = `Total ball ${balls.length}`;
     requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
 
-},{}]},["lSgxL","kuM8f"], "kuM8f", "parcelRequiref9ae")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./lib/KeyControls":"lOw3Q"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"lOw3Q":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class KeyControls {
+    keys = {};
+    pressedKey = "";
+    constructor(){
+        this.keys = {};
+        document.addEventListener("keydown", (e)=>{
+            if ([
+                37,
+                38,
+                39,
+                40
+            ].indexOf(e.which) > 0) e.preventDefault();
+            this.keys[e.which] = true;
+            this.pressedKey = e.key;
+        });
+        document.addEventListener("keyup", (e)=>{
+            this.keys[e.which] = false;
+            this.pressedKey = "";
+        });
+    }
+    // do something when spacebar is pressed - Jump/Shoot...
+    get action() {
+        return this.keys[32];
+    }
+    // get Left/Right or A/D keys
+    get x() {
+        if (this.keys[37] || this.keys[65]) return -1;
+        // right arrow or D key
+        if (this.keys[39] || this.keys[68]) return 1;
+        return 0;
+    }
+    get y() {
+        // up arrow or W key
+        if (this.keys[38] || this.keys[87]) return -1;
+        if (this.keys[40] || this.keys[83]) return 1;
+        return 0;
+    }
+    // when we want to add a specific key for a specific action
+    key(key, value) {
+        if (value !== undefined) this.keys[key] = value;
+        return this.keys[key];
+    }
+    reset() {
+        for(let key in this.keys)this.keys[key] = false;
+    }
+}
+exports.default = KeyControls;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["lSgxL","kuM8f"], "kuM8f", "parcelRequiref9ae")
 
 //# sourceMappingURL=index.6b815632.js.map
