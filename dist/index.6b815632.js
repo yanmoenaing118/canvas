@@ -560,43 +560,31 @@ function hmrAccept(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _index = require("../pop/index");
 var _indexDefault = parcelHelpers.interopDefault(_index);
-const { KeyControls  } = (0, _indexDefault.default);
-const controls = new KeyControls();
+const { Container , KeyControls  } = (0, _indexDefault.default);
+const stats = document.querySelector("p");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const { width: w , height: h  } = canvas;
-const stats = document.querySelector("p");
-let start = 0;
-let lastTimeStamp = 0;
-let delta = 0;
-class Ball {
-    constructor(x, y, size, speed){
-        this.x = x;
-        this.y = y;
-        this.size = size;
-        this.speed = speed;
+let lastTimeStamp = 0; // will be total
+let delta = 0; // 1s/60 60FPS
+const controls = new KeyControls();
+const scene = new Container();
+const player1 = {
+    update: (delta, t)=>{
+        console.log("update PLAYER_1", delta, t);
     }
-}
-const ball = new Ball(50, 50, 25, 2000);
-const balls = [];
+};
+const player2 = {
+    update: (delta, t)=>{
+        console.log("update PLAYER_2: ", delta, t);
+    }
+};
+scene.add(player1);
+scene.add(player2);
 function loop(ellapsedTime) {
     delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
     lastTimeStamp = ellapsedTime;
-    /**
-   * Game Logic Will be here
-   */ context.fillStyle = "black";
-    context.fillRect(0, 0, w, h);
-    context.save();
-    /** Global Settings */ // ball.x will be 128px after 1s because the loop run 60times in 1s
-    ball.x += controls.x * ball.speed * delta;
-    ball.y += controls.y * ball.speed * delta;
-    context.fillStyle = `white`;
-    context.globalAlpha = 0.5;
-    context.beginPath();
-    context.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2, false);
-    context.fill();
-    context.restore();
-    stats.textContent = `Total ball ${balls.length}`;
+    scene.update(delta, ellapsedTime);
     requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
@@ -716,6 +704,23 @@ class Container {
             y: 0
         };
         this.children = [];
+    }
+    add(child) {
+        this.children.push(child);
+        return child;
+    }
+    remove(child) {
+        this.children = this.children.filter((c)=>c != child);
+        return child;
+    }
+    /**
+   * 
+   * @param dt delta time
+   * @param t total time since the game has started
+   */ update(dt, t) {
+        this.children.forEach((child)=>{
+            if (child.update) child.update(dt, t);
+        });
     }
 }
 exports.default = Container;
