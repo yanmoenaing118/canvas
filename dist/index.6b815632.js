@@ -558,9 +558,10 @@ function hmrAccept(bundle, id) {
 
 },{}],"kuM8f":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _keyControls = require("./lib/KeyControls");
-var _keyControlsDefault = parcelHelpers.interopDefault(_keyControls);
-const controls = new (0, _keyControlsDefault.default)();
+var _index = require("../pop/index");
+var _indexDefault = parcelHelpers.interopDefault(_index);
+const { KeyControls  } = (0, _indexDefault.default);
+const controls = new KeyControls();
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const { width: w , height: h  } = canvas;
@@ -568,20 +569,15 @@ const stats = document.querySelector("p");
 let start = 0;
 let lastTimeStamp = 0;
 let delta = 0;
-let ball = {
-    x: 50,
-    y: h - 50,
-    size: 40,
-    last: 0
-};
 class Ball {
-    speed = 100;
-    constructor(x, y, size){
+    constructor(x, y, size, speed){
         this.x = x;
         this.y = y;
         this.size = size;
+        this.speed = speed;
     }
 }
+const ball = new Ball(50, 50, 25, 2000);
 const balls = [];
 function loop(ellapsedTime) {
     delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
@@ -591,9 +587,9 @@ function loop(ellapsedTime) {
    */ context.fillStyle = "black";
     context.fillRect(0, 0, w, h);
     context.save();
-    /** Global Settings */ const speed = 1000 * delta; // ball.x will be 128px after 1s because the loop run 60times in 1s
-    ball.x += controls.x * speed;
-    ball.y += controls.y * speed;
+    /** Global Settings */ // ball.x will be 128px after 1s because the loop run 60times in 1s
+    ball.x += controls.x * ball.speed * delta;
+    ball.y += controls.y * ball.speed * delta;
     context.fillStyle = `white`;
     context.globalAlpha = 0.5;
     context.beginPath();
@@ -605,7 +601,7 @@ function loop(ellapsedTime) {
 }
 requestAnimationFrame(loop);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./lib/KeyControls":"lOw3Q"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../pop/index":"5XN6z"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -635,7 +631,22 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"lOw3Q":[function(require,module,exports) {
+},{}],"5XN6z":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _keyControls = require("./controls/KeyControls");
+var _keyControlsDefault = parcelHelpers.interopDefault(_keyControls);
+var _mouseControls = require("./controls/MouseControls");
+var _mouseControlsDefault = parcelHelpers.interopDefault(_mouseControls);
+var _container = require("./Container");
+var _containerDefault = parcelHelpers.interopDefault(_container);
+exports.default = {
+    Container: (0, _containerDefault.default),
+    KeyControls: (0, _keyControlsDefault.default),
+    MouseControls: (0, _mouseControlsDefault.default)
+};
+
+},{"./controls/KeyControls":"87CJ0","./controls/MouseControls":"gEnt6","./Container":"6ONW3","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"87CJ0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class KeyControls {
@@ -685,6 +696,29 @@ class KeyControls {
     }
 }
 exports.default = KeyControls;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gEnt6":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class MouseControls {
+    constructor(){}
+}
+exports.default = MouseControls;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6ONW3":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class Container {
+    constructor(){
+        console.log("This is container");
+        this.pos = {
+            x: 0,
+            y: 0
+        };
+        this.children = [];
+    }
+}
+exports.default = Container;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["lSgxL","kuM8f"], "kuM8f", "parcelRequiref9ae")
 

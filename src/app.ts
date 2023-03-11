@@ -1,6 +1,9 @@
-import KeyControls from "./lib/KeyControls";
+import lib from "../pop/index";
+const { KeyControls} = lib;
+
 
 const controls = new KeyControls();
+
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -12,24 +15,20 @@ let start = 0;
 let lastTimeStamp = 0;
 let delta = 0;
 
-let ball = {
-  x: 50,
-  y: h - 50,
-  size: 40,
-  last: 0,
-};
-
 class Ball {
   x: number;
   y: number;
   size: number;
-  speed: number = 100;
-  constructor(x: number, y: number, size: number) {
+  speed: number;
+  constructor(x: number, y: number, size: number, speed: number) {
     this.x = x;
     this.y = y;
     this.size = size;
+    this.speed = speed;
   }
 }
+
+const ball = new Ball(50, 50, 25, 2000);
 
 const balls: Array<Ball> = [];
 
@@ -45,10 +44,10 @@ function loop(ellapsedTime: number) {
   context.save();
 
   /** Global Settings */
-  const speed = 1000 * delta; // ball.x will be 128px after 1s because the loop run 60times in 1s
+  // ball.x will be 128px after 1s because the loop run 60times in 1s
 
-  ball.x += controls.x * speed;
-  ball.y += controls.y * speed;
+  ball.x += controls.x * ball.speed * delta;
+  ball.y += controls.y * ball.speed * delta;
 
   context.fillStyle = `white`;
   context.globalAlpha = 0.5;
