@@ -560,14 +560,15 @@ function hmrAccept(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _index = require("../pop/index");
 var _indexDefault = parcelHelpers.interopDefault(_index);
-const { Container , Text , CanvasRenderer  } = (0, _indexDefault.default);
+const { Container , Text , CanvasRenderer , KeyControls  } = (0, _indexDefault.default);
 let lastTimeStamp = 0; // will be total
 let delta = 0; // 1s/60 60FPS
-const width = 640;
+/** Renderer */ const width = 640;
 const height = 480;
 const renderer = new CanvasRenderer(width, height);
 document.querySelector("#board").appendChild(renderer.view);
-const scene = new Container();
+/**control */ const control = new KeyControls();
+/**Objects */ const scene = new Container();
 const message = new Text("Love you", {
     font: "40pt monospace",
     fill: "indigo",
@@ -576,12 +577,19 @@ const message = new Text("Love you", {
 message.pos.x = renderer.w / 2;
 message.pos.y = renderer.h / 2;
 scene.add(message);
-renderer.render(scene); // function loop(ellapsedTime: number) {
- //   delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
- //   lastTimeStamp = ellapsedTime;
- //   requestAnimationFrame(loop);
- // }
- // requestAnimationFrame(loop);
+scene.update(0, 0);
+renderer.render(scene);
+console.log(scene);
+function loop(ellapsedTime) {
+    delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
+    lastTimeStamp = ellapsedTime;
+    if (control.action) message.pos.y -= 100 * delta;
+    else message.pos.y = renderer.h / 2;
+    scene.update(delta, lastTimeStamp);
+    renderer.render(scene);
+    requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
 
 },{"../pop/index":"5XN6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5XN6z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
