@@ -560,66 +560,30 @@ function hmrAccept(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _index = require("../pop/index");
 var _indexDefault = parcelHelpers.interopDefault(_index);
-const { Container , KeyControls  } = (0, _indexDefault.default);
-const stats = document.querySelector("p");
-const canvas = document.getElementById("canvas");
-const context = canvas.getContext("2d");
-const { width: w , height: h  } = canvas;
+const { Container , Text , CanvasRenderer  } = (0, _indexDefault.default);
 let lastTimeStamp = 0; // will be total
 let delta = 0; // 1s/60 60FPS
-const controls = new KeyControls();
+const width = 640;
+const height = 480;
+const renderer = new CanvasRenderer(width, height);
+document.querySelector("#board").appendChild(renderer.view);
 const scene = new Container();
-const player1 = {
-    update: (delta, t)=>{
-        console.log("update PLAYER_1", delta, t);
-    }
-};
-const player2 = {
-    update: (delta, t)=>{
-        console.log("update PLAYER_2: ", delta, t);
-    }
-};
-scene.add(player1);
-scene.add(player2);
-function loop(ellapsedTime) {
-    delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
-    lastTimeStamp = ellapsedTime;
-    scene.update(delta, ellapsedTime);
-    requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
+const message = new Text("Love you", {
+    font: "40pt monospace",
+    fill: "indigo",
+    align: "center"
+});
+message.pos.x = renderer.w / 2;
+message.pos.y = renderer.h / 2;
+scene.add(message);
+renderer.render(scene); // function loop(ellapsedTime: number) {
+ //   delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
+ //   lastTimeStamp = ellapsedTime;
+ //   requestAnimationFrame(loop);
+ // }
+ // requestAnimationFrame(loop);
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../pop/index":"5XN6z"}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"5XN6z":[function(require,module,exports) {
+},{"../pop/index":"5XN6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5XN6z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _keyControls = require("./controls/KeyControls");
@@ -628,13 +592,19 @@ var _mouseControls = require("./controls/MouseControls");
 var _mouseControlsDefault = parcelHelpers.interopDefault(_mouseControls);
 var _container = require("./Container");
 var _containerDefault = parcelHelpers.interopDefault(_container);
+var _canvasRenderer = require("./renderer/CanvasRenderer");
+var _canvasRendererDefault = parcelHelpers.interopDefault(_canvasRenderer);
+var _text = require("./Text");
+var _textDefault = parcelHelpers.interopDefault(_text);
 exports.default = {
     Container: (0, _containerDefault.default),
     KeyControls: (0, _keyControlsDefault.default),
-    MouseControls: (0, _mouseControlsDefault.default)
+    MouseControls: (0, _mouseControlsDefault.default),
+    CanvasRenderer: (0, _canvasRendererDefault.default),
+    Text: (0, _textDefault.default)
 };
 
-},{"./controls/KeyControls":"87CJ0","./controls/MouseControls":"gEnt6","./Container":"6ONW3","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"87CJ0":[function(require,module,exports) {
+},{"./controls/KeyControls":"87CJ0","./controls/MouseControls":"gEnt6","./Container":"6ONW3","./renderer/CanvasRenderer":"7dhcE","./Text":"532h2","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"87CJ0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class KeyControls {
@@ -685,7 +655,37 @@ class KeyControls {
 }
 exports.default = KeyControls;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gEnt6":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"gEnt6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class MouseControls {
@@ -698,7 +698,6 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class Container {
     constructor(){
-        console.log("This is container");
         this.pos = {
             x: 0,
             y: 0
@@ -724,6 +723,55 @@ class Container {
     }
 }
 exports.default = Container;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7dhcE":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class CanvasRenderer {
+    constructor(w, h){
+        const canvas = document.createElement("canvas");
+        this.w = canvas.width = w;
+        this.h = canvas.height = h;
+        this.view = canvas;
+        this.ctx = canvas.getContext("2d");
+    }
+    render(container) {
+        const { ctx  } = this;
+        function renderRec(container) {
+            container.children.forEach((child)=>{
+                ctx.save(); // save current state before any state chagnes
+                if (child.pos) ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y));
+                if (child.text) {
+                    const { font , fill , align  } = child.style;
+                    if (font) ctx.font = font;
+                    if (fill) ctx.fillStyle = fill;
+                    if (align) ctx.textAlign = align;
+                    ctx.fillText(child.text, 0, 0);
+                }
+                if (child.children) renderRec(child);
+                ctx.restore();
+            });
+        }
+        ctx.clearRect(0, 0, this.w, this.h);
+        renderRec(container);
+    }
+}
+exports.default = CanvasRenderer;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"532h2":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class Text {
+    constructor(text = "", style = {}){
+        this.text = text;
+        this.style = style;
+        this.pos = {
+            x: 0,
+            y: 0
+        };
+    }
+}
+exports.default = Text;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["lSgxL","kuM8f"], "kuM8f", "parcelRequiref9ae")
 
