@@ -569,6 +569,7 @@ const renderer = new CanvasRenderer(width, height);
 document.querySelector("#board").appendChild(renderer.view);
 /**control */ const control = new KeyControls();
 /**Objects */ const scene = new Container();
+console.log(scene);
 const message = new Text("Love you", {
     font: "40pt monospace",
     fill: "indigo",
@@ -576,18 +577,18 @@ const message = new Text("Love you", {
 });
 message.pos.x = renderer.w / 2;
 message.pos.y = renderer.h / 2;
+message.update = function(delta, t) {
+    this.pos.x -= 50 * delta;
+    const textWidth = renderer.ctx.measureText("Love you").width;
+    if (this.pos.x < -textWidth) this.pos.x = width + textWidth;
+};
 scene.add(message);
-scene.update(0, 0);
-renderer.render(scene);
-console.log(scene);
 function loop(ellapsedTime) {
+    requestAnimationFrame(loop);
     delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
     lastTimeStamp = ellapsedTime;
-    if (control.action) message.pos.y -= 100 * delta;
-    else message.pos.y = renderer.h / 2;
     scene.update(delta, lastTimeStamp);
     renderer.render(scene);
-    requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
 
@@ -726,7 +727,9 @@ class Container {
    * @param t total time since the game has started
    */ update(dt, t) {
         this.children.forEach((child)=>{
-            if (child.update) child.update(dt, t);
+            if (child.update) /**
+         * if child is an container it will recall this update method
+         */ child.update(dt, t);
         });
     }
 }
@@ -743,10 +746,11 @@ class CanvasRenderer {
         this.view = canvas;
         this.ctx = canvas.getContext("2d");
     }
-    render(container) {
+    render(container, clear = true) {
         const { ctx  } = this;
         function renderRec(container) {
             container.children.forEach((child)=>{
+                if (child.visible === false) return;
                 ctx.save(); // save current state before any state chagnes
                 if (child.pos) ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y));
                 if (child.text) {
@@ -760,7 +764,7 @@ class CanvasRenderer {
                 ctx.restore();
             });
         }
-        ctx.clearRect(0, 0, this.w, this.h);
+        if (clear) ctx.clearRect(0, 0, this.w, this.h);
         renderRec(container);
     }
 }
@@ -770,6 +774,7 @@ exports.default = CanvasRenderer;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class Text {
+    visible = true;
     constructor(text = "", style = {}){
         this.text = text;
         this.style = style;

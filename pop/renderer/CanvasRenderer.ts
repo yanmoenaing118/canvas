@@ -12,10 +12,12 @@ export default class CanvasRenderer {
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   }
 
-  render(container: any) {
+  render(container: any, clear: boolean = true) {
     const { ctx } = this;
     function renderRec(container: any) {
       container.children.forEach((child: any) => {
+        if (child.visible === false) return;
+
         ctx.save(); // save current state before any state chagnes
 
         if (child.pos) {
@@ -37,7 +39,9 @@ export default class CanvasRenderer {
       });
     }
 
-    ctx.clearRect(0, 0, this.w, this.h);
+    if (clear) {
+      ctx.clearRect(0, 0, this.w, this.h);
+    }
     renderRec(container);
   }
 }
