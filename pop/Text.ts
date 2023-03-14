@@ -9,7 +9,7 @@ export default class Text {
     style: any;
     visible: boolean = true;
 
-    update: (delta: number, t: number) => void;
+    update: ((delta: number, t: number) => void) | undefined;
     constructor(text = "", style={}) {
         this.text = text;
         this.style = style;
