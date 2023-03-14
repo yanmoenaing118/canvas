@@ -1,3 +1,5 @@
+import Texture from "../Texture";
+
 export default class CanvasRenderer {
   w: number;
   h: number;
@@ -22,6 +24,11 @@ export default class CanvasRenderer {
 
         if (child.pos) {
           ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y));
+        }
+
+        if(child.texture) {
+          const texture: Texture = child.texture;
+          ctx.drawImage(texture.image,0,0);
         }
 
         if (child.text) {

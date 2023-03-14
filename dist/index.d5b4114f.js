@@ -560,6 +560,8 @@ function hmrAccept(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _index = require("./pop/index");
 var _indexDefault = parcelHelpers.interopDefault(_index);
+var _sprite = require("./pop/Sprite");
+var _spriteDefault = parcelHelpers.interopDefault(_sprite);
 var _texture = require("./pop/Texture");
 var _textureDefault = parcelHelpers.interopDefault(_texture);
 var _spaceshipPng = require("./res/Images/spaceship.png");
@@ -580,8 +582,22 @@ const message = new Text("Love you", {
     align: "center"
 });
 const texture = new (0, _textureDefault.default)((0, _spaceshipPngDefault.default));
-console.log(texture.image);
-document.body.append(texture.image);
+const sprites = new Container();
+let speed = 100;
+for(let i = 0; i < 50; i++){
+    const ship = new (0, _spriteDefault.default)(texture);
+    ship.pos.x = Math.random() * width;
+    ship.pos.y = Math.random() * height;
+    ship.update = (delta, time)=>{
+        if (control.action) speed += 0.1;
+        else speed = 100;
+        if (ship.pos.x >= width) ship.pos.x = Math.random() * 25;
+        else if (control.x) ship.pos.x += speed * delta * control.x;
+        else ship.pos.x += speed * delta;
+    };
+    sprites.add(ship);
+}
+scene.add(sprites);
 message.pos.x = renderer.w / 2;
 message.pos.y = renderer.h / 2;
 message.update = function(delta, t) {
@@ -599,7 +615,7 @@ function loop(ellapsedTime) {
 }
 requestAnimationFrame(loop);
 
-},{"./pop/index":"5XN6z","./pop/Texture":"5U9tx","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./res/Images/spaceship.png":"jJePl"}],"5XN6z":[function(require,module,exports) {
+},{"./pop/index":"5XN6z","./pop/Texture":"5U9tx","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./res/Images/spaceship.png":"jJePl","./pop/Sprite":"id45o"}],"5XN6z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _keyControls = require("./controls/KeyControls");
@@ -766,6 +782,10 @@ class CanvasRenderer {
                 if (child.visible === false) return;
                 ctx.save(); // save current state before any state chagnes
                 if (child.pos) ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y));
+                if (child.texture) {
+                    const texture = child.texture;
+                    ctx.drawImage(texture.image, 0, 0);
+                }
                 if (child.text) {
                     const { font , fill , align  } = child.style;
                     if (font) ctx.font = font;
@@ -814,6 +834,7 @@ exports.default = Texture;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class Sprite {
+    update = (delta, t)=>{};
     constructor(texture){
         this.texture = texture;
         this.pos = {
