@@ -104,7 +104,7 @@
     "yaml": "^1.10.2"
   },
   "scripts": {
-    "start": "parcel src/index.html"
+    "start": "parcel index.html"
   },
   "keywords": [],
   "author": "",

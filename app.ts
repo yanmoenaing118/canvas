@@ -1,4 +1,6 @@
-import lib from "../pop/index";
+import lib from "./pop/index";
+import Texture from "./pop/Texture";
+import spaceshipImage from './res/Images/spaceship.png';
 const { Container, Text, CanvasRenderer, KeyControls } = lib;
 
 let lastTimeStamp = 0; // will be total
@@ -21,6 +23,12 @@ const message = new Text("Love you", {
   fill: "indigo",
   align: "center",
 });
+
+const texture = new Texture(spaceshipImage)
+console.log(texture.image);
+
+document.body.append(texture.image);
+
 
 message.pos.x = renderer.w / 2;
 message.pos.y = renderer.h / 2;

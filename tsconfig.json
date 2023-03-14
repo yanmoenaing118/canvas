@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"module": "commonjs",
+        "forceConsistentCasingInFileNames": true
+	},
+	"include": [
+		"**/*.ts",
+        ".d.ts"
+	],
+	"exclude": [
+		".git",
+		"node_modules"
+	]
+}

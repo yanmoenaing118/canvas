@@ -142,13 +142,13 @@
       this[globalName] = mainExports;
     }
   }
-})({"lSgxL":[function(require,module,exports) {
+})({"1nhj6":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
-module.bundle.HMR_BUNDLE_ID = "0cf78e626b815632";
+module.bundle.HMR_BUNDLE_ID = "e2205b50d5b4114f";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, chrome, browser, globalThis, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -556,12 +556,14 @@ function hmrAccept(bundle, id) {
     });
 }
 
-},{}],"kuM8f":[function(require,module,exports) {
+},{}],"2iQTb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _index = require("../pop/index");
+var _index = require("./pop/index");
 var _indexDefault = parcelHelpers.interopDefault(_index);
-var _texture = require("../pop/Texture");
+var _texture = require("./pop/Texture");
 var _textureDefault = parcelHelpers.interopDefault(_texture);
+var _spaceshipPng = require("./res/Images/spaceship.png");
+var _spaceshipPngDefault = parcelHelpers.interopDefault(_spaceshipPng);
 const { Container , Text , CanvasRenderer , KeyControls  } = (0, _indexDefault.default);
 let lastTimeStamp = 0; // will be total
 let delta = 0; // 1s/60 60FPS
@@ -577,8 +579,9 @@ const message = new Text("Love you", {
     fill: "indigo",
     align: "center"
 });
-const texture = new (0, _textureDefault.default)("../res/Images/spaceship.png");
-console.log(texture);
+const texture = new (0, _textureDefault.default)((0, _spaceshipPngDefault.default));
+console.log(texture.image);
+document.body.append(texture.image);
 message.pos.x = renderer.w / 2;
 message.pos.y = renderer.h / 2;
 message.update = function(delta, t) {
@@ -596,7 +599,7 @@ function loop(ellapsedTime) {
 }
 requestAnimationFrame(loop);
 
-},{"../pop/index":"5XN6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../pop/Texture":"5U9tx"}],"5XN6z":[function(require,module,exports) {
+},{"./pop/index":"5XN6z","./pop/Texture":"5U9tx","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./res/Images/spaceship.png":"jJePl"}],"5XN6z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _keyControls = require("./controls/KeyControls");
@@ -623,7 +626,7 @@ exports.default = {
     Sprite: (0, _spriteDefault.default)
 };
 
-},{"./controls/KeyControls":"87CJ0","./controls/MouseControls":"gEnt6","./Container":"6ONW3","./renderer/CanvasRenderer":"7dhcE","./Text":"532h2","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./Texture":"5U9tx","./Sprite":"id45o"}],"87CJ0":[function(require,module,exports) {
+},{"./controls/KeyControls":"87CJ0","./controls/MouseControls":"gEnt6","./Container":"6ONW3","./renderer/CanvasRenderer":"7dhcE","./Text":"532h2","./Texture":"5U9tx","./Sprite":"id45o","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"87CJ0":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class KeyControls {
@@ -821,6 +824,43 @@ class Sprite {
 }
 exports.default = Sprite;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["lSgxL","kuM8f"], "kuM8f", "parcelRequiref9ae")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jJePl":[function(require,module,exports) {
+module.exports = require("f0386f5351b79fd6").getBundleURL("jpFg7") + "spaceship.8827efa1.png" + "?" + Date.now();
 
-//# sourceMappingURL=index.6b815632.js.map
+},{"f0386f5351b79fd6":"lgJ39"}],"lgJ39":[function(require,module,exports) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return "/";
+}
+function getBaseURL(url) {
+    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
+} // TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error("Origin not found");
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
+
+},{}]},["1nhj6","2iQTb"], "2iQTb", "parcelRequiref9ae")
+
+//# sourceMappingURL=index.d5b4114f.js.map
