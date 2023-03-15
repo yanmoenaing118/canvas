@@ -1,66 +1,91 @@
-const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-const { width: w, height: h } = canvas;
-let delta: number = 0,
-  totalTime: number = 0;
-
-function draw(ellapsedTime: number) {
-  delta = (ellapsedTime - totalTime) * 0.001;
-  totalTime = ellapsedTime;
-
-  ctx.clearRect(0, 0, w, h);
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-
-  animateText(ctx, delta);
-
-//   ctx.save();
-//   ctx.fillStyle = "red";
-//   ctx.translate(w / 2, h / 2);
-//   ctx.fillRect(0, 0, 100, 100);
-//   ctx.restore();
-
-//   ctx.save();
-//   ctx.fillStyle = "green";
-//   ctx.translate(100, 100);
-//   ctx.fillRect(0, 0, 100, 100);
-//   ctx.restore();
-
-//   ctx.save();
-//   ctx.fillStyle = "pink";
-//   ctx.translate(100, 0);
-//   ctx.fillRect(0, 0, 100, 100);
-//   ctx.restore();
-
-  requestAnimationFrame(draw);
+interface Position {
+  x: number;
+  y: number;
 }
 
-let textX = 0;
-let textY = 0;
-let textSize = 50;
-let textOpacity = 0;
+class Rect {
+  fill: string;
+  pos: Position;
+  width: number;
+  height: number;
 
-function animateText(ctx: CanvasRenderingContext2D, delta: number) {
-  textX = w / 2;
-  textY = h / 2;
-  if (textSize > 20) {
-    textSize -= 0.5;
+  constructor(width: number, height: number, fill: string) {
+    this.width = width;
+    this.height = height;
+    this.fill = fill;
+    this.pos = { x: 0, y: 0 };
   }
-  if (textOpacity < 1) {
-    textOpacity += 0.01;
+}
+
+const canvas = document.querySelector("canvas") as HTMLCanvasElement;
+const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+let selectedObject: any;
+let threshold: number = 10;
+
+// canvas.addEventListener("mousemove", function (e: MouseEvent) {
+//   if (
+//     checkInsideRect(
+//       {
+//         x: e.clientX,
+//         y: e.clientY,
+//       },
+//       rect
+//     )
+//   ) {
+//     console.log(rect);
+//   }
+// });
+
+canvas.addEventListener("click", function (e: MouseEvent) {
+  if (
+    checkInsideRect(
+      {
+        x: e.clientX,
+        y: e.clientY,
+      },
+      rect
+    )
+  ) {
+    console.log(rect);
+  }
+});
+
+function checkInsideRect(clickedPos: Position, rect: Rect) {
+  let inside: boolean = false;
+  if (
+    clickedPos.x <= rect.pos.x + rect.width &&
+    clickedPos.y <= rect.pos.y + rect.height &&
+    clickedPos.x >= rect.pos.x &&
+    clickedPos.y >= rect.pos.y
+  ) {
+    inside = true;
   }
 
+  return inside;
+}
 
+let delta: number = 0;
+let lastTimeStamp: number = 0;
+
+const rect = new Rect(100, 100, "pink");
+rect.pos.x = canvas.width / 2 - 50;
+rect.pos.y = canvas.height / 2 - 50;
+
+function draw(currentTimestamp: number) {
+  requestAnimationFrame(draw);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  /** update */
+
+  /** render */
   ctx.save();
-  ctx.fillStyle = "darkred";
-  ctx.textAlign = "center";
-
-  ctx.globalAlpha = textOpacity;
-  ctx.font = `${textSize}px Arial`;
-  ctx.translate(textX, textY);
-  ctx.fillText("Hello Canvas", 0, 0);
-
+  ctx.translate(rect.pos.x, rect.pos.y);
+  ctx.fillStyle = rect.fill;
+  ctx.fillRect(0, 0, rect.width, rect.height);
   ctx.restore();
+
+  delta = (currentTimestamp - lastTimeStamp) * 0.001;
+  lastTimeStamp = currentTimestamp;
 }
 
 requestAnimationFrame(draw);
