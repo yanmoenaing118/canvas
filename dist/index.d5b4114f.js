@@ -575,7 +575,6 @@ const renderer = new CanvasRenderer(width, height);
 document.querySelector("#board").appendChild(renderer.view);
 /**control */ const control = new KeyControls();
 /**Objects */ const scene = new Container();
-console.log(scene);
 const message = new Text("Love you", {
     font: "40pt monospace",
     fill: "indigo",
@@ -583,21 +582,18 @@ const message = new Text("Love you", {
 });
 const texture = new (0, _textureDefault.default)((0, _spaceshipPngDefault.default));
 const sprites = new Container();
-let speed = 100;
 for(let i = 0; i < 50; i++){
     const ship = new (0, _spriteDefault.default)(texture);
     ship.pos.x = Math.random() * width;
-    ship.pos.y = Math.random() * height;
+    ship.pos.y = Math.max(30, Math.random() * height - 30);
+    const speed = Math.random() * 300 + 50;
     ship.update = (delta, time)=>{
-        if (control.action) speed += 0.1;
-        else speed = 100;
         if (ship.pos.x >= width) ship.pos.x = Math.random() * 25;
         else if (control.x) ship.pos.x += speed * delta * control.x;
         else ship.pos.x += speed * delta;
     };
-    sprites.add(ship);
+    scene.add(ship);
 }
-scene.add(sprites);
 message.pos.x = renderer.w / 2;
 message.pos.y = renderer.h / 2;
 message.update = function(delta, t) {
@@ -610,12 +606,12 @@ function loop(ellapsedTime) {
     requestAnimationFrame(loop);
     delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
     lastTimeStamp = ellapsedTime;
-    scene.update(delta, lastTimeStamp);
-    renderer.render(scene);
+    scene.update(delta, lastTimeStamp); // update a bit
+    renderer.render(scene); // render everything which is just been updated
 }
 requestAnimationFrame(loop);
 
-},{"./pop/index":"5XN6z","./pop/Texture":"5U9tx","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./res/Images/spaceship.png":"jJePl","./pop/Sprite":"id45o"}],"5XN6z":[function(require,module,exports) {
+},{"./pop/index":"5XN6z","./pop/Sprite":"id45o","./pop/Texture":"5U9tx","./res/Images/spaceship.png":"jJePl","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5XN6z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _keyControls = require("./controls/KeyControls");

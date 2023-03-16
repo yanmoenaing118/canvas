@@ -18,7 +18,7 @@ const control = new KeyControls();
 
 /**Objects */
 const scene = new Container();
-console.log(scene);
+
 const message = new Text("Love you", {
   font: "40pt monospace",
   fill: "indigo",
@@ -28,18 +28,14 @@ const message = new Text("Love you", {
 const texture = new Texture(spaceshipImage);
 const sprites = new Container();
 
-let speed = 100;
 
 for (let i = 0; i < 50; i++) {
   const ship = new Sprite(texture);
   ship.pos.x = Math.random() * width;
-  ship.pos.y = Math.random() * height;
+  ship.pos.y = Math.max(30, Math.random() * height - 30);
+  const speed = Math.random() * 300 + 50;
   ship.update = (delta, time) => {
-    if (control.action) {
-      speed += 0.1;
-    } else {
-      speed = 100;
-    }
+   
     if (ship.pos.x >= width) {
       ship.pos.x = Math.random() * 25;
     } else if (control.x) {
@@ -48,10 +44,8 @@ for (let i = 0; i < 50; i++) {
       ship.pos.x += speed * delta;
     }
   };
-  sprites.add(ship);
+  scene.add(ship);
 }
-
-scene.add(sprites);
 
 message.pos.x = renderer.w / 2;
 message.pos.y = renderer.h / 2;
@@ -71,8 +65,8 @@ function loop(ellapsedTime: number) {
   delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
   lastTimeStamp = ellapsedTime;
 
-  scene.update(delta, lastTimeStamp);
-  renderer.render(scene);
+  scene.update(delta, lastTimeStamp); // update a bit
+  renderer.render(scene); // render everything which is just been updated
 }
 
 requestAnimationFrame(loop);
