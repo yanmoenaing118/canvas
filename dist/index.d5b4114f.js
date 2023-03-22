@@ -566,42 +566,36 @@ var _texture = require("./pop/Texture");
 var _textureDefault = parcelHelpers.interopDefault(_texture);
 var _spaceshipPng = require("./res/Images/spaceship.png");
 var _spaceshipPngDefault = parcelHelpers.interopDefault(_spaceshipPng);
+var _bgPng = require("./res/Images/bg.png");
+var _bgPngDefault = parcelHelpers.interopDefault(_bgPng);
+var _bulletPng = require("./res/Images/bullet.png");
+var _bulletPngDefault = parcelHelpers.interopDefault(_bulletPng);
 const { Container , Text , CanvasRenderer , KeyControls  } = (0, _indexDefault.default);
 let lastTimeStamp = 0; // will be total
 let delta = 0; // 1s/60 60FPS
 /** Renderer */ const width = 640;
-const height = 480;
+const height = 300;
 const renderer = new CanvasRenderer(width, height);
 document.querySelector("#board").appendChild(renderer.view);
 /**control */ const control = new KeyControls();
 /**Objects */ const scene = new Container();
-const message = new Text("Love you", {
-    font: "40pt monospace",
-    fill: "indigo",
-    align: "center"
-});
-const texture = new (0, _textureDefault.default)((0, _spaceshipPngDefault.default));
-const sprites = new Container();
-for(let i = 0; i < 50; i++){
-    const ship = new (0, _spriteDefault.default)(texture);
-    ship.pos.x = Math.random() * width;
-    ship.pos.y = Math.max(30, Math.random() * height - 30);
-    const speed = Math.random() * 300 + 50;
-    ship.update = (delta, time)=>{
-        if (ship.pos.x >= width) ship.pos.x = Math.random() * 25;
-        else if (control.x) ship.pos.x += speed * delta * control.x;
-        else ship.pos.x += speed * delta;
-    };
-    scene.add(ship);
-}
-message.pos.x = renderer.w / 2;
-message.pos.y = renderer.h / 2;
-message.update = function(delta, t) {
-    this.pos.x -= 50 * delta;
-    const textWidth = renderer.ctx.measureText("Love you").width;
-    if (this.pos.x < -textWidth) this.pos.x = width + textWidth;
+const textures = {
+    background: new (0, _textureDefault.default)((0, _bgPngDefault.default)),
+    spaceship: new (0, _textureDefault.default)((0, _spaceshipPngDefault.default)),
+    bullet: new (0, _textureDefault.default)((0, _bulletPngDefault.default))
 };
-scene.add(message);
+const player = new (0, _spriteDefault.default)(textures.spaceship);
+const playerSize = 30;
+const speed = 1500;
+player.update = function(dt, t) {
+    if (control.y) this.pos.y += control.y * speed * dt;
+    if (control.x) this.pos.x += control.x * speed * dt;
+    this.pos.y = Math.min(Math.max(this.pos.y, 0), height - playerSize);
+    this.pos.x = Math.min(Math.max(this.pos.x, 0), width - playerSize);
+};
+scene.add(new (0, _spriteDefault.default)(textures.background));
+scene.add(player);
+console.log(scene);
 function loop(ellapsedTime) {
     requestAnimationFrame(loop);
     delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
@@ -611,7 +605,7 @@ function loop(ellapsedTime) {
 }
 requestAnimationFrame(loop);
 
-},{"./pop/index":"5XN6z","./pop/Sprite":"id45o","./pop/Texture":"5U9tx","./res/Images/spaceship.png":"jJePl","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5XN6z":[function(require,module,exports) {
+},{"./pop/index":"5XN6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pop/Texture":"5U9tx","./pop/Sprite":"id45o","./res/Images/spaceship.png":"jJePl","./res/Images/bg.png":"My65e","./res/Images/bullet.png":"j38EM"}],"5XN6z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _keyControls = require("./controls/KeyControls");
@@ -878,6 +872,12 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}]},["1nhj6","2iQTb"], "2iQTb", "parcelRequiref9ae")
+},{}],"My65e":[function(require,module,exports) {
+module.exports = require("cc4ec1ee3290e9fa").getBundleURL("jpFg7") + "bg.2ba31035.png" + "?" + Date.now();
+
+},{"cc4ec1ee3290e9fa":"lgJ39"}],"j38EM":[function(require,module,exports) {
+module.exports = require("14bc81e993d41fcb").getBundleURL("jpFg7") + "bullet.bc3d52d5.png" + "?" + Date.now();
+
+},{"14bc81e993d41fcb":"lgJ39"}]},["1nhj6","2iQTb"], "2iQTb", "parcelRequiref9ae")
 
 //# sourceMappingURL=index.d5b4114f.js.map
