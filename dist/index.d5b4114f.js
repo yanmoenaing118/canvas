@@ -587,15 +587,34 @@ const textures = {
 const player = new (0, _spriteDefault.default)(textures.spaceship);
 const playerSize = 30;
 const speed = 1500;
-player.update = function(dt, t) {
+let lastShot = 0;
+const bullets = new Container();
+player.update = function(dt, t, container) {
     if (control.y) this.pos.y += control.y * speed * dt;
     if (control.x) this.pos.x += control.x * speed * dt;
     this.pos.y = Math.min(Math.max(this.pos.y, 0), height - playerSize);
     this.pos.x = Math.min(Math.max(this.pos.x, 0), width - playerSize);
+    if (control.action && t - lastShot > 0.15) {
+        lastShot = t;
+        firebullet({
+            x: this.pos.x + 24,
+            y: this.pos.y + 10
+        });
+    }
 };
+function firebullet(pos) {
+    const bullet = new (0, _spriteDefault.default)(textures.bullet);
+    bullet.pos.x = pos.x;
+    bullet.pos.y = pos.y;
+    bullet.update = function(delta, t) {
+        bullet.pos.x += delta * 400;
+        if (bullet.pos.x > width + 20) bullet.dead = true;
+    };
+    bullets.add(bullet);
+}
 scene.add(new (0, _spriteDefault.default)(textures.background));
 scene.add(player);
-console.log(scene);
+scene.add(bullets);
 function loop(ellapsedTime) {
     requestAnimationFrame(loop);
     delta = (ellapsedTime - lastTimeStamp) * 0.001; // will sresult in 0.016666s
@@ -605,7 +624,7 @@ function loop(ellapsedTime) {
 }
 requestAnimationFrame(loop);
 
-},{"./pop/index":"5XN6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pop/Texture":"5U9tx","./pop/Sprite":"id45o","./res/Images/spaceship.png":"jJePl","./res/Images/bg.png":"My65e","./res/Images/bullet.png":"j38EM"}],"5XN6z":[function(require,module,exports) {
+},{"./pop/index":"5XN6z","./pop/Sprite":"id45o","./pop/Texture":"5U9tx","./res/Images/spaceship.png":"jJePl","./res/Images/bg.png":"My65e","./res/Images/bullet.png":"j38EM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5XN6z":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _keyControls = require("./controls/KeyControls");
@@ -745,10 +764,11 @@ class Container {
    * @param dt delta time
    * @param t total time since the game has started
    */ update(dt, t) {
-        this.children.forEach((child)=>{
+        this.children = this.children.filter((child)=>{
             if (child.update) /**
          * if child is an container it will recall this update method
-         */ child.update(dt, t);
+         */ child.update(dt, t, this);
+            return child.dead ? false : true;
         });
     }
 }
@@ -824,13 +844,14 @@ exports.default = Texture;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class Sprite {
-    update = (delta, t)=>{};
+    update = (delta, t, self)=>{};
     constructor(texture){
         this.texture = texture;
         this.pos = {
             x: 0,
             y: 0
         };
+        this.dead = false;
     }
 }
 exports.default = Sprite;

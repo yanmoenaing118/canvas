@@ -4,6 +4,7 @@ import Texture from "./pop/Texture";
 import spaceshipImage from "./res/Images/spaceship.png";
 import bgImage from "./res/Images/bg.png";
 import bulletImage from "./res/Images/bullet.png";
+import { Position } from "./pop/Types";
 
 const { Container, Text, CanvasRenderer, KeyControls } = lib;
 
@@ -24,29 +25,45 @@ const scene = new Container();
 const textures = {
   background: new Texture(bgImage),
   spaceship: new Texture(spaceshipImage),
-  bullet: new Texture(bulletImage)
+  bullet: new Texture(bulletImage),
 };
 
 const player = new Sprite(textures.spaceship);
 const playerSize = 30;
 const speed = 1500;
+let lastShot = 0;
+const bullets = new Container();
 
-player.update = function (dt, t) {
-  
+player.update = function (dt, t, container) {
   if (control.y) this.pos.y += control.y * speed * dt;
   if (control.x) this.pos.x += control.x * speed * dt;
-  
+
   this.pos.y = Math.min(Math.max(this.pos.y, 0), height - playerSize);
   this.pos.x = Math.min(Math.max(this.pos.x, 0), width - playerSize);
 
-
+  if (control.action && t - lastShot > 0.15) {
+    lastShot = t;
+    firebullet({ x: this.pos.x + 24, y: this.pos.y + 10 });
+  }
 };
+
+function firebullet(pos: Position) {
+  const bullet = new Sprite(textures.bullet);
+  bullet.pos.x = pos.x;
+  bullet.pos.y = pos.y;
+  bullet.update = function (delta, t) {
+    bullet.pos.x += delta * 400;
+    if (bullet.pos.x > width + 20) {
+      bullet.dead = true;
+    }
+  };
+
+  bullets.add(bullet);
+}
 
 scene.add(new Sprite(textures.background));
 scene.add(player);
-
-console.log(scene);
-
+scene.add(bullets);
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 

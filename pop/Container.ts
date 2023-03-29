@@ -22,13 +22,14 @@ class Container {
    * @param t total time since the game has started
    */
   update(dt: number,t: number): any {
-    this.children.forEach(child => {
+    this.children = this.children.filter(child => {
       if(child.update) {
         /**
          * if child is an container it will recall this update method
          */
-        child.update(dt,t);
+        child.update(dt,t,this);
       }
+      return child.dead ? false : true;
     })
   }
 }
