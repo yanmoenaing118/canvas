@@ -24,9 +24,6 @@ class Container {
   update(dt: number,t: number): any {
     this.children = this.children.filter(child => {
       if(child.update) {
-        /**
-         * if child is an container it will recall this update method
-         */
         child.update(dt,t,this);
       }
       return child.dead ? false : true;
