@@ -1,98 +1,89 @@
-interface Position {
-  x: number;
-  y: number;
+import { Rect } from "./Shapes";
+import { Position } from "./types";
+
+const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+const { width, height } = canvas;
+
+
+const rect1 = new Rect(0,0,40,40, 'green');
+const rect2  = new Rect(width - 40, 0, 40,40, 'red');
+
+let dt = 0;
+let lastTimeStamp = 0;
+
+
+
+function loop(ellapsedTime: number){ 
+
+    dt = (ellapsedTime - lastTimeStamp ) * 0.001;
+    lastTimeStamp = ellapsedTime;
+
+
+    update(dt, ellapsedTime);
+    render();
+
+    requestAnimationFrame(loop);
 }
 
-class Rect {
-  fill: string;
-  pos: Position;
-  width: number;
-  height: number;
-  selected: boolean = false;
-  constructor(width: number, height: number, fill: string) {
-    this.width = width;
-    this.height = height;
-    this.fill = fill;
-    this.pos = { x: 0, y: 0 };
-  }
+function update(dt: number,ellapsedTime: number) {
 
-  setSelected(selected: boolean) {
-    this.selected = selected;
-  }
-}
+    /**
+     * Check Collision Between two rectangles
+     */
 
-const canvas = document.querySelector("canvas") as HTMLCanvasElement;
-const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-let selectedObject: Rect | null;
-let threshold: number = 10;
-
-
-canvas.addEventListener("click", function (e: MouseEvent) {
-  rects.forEach((rect) => {
-    if (
-      checkInsideRect(
-        {
-          x: e.clientX,
-          y: e.clientY,
-        },
-        rect
-      )
-    ) {
-      rect.setSelected(true);
-      selectedObject = rect;
+    if(isCollide(rect1,rect2)) {
+        rect1.pos.x -= 1000 * dt;
+        rect2.pos.x +=  1000 * dt ;
     } else {
-      rect.setSelected(false);
-      selectedObject = null;
+        rect1.pos.x += 100 * dt;
+        rect2.pos.x -= 100 * dt;    
     }
-  });
-});
-
-function checkInsideRect(clickedPos: Position, rect: Rect) {
-  let inside: boolean = false;
-  if (
-    clickedPos.x <= rect.pos.x + rect.width &&
-    clickedPos.y <= rect.pos.y + rect.height &&
-    clickedPos.x >= rect.pos.x &&
-    clickedPos.y >= rect.pos.y
-  ) {
-    inside = true;
-  }
-
-  return inside;
 }
 
-let delta: number = 0;
-let lastTimeStamp: number = 0;
+function isCollide<T1 extends { pos: Position, width: number, height: number }>(obj1: T1, obj2: T1): boolean {
 
-const rect = new Rect(100, 100, "pink");
-rect.pos.x = canvas.width / 2 - 50;
-rect.pos.y = canvas.height / 2 - 50;
+    let obj1Left = obj1.pos.x;
+    let obj1Right = obj1.pos.x + obj1.width;
+    let obj1Top = obj1.pos.y;
+    let obj1Bottom = obj1.pos.y + obj1.height;
 
-const rectTwo = new Rect(50, 50, "red");
+    let obj2Left = obj2.pos.x;
+    let obj2Right = obj2.pos.x + obj2.width;
+    let obj2Top = obj2.pos.y;
+    let obj2Bottom = obj2.pos.y + obj2.height;
 
-const rects: Rect[] = [];
+    if(
+        obj1Left < obj2Right &&
+        obj1Right > obj2Left &&
+        obj1Top < obj2Bottom &&
+        obj1Bottom > obj2Top
+    ) {
+        return true;
+    } 
 
-rects.push(rect);
-rects.push(rectTwo);
-function draw(currentTimestamp: number) {
-  requestAnimationFrame(draw);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  rects.forEach((rect) => {
+    return false;
+}
+
+function render() {
+    ctx.clearRect(0,0,width,height);
+
     ctx.save();
-    ctx.translate(rect.pos.x, rect.pos.y);
-    ctx.fillStyle = rect.fill;
-    if (rect.selected) {
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 2;
-      ctx.strokeRect(0, 0, rect.width, rect.height);
-    }
-    ctx.fillRect(0, 0, rect.width, rect.height);
+    ctx.fillStyle = rect1.fill;
+    ctx.translate(rect1.pos.x,rect1.pos.y);
+    ctx.fillRect(0,0,rect1.width,rect1.height)
     ctx.restore();
-  });
 
-  delta = (currentTimestamp - lastTimeStamp) * 0.001;
-  lastTimeStamp = currentTimestamp;
+
+    ctx.save();
+    ctx.fillStyle = rect2.fill;
+    ctx.translate(rect2.pos.x, rect2.pos.y);
+    ctx.fillRect(0,0,rect2.width, rect2.height);
+    ctx.restore();
+
+
 }
 
-requestAnimationFrame(draw);
+
+requestAnimationFrame(loop);
