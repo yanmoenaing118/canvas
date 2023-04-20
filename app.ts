@@ -100,7 +100,7 @@ function doGameOver() {
     fill: "#8B8994",
     align: "center"
   });
-  gameOverMessage.pos.x = w / 2;
+  gameOverMessage.pos.x = width / 2;
   gameOverMessage.pos.y = 120;
   scene.add(gameOverMessage);
   scene.remove(player);
