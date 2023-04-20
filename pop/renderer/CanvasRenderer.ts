@@ -1,3 +1,4 @@
+import { TextStyle } from "../Text";
 import Texture from "../Texture";
 
 export default class CanvasRenderer {
@@ -32,7 +33,7 @@ export default class CanvasRenderer {
         }
 
         if (child.text) {
-          const { font, fill, align } = child.style;
+          const { font, fill, align } = child.style as TextStyle;
           if (font) ctx.font = font;
           if (fill) ctx.fillStyle = fill;
           if (align) ctx.textAlign = align;

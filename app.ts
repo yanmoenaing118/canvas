@@ -34,12 +34,24 @@ const player = new Sprite(textures.spaceship);
 const playerSize = 30;
 const speed = 1500;
 
+let scoreAmount = 0;
+let gameOver = false;
+
 let lastShot = 0;
 let lastSpwan = 0;
 let spwanSpeed = 1;
 
 const bullets = new Container();
 const buddies = new Container();
+
+const score = new Text("Score: ", {
+  font: "20px sans-serif",
+  fill: "red",
+  align: "center",
+});
+
+score.pos.x = width / 2;
+score.pos.y = height - 50;
 
 player.update = function (dt, t, container) {
   if (control.y) this.pos.y += control.y * speed * dt;
@@ -82,10 +94,23 @@ function spwanBuddie(x: number, y: number, speed: number) {
   buddies.add(buddie);
 }
 
+function doGameOver() {
+  const gameOverMessage = new Text("Game Over", {
+    font: "30pt sans-serif",
+    fill: "#8B8994",
+    align: "center"
+  });
+  gameOverMessage.pos.x = w / 2;
+  gameOverMessage.pos.y = 120;
+  scene.add(gameOverMessage);
+  scene.remove(player);
+  gameOver = true;
+}
 scene.add(new Sprite(textures.background));
 scene.add(player);
 scene.add(bullets);
 scene.add(buddies);
+scene.add(score);
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
@@ -95,11 +120,24 @@ function loop(ellapsedTime: number) {
   if (ellapsedTime - lastSpwan > spwanSpeed) {
     lastSpwan = ellapsedTime;
     const x = width;
-    const y = Math.random() * height;
-    const speed = -100 - Math.random() * Math.random() * 1000;
+    const y = Math.random() * height + 60;
+    const speed = -100 - Math.random() * Math.random() * 100;
     spwanBuddie(x, y, speed);
-    spwanSpeed = Math.random() * 100 + 100;
+    spwanSpeed = Math.random() * 500;
   }
+
+  buddies.children.forEach((baddie: Sprite) => {
+    bullets.children.forEach((bullet: Sprite) => {
+      const dx = baddie.pos.x + 16 - (bullet.pos.x + 8);
+      const dy = baddie.pos.y + 16 - (bullet.pos.y + 8);
+      if (Math.sqrt(dx * dx + dy * dy) < 24) {
+        // A hit!
+        bullet.dead = true;
+        baddie.dead = true;
+        scoreAmount += Math.floor(ellapsedTime);
+      }
+    });
+  });
 
   scene.update(delta, ellapsedTime); // update a bit
   renderer.render(scene); // render everything which is just been updated
