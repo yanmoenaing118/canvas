@@ -28,6 +28,10 @@ class Container {
       return child.dead ? false : true;
     });
   }
+
+  map<Type extends { pos: Position }>(fn: any): Type[] {
+    return this.children.map(fn);
+  }
 }
 
 export default Container;

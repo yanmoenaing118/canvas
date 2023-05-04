@@ -1,6 +1,7 @@
 import Game from "./pop/Game";
 import pop from "./pop/index";
-const { CanvasRenderer, Container, KeyControls, Text, Texture, Sprite } = pop;
+import Sprite from './pop/Sprite';
+const { CanvasRenderer, Container, KeyControls, Text, Texture } = pop;
 
 // Game setup code
 const w = 640;
@@ -109,8 +110,8 @@ game.run((dt: number, t: number) => {
    }
  
    // Check for collisions, or out of screen
-   baddies.children.forEach(baddie => {
-     bullets.children.forEach(bullet => {
+   baddies.map((baddie: Sprite) => {
+     bullets.map((bullet: Sprite) => {
  
        // Check distance between baddie and bullet
        const dx = baddie.pos.x + 16 - (bullet.pos.x + 8);

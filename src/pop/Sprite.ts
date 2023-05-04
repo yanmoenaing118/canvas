@@ -4,6 +4,7 @@ import { Position } from "./models";
 class Sprite {
   texture: Texture | undefined;
   pos: Position = { x: 0, y: 0 };
+  dead: boolean = false;
   update!: (dt: number) => void;
   constructor(texture: Texture) {
     this.texture = texture;
