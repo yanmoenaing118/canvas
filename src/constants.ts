@@ -1,0 +1,1 @@
+export const MAX_FRAME = 1/60;

@@ -1,5 +1,6 @@
 import { Player } from "./Entities";
 import { KeyControls } from "./KeyControls";
+import { MAX_FRAME } from "./constants";
 import { Position } from "./interfaces";
 
 function createCanvas(w: number, h: number) {
@@ -61,7 +62,7 @@ function loop(ellapsedTime: number) {
   context.clearRect(0, 0, width, height);
   context.save();
 
-  dt = Math.min((ellapsedTime - lastEllapsedTime) * 0.001, 1 / 60);
+  dt = Math.min((ellapsedTime - lastEllapsedTime) * 0.001, MAX_FRAME);
   lastEllapsedTime = ellapsedTime;
 
   if (sec(lastEllapsedTime) - lastAppearedPlayer > playerFrameRate) {
