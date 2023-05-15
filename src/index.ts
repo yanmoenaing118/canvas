@@ -21,7 +21,7 @@ const context = canvas.context as CanvasRenderingContext2D;
 const controls = new KeyControls();
 
 function drawPlayer(pos: Position) {
-  const size = 40;
+  const size = 20;
   context.save();
   context.translate(pos.x, pos.y);
   context.fillStyle = "green";
@@ -34,20 +34,18 @@ function drawTimestamp(ellapsedTime: number) {
   const textWidth = context.measureText(totalMin).width;
   context.save();
   context.translate(width - textWidth - 20, height - 10);
-  context.fillStyle = 'black';
-  context.font = '18px Consolas';
-  context.fillText(totalMin,0,0);
+  context.fillStyle = "black";
+  context.font = "18px Consolas";
+  context.fillText(totalMin, 0, 0);
   context.restore();
 }
 
-
 const players: Player[] = [];
 const player: Player = new Player();
-let playerFrameRate = .1; // 4s
+let playerFrameRate = .5; // 4s
 let lastAppearedPlayer = 0;
 
 players.push(player);
-
 
 let dx = 0;
 let dy = 0;
@@ -56,35 +54,50 @@ let dt = 1 / 60;
 let lastEllapsedTime = 0;
 
 function sec(milli: number) {
-  return Math.round(milli * 0.001);
+  return milli * 0.001;
 }
 
 function loop(ellapsedTime: number) {
   context.clearRect(0, 0, width, height);
   context.save();
 
-  dt = Math.min((ellapsedTime - lastEllapsedTime) * 0.001, 1/60);
+  dt = Math.min((ellapsedTime - lastEllapsedTime) * 0.001, 1 / 60);
   lastEllapsedTime = ellapsedTime;
 
-  
-  if(sec(lastEllapsedTime) - lastAppearedPlayer > playerFrameRate) {
-    const player =  new Player();
-    player.pos.y = players.length * 40;
+  if (sec(lastEllapsedTime) - lastAppearedPlayer > playerFrameRate) {
+    const player = new Player();
+    player.pos.x = Math.random() * width;
+    player.pos.y = Math.random() * height;
+    if(player.pos.y > height) {
+      player.pos.y = 0;
+    }
     players.push(player);
     lastAppearedPlayer = sec(lastEllapsedTime);
   }
 
+  /**
+   * loop all players and update
+   */
   players.forEach((player: Player, i: number) => {
-    player.pos.x +=  speed * dt;
-    if(player.pos.x >= width){
-      player.pos.x = 0;
+    player.pos.x += speed * dt * controls.x || 1;
+    if (player.pos.x >= width) {
+      player.pos.x = 20;
     }
+  });
+
+
+  
+  /**
+   * loop all players and render them
+   */
+  players.forEach((player: Player, i: number) => {
     drawPlayer({
       x: player.pos.x,
       y: player.pos.y,
     });
-  })
+  });
 
+  console.log(players.length)
   drawTimestamp(ellapsedTime);
   context.restore();
   requestAnimationFrame(loop);
