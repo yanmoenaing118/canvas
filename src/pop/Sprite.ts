@@ -5,7 +5,8 @@ class Sprite {
   texture: Texture | undefined;
   pos: Position = { x: 0, y: 0 };
   dead: boolean = false;
-  update!: (dt: number) => void;
+  update!: (dt: number, t: number) => void;
+  scale = {x: 1, y: 1}
   constructor(texture: Texture) {
     this.texture = texture;
     this.pos = { x: 0, y: 0 };

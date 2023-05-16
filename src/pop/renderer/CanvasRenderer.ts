@@ -30,9 +30,16 @@ class CanvasRenderer {
         ctx.save();
 
         // Handle transforms
+
+
         if (child.pos) {
           ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y));
         }
+
+        if(child.scale){
+          ctx.scale(child.scale.x, child.scale.y);2
+        }
+
 
         // Draw the leaf nodes
         if (child.text) {
