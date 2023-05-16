@@ -1,7 +1,8 @@
 import Game from "./pop/Game";
 import pop from "./pop/index";
 import Sprite from "./pop/Sprite";
-const { Container, KeyControls, Text, Texture } = pop;
+const { Container, KeyControls, Text, Texture, math } = pop;
+
 
 // Game setup code
 const w = 640;
@@ -42,15 +43,16 @@ ship.pos.x = Math.random() * w / 2;
 ship.pos.y = Math.random() * h / 2;
 
 ship.update = function(dt: number, t: number) {
-  ship.scale.x = Math.abs(Math.sin(t)) + 0.5;
-  ship.scale.y = Math.abs(Math.sin(t)) + 0.5;
+
 }
 
 game.run((dt: number, t: number) => {
+  ship.scale.x = Math.abs(Math.sin(t)) + 0.5;
+  ship.scale.y = Math.abs(Math.sin(t)) + 0.5;
   buildings.map(function (building: Sprite) {
-    building.pos.x += 100 * dt;
-    if(building.pos.x > w) {
-      building.pos.x = -50;
+    building.pos.x -= 100 * dt;
+    if(building.pos.x < -80) {
+      building.pos.x = w + 100;
     }
   });
 });
