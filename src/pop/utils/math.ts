@@ -15,7 +15,26 @@ function rand(min?: number, max?: number) {
   return Math.floor(randf(min, max));
 }
 
+/**
+ * 
+ * @param max 
+ * @returns c
+ */
+function randOneIn(max = 2) {
+  return rand(0, max) == 0;
+}
+
+/**
+ * 
+ * @param array 
+ * @returns return a random element from the array
+ */
+function randOneFrom<T>(array: Array<T>): T {
+  return array[rand(array.length)];
+}
 export default {
   rand,
   randf,
+  randOneIn,
+  randOneFrom
 };
