@@ -32,11 +32,13 @@ function loop(lastEllapsedTime: number) {
   //   context.rotate(Math.PI / 4);
 
   context.translate(width / 2, height / 2);
+
   rotation += 0.05;
   context.rotate(rotation);
-  context.scale(-1.5, 1.5);
-  // context.fillRect((w / 2) * -1, (h / 2) * -1, w, h);
+  //   context.scale(-1.5, 1.5);
   context.translate(anchor.x, anchor.y);
+
+  // context.fillRect((w / 2) * -1, (h / 2) * -1, w, h);
   context.drawImage(img, 0, 0);
   context.restore();
   requestAnimationFrame(loop);
