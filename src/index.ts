@@ -1,5 +1,6 @@
 import { Player } from "./Entities";
 import { KeyControls } from "./KeyControls";
+import { drawTimestamp } from "./Objects";
 import { MAX_FRAME } from "./constants";
 import { Position } from "./interfaces";
 
@@ -18,8 +19,10 @@ const width = 600;
 const height = 600;
 const canvas = createCanvas(width, height);
 const context = canvas.context as CanvasRenderingContext2D;
-
+let dt = MAX_FRAME / 60;
+let lastEllapsedTime = 0;
 const controls = new KeyControls();
+
 
 function drawGrid(
   width: number,
@@ -61,11 +64,12 @@ const gridSize = 60;
 let player: Player = new Player();
 player.w = gridSize;
 player.h = gridSize;
-player.pos.x = gridSize;
+player.pos.x = gridSize * 2;
 player.pos.y = gridSize;
 let image = new Image();
 image.src  = './logo.ico';
 function drawPlayer(){
+  // player.pos.x = player.pos.x + controls.x * dt * 720;
   context.save();
   /**
    * translate scale rotate
@@ -73,14 +77,19 @@ function drawPlayer(){
   context.translate(player.pos.x, player.pos.y);  
   // context.rotate(player.rotation);
   // context.fillRect(0,0,player.w, player.h);
-  context.scale(player.scale.x * 2, player.scale.y * 2);
+  context.scale(-1 , player.scale.y );
+  // context.translate(-30,0);
   // context.scale(player.scale.x, player.scale.y);
-  context.translate(player.w/ 2 * -1, player.h / 2 * -1);
+  // context.translate(player.w/ 2 , player.h / 2 );
   context.drawImage(image, 0, 0, gridSize, gridSize);
   context.restore();
 }
 
 function loop(time: number) {
+
+  dt = Math.min(MAX_FRAME, (time - lastEllapsedTime ) * 0.001);
+  lastEllapsedTime = time;
+
 
   context.clearRect(0, 0, width, height);
 
@@ -90,6 +99,7 @@ function loop(time: number) {
   drawPlayer();
   drawGrid(width, height, gridSize,gridSize);
 
+  drawTimestamp(time, context)
   requestAnimationFrame(loop);
 }
 
