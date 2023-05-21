@@ -7,100 +7,89 @@ function createCanvas(w: number, h: number) {
   const canvasEl = document.createElement("canvas") as HTMLCanvasElement;
   canvasEl.width = w;
   canvasEl.height = h;
-  document.getElementById("board")?.appendChild(canvasEl);
+  document.body.appendChild(canvasEl);
   return {
     canvas: canvasEl,
     context: canvasEl.getContext("2d"),
   };
 }
 
-const width = 400;
-const height = 300;
+const width = 600;
+const height = 600;
 const canvas = createCanvas(width, height);
 const context = canvas.context as CanvasRenderingContext2D;
 
 const controls = new KeyControls();
 
-function drawPlayer(pos: Position) {
-  const size = 20;
-  context.save();
-  context.translate(pos.x, pos.y);
-  context.fillStyle = "green";
-  context.fillRect(0, 0, size, size);
-  context.restore();
-}
-
-function drawTimestamp(ellapsedTime: number) {
-  const totalMin = `${Math.round(ellapsedTime * 0.001)} sec`; // milli to sec
-  const textWidth = context.measureText(totalMin).width;
-  context.save();
-  context.translate(width - textWidth - 20, height - 10);
-  context.fillStyle = "black";
-  context.font = "18px Consolas";
-  context.fillText(totalMin, 0, 0);
-  context.restore();
-}
-
-const players: Player[] = [];
-const player: Player = new Player();
-let playerFrameRate = .5; // 4s
-let lastAppearedPlayer = 0;
-
-players.push(player);
-
-let dx = 0;
-let dy = 0;
-let speed = 100;
-let dt = 1 / 60;
-let lastEllapsedTime = 0;
-
-function sec(milli: number) {
-  return milli * 0.001;
-}
-
-function loop(ellapsedTime: number) {
-  context.clearRect(0, 0, width, height);
-  context.save();
-
-  dt = Math.min((ellapsedTime - lastEllapsedTime) * 0.001, MAX_FRAME);
-  lastEllapsedTime = ellapsedTime;
-
-  if (sec(lastEllapsedTime) - lastAppearedPlayer > playerFrameRate) {
-    const player = new Player();
-    player.pos.x = Math.random() * width;
-    player.pos.y = Math.random() * height;
-    if(player.pos.y > height) {
-      player.pos.y = 0;
-    }
-    players.push(player);
-    lastAppearedPlayer = sec(lastEllapsedTime);
+function drawGrid(
+  width: number,
+  height: number,
+  colWidth: number = 40,
+  rowWidth: number = 40
+) {
+  /**
+   * draw cols
+   */
+  for (let i = 0; i <= width / colWidth; i++) {
+    context.save();
+    context.beginPath();
+    context.lineWidth = 1;
+    context.translate(i * colWidth, 0);
+    context.moveTo(0, 0);
+    context.lineTo(0, context.canvas.height + 4);
+    context.stroke();
+    context.restore();
   }
 
   /**
-   * loop all players and update
+   * draw rows
    */
-  players.forEach((player: Player, i: number) => {
-    player.pos.x += speed * dt * controls.x || 1;
-    if (player.pos.x >= width) {
-      player.pos.x = 20;
-    }
-  });
+  for (let j = 0; j <= height / rowWidth; j++) {
+    context.save();
+    context.beginPath();
+    context.lineWidth = 1;
+    context.translate(0, j * rowWidth);
+    context.moveTo(0, 0);
+    context.lineTo(context.canvas.width, 0);
+    context.stroke();
+    context.restore();
+  }
+}
 
 
-  
+const gridSize = 60;
+let player: Player = new Player();
+player.w = gridSize;
+player.h = gridSize;
+player.pos.x = gridSize;
+player.pos.y = gridSize;
+let image = new Image();
+image.src  = './logo.ico';
+function drawPlayer(){
+  context.save();
   /**
-   * loop all players and render them
+   * translate scale rotate
    */
-  players.forEach((player: Player, i: number) => {
-    drawPlayer({
-      x: player.pos.x,
-      y: player.pos.y,
-    });
-  });
-
-  console.log(players.length)
-  drawTimestamp(ellapsedTime);
+  context.translate(player.pos.x, player.pos.y);  
+  // context.rotate(player.rotation);
+  // context.fillRect(0,0,player.w, player.h);
+  context.scale(player.scale.x * 2, player.scale.y * 2);
+  // context.scale(player.scale.x, player.scale.y);
+  context.translate(player.w/ 2 * -1, player.h / 2 * -1);
+  context.drawImage(image, 0, 0, gridSize, gridSize);
   context.restore();
+}
+
+function loop(time: number) {
+
+  context.clearRect(0, 0, width, height);
+
+
+  player.scale.x = controls.x ? controls.x : 1;
+
+  drawPlayer();
+  drawGrid(width, height, gridSize,gridSize);
+
   requestAnimationFrame(loop);
 }
 
