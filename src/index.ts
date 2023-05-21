@@ -67,9 +67,9 @@ for (let i = 0; i < 10; i++) {
 scene.add(ships);
 game.run((dt: number, t: number) => {
   console.log(dt);
-  const rps = Math.PI  * dt; // One revolution per second
+  const rps = 2 * Math.PI  * dt; // One revolution per second
   ships.map((s: Sprite, i: number) => {
-    s.rotation += rps * 5;
+    s.rotation += rps;
   });
   buildings.map(function (building: Sprite) {
     building.pos.x -= 100 * dt;
