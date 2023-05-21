@@ -1,4 +1,3 @@
-import { Rect } from "./Shapes";
 import { Position } from "./types";
 
 const canvas = document.querySelector("canvas") as HTMLCanvasElement;
@@ -18,6 +17,11 @@ let dt = 1/60;
 
 let rotation = 0;
 
+let anchor: Position = {
+    x: -16,
+    y: -16
+}
+
 function loop(lastEllapsedTime: number) {
     context.clearRect(0,0,width,height);
     context.save();
@@ -32,7 +36,7 @@ function loop(lastEllapsedTime: number) {
     context.rotate(rotation);
     context.scale(-1.5,1.5);
     // context.fillRect((w / 2) * -1, (h / 2) * -1, w, h);
-    context.translate(w / 2 * -1, h / 2 * -1);
+    context.translate(anchor.x, anchor.y);
     context.drawImage(img, 0, 0);
     context.restore();
     requestAnimationFrame(loop);
