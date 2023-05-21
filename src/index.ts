@@ -9,6 +9,7 @@ const { Container, KeyControls, Text, Texture, math } = pop;
 const w = 640;
 const h = 300;
 const game = new Game(w, h);
+let dt = 1/60;
 
 // Load game textures
 const textures = {
@@ -45,15 +46,31 @@ console.log(buildings);
 
 const ship = scene.add(new Sprite(textures.spaceship));
 
-ship.pos.x = Math.random() * w / 2;
-ship.pos.y = Math.random() * h / 2;
+ship.pos.x =  w / 2;
+ship.pos.y = h / 2;
+
+ship.anchor = {
+  x: -16,
+  y: -16
+}
+const flipped = Math.random() < 0.5;
+ship.scale.x = flipped ? -1 : 1;
+ship.anchor.x = flipped ? 32 : 0;
+const ships = new Container();
+for (let i = 0; i < 10; i++) {
+  const ship = ships.add(new Sprite(textures.spaceship));
+  ship.pivot = { x: 16, y: 16 };
+  ship.pos.x = i * 32;
+}
 
 
-
+scene.add(ships);
 game.run((dt: number, t: number) => {
-  console.log(Math.sin(t))
-  ship.scale.x = Math.max(Math.abs(Math.sin(t)) + 0.25, 0.25) + 1;
-  ship.scale.y = Math.max(Math.abs(Math.sin(t)) + 0.25, 0.25) + 1;
+  console.log(dt);
+  const rps = Math.PI  * dt; // One revolution per second
+  ships.map((s: Sprite, i: number) => {
+    s.rotation += rps * 5;
+  });
   buildings.map(function (building: Sprite) {
     building.pos.x -= 100 * dt;
     if(building.pos.x < -80) {

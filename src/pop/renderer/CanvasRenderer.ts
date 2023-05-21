@@ -30,16 +30,26 @@ class CanvasRenderer {
         ctx.save();
 
         // Handle transforms
-
-
+        /** Note:
+         *  translate to the correct position, scale to the correct size, then rotate.
+         *  If we rotated first before scaling, our pivot point would be incorrect.
+         */
         if (child.pos) {
           ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y));
         }
-
+        if(child.anchor){
+          ctx.translate(child.anchor.x, child.anchor.y);
+        }
         if(child.scale){
           ctx.scale(child.scale.x, child.scale.y);2
         }
-
+        if(child.rotation) {
+          const px = child.pivot.x ? child.pivot.x : 0;
+          const py = child.pivot.y ? child.pivot.y : 0;
+          ctx.translate(px,py);
+          ctx.rotate(child.rotation);
+          ctx.translate(-px,-py);
+        }
 
         // Draw the leaf nodes
         if (child.text) {
