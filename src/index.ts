@@ -66,8 +66,13 @@ player.w = gridSize;
 player.h = gridSize;
 player.pos.x = gridSize * 2;
 player.pos.y = gridSize;
+
+player.anchor.y = 0;
 let image = new Image();
 image.src  = './logo.ico';
+
+let rotation = 0.1;
+
 function drawPlayer(){
   // player.pos.x = player.pos.x + controls.x * dt * 720;
   context.save();
@@ -77,8 +82,12 @@ function drawPlayer(){
   context.translate(player.pos.x, player.pos.y);  
   // context.rotate(player.rotation);
   // context.fillRect(0,0,player.w, player.h);
-  context.scale(-1 , player.scale.y );
-  // context.translate(-30,0);
+  context.scale(player.scale.x * 2 , player.scale.y * 2 );
+  context.translate(player.anchor.x,0);
+
+  context.translate(30,30);
+  context.rotate(rotation += 0.1)
+  context.translate(-30,-30);
   // context.scale(player.scale.x, player.scale.y);
   // context.translate(player.w/ 2 , player.h / 2 );
   context.drawImage(image, 0, 0, gridSize, gridSize);
@@ -95,8 +104,18 @@ function loop(time: number) {
 
 
   player.scale.x = controls.x ? controls.x : 1;
+  player.anchor.x = player.scale.x == -1 ? -60 : 0;
+  console.log(controls.x)
 
   drawPlayer();
+
+  context.save();
+  context.fillStyle = 'red';
+  context.translate(gridSize * 5, gridSize * 2);
+  context.fillRect(0,0,gridSize, gridSize);
+  context.restore();
+  // drawPlayer();
+  // drawPlayer();
   drawGrid(width, height, gridSize,gridSize);
 
   drawTimestamp(time, context)
