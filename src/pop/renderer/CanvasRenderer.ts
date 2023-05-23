@@ -37,18 +37,19 @@ class CanvasRenderer {
         if (child.pos) {
           ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y));
         }
-        if(child.anchor){
+        if (child.anchor) {
           ctx.translate(child.anchor.x, child.anchor.y);
         }
-        if(child.scale){
-          ctx.scale(child.scale.x, child.scale.y);2
+        if (child.scale) {
+          ctx.scale(child.scale.x, child.scale.y);
+          2;
         }
-        if(child.rotation) {
+        if (child.rotation) {
           const px = child.pivot.x ? child.pivot.x : 0;
           const py = child.pivot.y ? child.pivot.y : 0;
-          ctx.translate(px,py);
+          ctx.translate(px, py);
           ctx.rotate(child.rotation);
-          ctx.translate(-px,-py);
+          ctx.translate(-px, -py);
         }
 
         // Draw the leaf nodes
@@ -58,10 +59,25 @@ class CanvasRenderer {
           if (fill) ctx.fillStyle = fill;
           if (align) ctx.textAlign = align;
           ctx.fillText(child.text, 0, 0);
-        } 
-        
-        if(child.texture) {
-          ctx.drawImage(child.texture.img, 0, 0);
+        }
+
+        if (child.texture) {
+          const img = child.texture.img;
+          if (child.tileW) {
+            ctx.drawImage(
+              img,
+              child.frame.x * child.tileW,
+              child.frame.y * child.tileH,
+              child.tileW,
+              child.tileH,
+              0,
+              0,
+              child.tileW,
+              child.tileH
+            );
+          } else {
+            ctx.drawImage(child.texture.img, 0, 0);
+          }
         }
 
         // Render any child sub-nodes
