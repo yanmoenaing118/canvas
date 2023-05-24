@@ -19,7 +19,7 @@ const width = 400;
 const height = 400;
 const canvas = createCanvas(width, height);
 const context = canvas.context as CanvasRenderingContext2D;
-let dt = MAX_FRAME / 60;
+let dt = MAX_FRAME ;
 let lastEllapsedTime = 0;
 const controls = new KeyControls();
 
@@ -112,6 +112,7 @@ let sprite = {
 }
 
 function drawSprite() {
+  
   context.save();
   context.translate(sprite.pos.x,sprite.pos.y);
   context.scale(1.5,1.5);
@@ -131,13 +132,19 @@ function drawSprite() {
 
 function loop(time: number) {
   // console.log('h')
-  const sec = (time * 0.001) ;
+  const sec = (time * 0.001) /  .11289;
   sprite.frame = {
     x:0,
-    y: 4
+    y: 2
+  }
+  const dx = sprite.pos.y + dt * 64;
+  if(dx < height) {
+    sprite.pos.y = dx;
+  } else {
+    sprite.pos.y = 0;
   }
   sprite.frame.x = Math.floor(sec) % 4;
-  console.log(Math.floor(sec) % 4)
+  // console.log(Math.floor(sec) % 4)
   if((time / 1000) <= 1) {
     times.push(time);
     console.log(Math.floor(times[times.length -1]))
