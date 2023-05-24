@@ -34,11 +34,17 @@ const text = scene.add(new Text(''))
 text.pos.x = 0;
 text.pos.y = 100;
 
+const timerecord: number[] = [];
 
 console.log(walker)
 let num = 0.08;
 game.run((dt: number, t: number) => {
   walker.frame.x = Math.floor(t /num) % 2;
   text.text = `${Math.floor(t)}`
-  console.log(Math.floor(t /num) % 4 , t, t /num)
+  // console.log(Math.floor(t /num) % 4 , t, t /num)
+  // console.log(t);
+  if(t <= 1) {
+    timerecord.push(t);
+    console.log(timerecord)
+  }
 });
