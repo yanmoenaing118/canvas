@@ -14,9 +14,12 @@ export default class Spider extends TileSprite {
     }
 
     update(dt: number, t: number) {
-        this.speed += t * 0.5 ; 
+        if(this.speed != 0) {
+            this.speed += t * 0.5 ; 
+        }
+
         this.pos.x -= this.speed * dt;
-        const frameRate = (10 / this.speed) * 2.5;
+        const frameRate = this.speed == 0 ? 0.1 : (10 / this.speed) * 2.5;
         this.frame.x = Math.floor(t / frameRate) % FRAME_SPIDERS;
     }
 }

@@ -9,6 +9,7 @@ import TileSprite from "./TileSprite";
 import math from "./math";
 import { Position } from "./types";
 import Text from "./Text";
+import { hasCollide } from "./utils";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -27,6 +28,8 @@ const control = new KeyControls();
 
 /** Game stats */
 let totalScore = 0;
+let girlAge = 250;
+let totalHit = 0;
 
 /**Background */
 const bg = new Texture("./assets/pyramid.jpg");
@@ -38,15 +41,11 @@ function renderBg() {
 
 /**Girl start */
 const girl = new Girl();
-girl.scale.x = 0.2;
-girl.scale.y = 0.2;
-girl.w = 1078 * girl.scale.x;
-girl.h = 2089 * girl.scale.y;
 girl.pos.y = h - girl.h;
 function renderGirl() {
   context.save();
   context.fillStyle = "pink";
-  // context.fillRect(girl.pos.x, 0, girl.w, h);
+  context.fillRect(girl.pos.x, 0, girl.w, h);
   context.restore();
   context.save();
   context.translate(girl.pos.x, girl.pos.y);
@@ -85,7 +84,7 @@ function createSpiders() {
   for (let i = 0; i < 1; i++) {
     const spider = new Spider();
     spider.pos.x = w - 64;
-    spider.pos.y = math.rand(0, h - spider.h - soldier.tileH / 2);
+    spider.pos.y = math.rand(h - girl.h, h - spider.h - soldier.tileH / 2);
     spider.tileH = 64;
     spider.tileW = 64;
     spider.frame.y = 3;
@@ -102,7 +101,7 @@ function renderSpiders() {
     context.translate(spider.pos.x, spider.pos.y);
     // context.translate(spider.anchor.x, spider.anchor.y);
     context.scale(spider.scale.x, spider.scale.y);
-    // context.strokeRect(0, 0, spider.w, spider.h);
+    // context.strokeRec t(0, 0, spider.w, spider.h);
     context.drawImage(
       spider.texture.img,
       spider.tileH * spider.frame.x,
@@ -154,6 +153,7 @@ function updateBullets(dt: number, t: number) {
 }
 // Bullets end
 
+// collisions
 function checkCollision() {
   bullets.forEach((bullet) => {
     spiders.forEach((spider) => {
@@ -165,20 +165,21 @@ function checkCollision() {
   });
 }
 
-function hasCollide(rect1: Sprite, rect2: Sprite) {
-  return (
-    rect1.pos.x < rect2.pos.x + rect2.w &&
-    rect1.pos.x + rect1.w > rect2.pos.x &&
-    rect1.pos.y < rect2.pos.y + rect2.h &&
-    rect1.h + rect1.pos.y > rect2.pos.y
-  );
+function checkGirlHit() {
+  spiders.forEach(spider => {
+    if(spider.pos.x < girl.pos.x + girl.w) {
+      if(hasCollide(spider, girl,100)) {
+        spider.speed = 0;
+      }
+
+    }
+  })
 }
 
 // score text
 const score = new Text("Total Kill: 0");
 score.style.color = 'white';
-function renderText() {
-
+function renderScore() {
   context.save();
   context.translate(w - score.width(context) * 2 - 1,0);
   context.fillStyle = 'black';
@@ -195,7 +196,7 @@ function renderText() {
 
 }
 
-renderText();
+renderScore();
 console.log(score)
 function run(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
@@ -217,12 +218,12 @@ function run(ellapsedTime: number) {
     createSpiders();
     lastSpwanTime = 0;
     const rate = Math.random() * 0.5;
-    
     spwanRate = rate > 0.15 ? 0.15 : rate;
   }
 
   // drawSpider();
   checkCollision();
+  checkGirlHit();
   score.text = `Total Kill: ${totalScore}`;
 
   /**
@@ -242,7 +243,7 @@ function run(ellapsedTime: number) {
   renderSoldier();
   renderSpiders();
   renderBullets();
-  renderText();
+  renderScore();
   requestAnimationFrame(run);
 }
 
