@@ -1,8 +1,8 @@
+import Squizz from "./pop/entities/Squizz";
 import Game from "./pop/Game";
 import pop from "./pop/index";
 import Sprite from "./pop/Sprite";
-import TileSprite from "./pop/TileSprite";
-const { Container, KeyControls, Text, Texture, math } = pop;
+const { textures, Container, KeyControls, Text, Texture, math } = pop;
 
 // Game setup code
 const w = 640;
@@ -12,39 +12,43 @@ const context = game.renderer.ctx;
 let dt = 1 / 60;
 
 // Load game textures
-const textures = {
-  background: new Texture("images/bg.png"),
-  spaceship: new Texture("images/spaceship.png"),
-  bullet: new Texture("images/bullet.png"),
-  baddie: new Texture("images/baddie.png"),
-  building: new Texture("images/building.png"),
-  walker: new Texture("images/player-walk.png"),
-};
-
-console.log(textures);
 
 // Game objects
 const scene = game.scene;
 const controls = new KeyControls();
 scene.add(new Sprite(textures.background));
-const walker = new TileSprite(textures.walker,32,32);
-scene.add(walker)
-const text = scene.add(new Text(''))
 
-text.pos.x = 0;
-text.pos.y = 100;
+const balls = new Container();
 
-const timerecord: number[] = [];
-
-console.log(walker)
-let num = 0.08;
+for (let i = 0; i < 10; i++) {
+  const ball = balls.add(new Squizz());
+  ball.pos.x = 0;
+  ball.pos.y = math.rand(h);
+  ball.update = (function () {
+    let rate = math.randf(0.05,0.1);
+    let currTime = 0;
+    let currFrame = 0;
+    let speed = math.rand(20,100);
+    return (dt: number, t: number) => {
+      ball.pos.x += dt * speed;
+      currTime += dt;
+      if (currTime > rate) {
+        ball.frame.x = currFrame++ % 4;
+        currTime -= rate;
+      }
+    };
+  })();
+}
+console.log(balls);
+scene.add(balls);
+let rate = 0.25;
+let currTime = 0;
 game.run((dt: number, t: number) => {
-  walker.frame.x = Math.floor(t /num) % 2;
-  text.text = `${Math.floor(t)}`
-  // console.log(Math.floor(t /num) % 4 , t, t /num)
-  // console.log(t);
-  if(t <= 1) {
-    timerecord.push(t);
-    console.log(timerecord)
+  currTime += dt;
+  if (currTime > rate) {
+    // console.log(currTime.toFixed(1));
+    currTime -= rate;
+  } else {
+    // console.log('test', currTime)
   }
 });

@@ -6,6 +6,7 @@ import Sprite from "./Sprite";
 import Text from "./Text";
 import Texture from "./Texture";
 import math from "./utils/math";
+import { textures } from "./textures";
 
 export default {
   CanvasRenderer,
@@ -14,5 +15,6 @@ export default {
   Sprite,
   Text,
   Texture,
-  math
+  math,
+  textures
 };
