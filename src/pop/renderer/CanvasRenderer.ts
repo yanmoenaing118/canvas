@@ -11,7 +11,7 @@ class CanvasRenderer {
     this.h = canvas.height = h;
     this.view = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.ctx.imageSmoothingEnabled = false;
+    this.ctx.imageSmoothingEnabled = true;
     this.ctx.textBaseline = "top";
   }
 
