@@ -3,11 +3,8 @@ import Girl from "./Girl";
 import KeyControls from "./KeysControl";
 import Soldier from "./Soldier";
 import Spider from "./Spider";
-import Sprite from "./Sprite";
 import Texture from "./Texture";
-import TileSprite from "./TileSprite";
 import math from "./math";
-import { Position } from "./types";
 import Text from "./Text";
 import { hasCollide } from "./utils";
 import Heart from "./Heart";
@@ -81,15 +78,16 @@ let spiders: Spider[] = [];
 let lastSpwanTime = 0;
 let spwanRate = 0.07;
 function createSpiders() {
-  for (let i = 0; i < 1; i++) {
-    const spider = new Spider();
+  // for (let i = 0; i < 1; i++) {
+    
+  // }
+  const spider = new Spider();
     spider.pos.x = w - 64;
-    spider.pos.y = math.rand(h - girl.h, h - spider.h - soldier.tileH / 2);
+    spider.pos.y = math.rand(0, h - spider.h - soldier.tileH / 2);
     spider.tileH = 64;
     spider.tileW = 64;
     spider.frame.y = 3;
     spiders.push(spider);
-  }
 }
 createSpiders();
 
