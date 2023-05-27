@@ -2,10 +2,8 @@ import Texture from "./Texture";
 import TileSprite from "./TileSprite";
 import { FRAMES_SOLDIERS } from "./sprite-frames";
 
-
-
 export default class Soldier extends TileSprite {
-    speed: number = 350;
+    speed: number = 330;
     constructor() {
         super(new Texture('./assets/soldier.png'))
         this.frame.y = 1;

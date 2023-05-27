@@ -9,14 +9,14 @@ export default class Sprite {
   };
   scale: Position = {
     x: 1,
-    y: 1
-  }
+    y: 1,
+  };
   anchor: Position = {
     x: 0,
-    y: 0
-  }
-  w: number
-  h: number
+    y: 0,
+  };
+  w: number;
+  h: number;
   dead: boolean = false;
   constructor(texture: Texture) {
     this.w = this.scale.x * texture.img.width;

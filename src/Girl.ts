@@ -3,7 +3,7 @@ import Texture from "./Texture";
 
 export default class Girl extends Sprite {
     constructor() {
-        super(new Texture('./assets/girl.png'));
+        super(new Texture('./assets/girl-normal.png'));
         this.scale =  {
             x: .21,
             y: .21
