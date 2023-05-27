@@ -1,7 +1,9 @@
 import Girl from "./Girl";
 import KeyControls from "./KeysControl";
 import Soldier from "./Soldier";
+import Spider from "./Spider";
 import Texture from "./Texture";
+import math from "./math";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -65,20 +67,65 @@ function drawSoldier() {
 }
 /** Soldier End */
 
+/** Spiders Start*/
+const spiders: Spider[] = [];
+
+function createSpiders() {
+  for (let i = 0; i < 10; i++) {
+    const spider = new Spider();
+    spider.pos.x = w - 64;
+    spider.pos.y = math.rand(h);
+    spider.tileH = 64;
+    spider.tileW = 64;
+    spider.frame.y = 3;
+    spiders.push(spider);
+  }
+}
+createSpiders();
+
+function drawSpiders() {
+  for (let i = 0; i < spiders.length; i++) {
+    const spider = spiders[i];
+    context.restore();
+    context.save();
+    context.translate(spider.pos.x, spider.pos.y);
+    context.scale(spider.scale.x, spider.scale.y);
+    context.drawImage(
+      spider.texture.img,
+      spider.tileH * spider.frame.x,
+      spider.tileH * spider.frame.y,
+      spider.tileW,
+      spider.tileH,
+      0,
+      0,
+      spider.tileW,
+      spider.tileH
+    );
+    context.restore();
+  }
+}
+
+function updateSpiders(dt: number, t: number) {
+  spiders.forEach((spider) => {
+    spider.update(dt, t);
+  });
+}
+/** Spiders End */
+
 function run(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
   time = ellapsedTime; // to seconds
-
-
-  if(control.y) {
+  if (control.y) {
     soldier.pos.y += soldier.speed * dt * control.y;
-    console.log(soldier.pos.y);
   }
+
+  // drawSpider();
 
   /**
    * update entities by self
    */
-  soldier.update(dt,ellapsedTime * 0.001);
+  soldier.update(dt, ellapsedTime * 0.001);
+  updateSpiders(dt, ellapsedTime * 0.001);
 
   /**
    * render entites
@@ -86,6 +133,7 @@ function run(ellapsedTime: number) {
   drawBg();
   drawGirl();
   drawSoldier();
+  drawSpiders();
 
   requestAnimationFrame(run);
 }

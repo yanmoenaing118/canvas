@@ -1,7 +1,8 @@
 import Texture from "./Texture";
 import TileSprite from "./TileSprite";
+import { FRAMES_SOLDIERS } from "./sprite-frames";
 
-const FRAMES_SOLDIERS = 12;
+
 
 export default class Soldier extends TileSprite {
     speed: number = 200;
