@@ -42,7 +42,6 @@ class CanvasRenderer {
         }
         if (child.scale) {
           ctx.scale(child.scale.x, child.scale.y);
-          2;
         }
         if (child.rotation) {
           const px = child.pivot.x ? child.pivot.x : 0;

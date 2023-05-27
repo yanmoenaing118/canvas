@@ -12,6 +12,10 @@ export default class Squizz extends TileSprite {
     x: -16,
     y: -16
   }
+  pivot: Position = {
+    x: 32,
+    y: 32
+  }
   frames = [
     { x: 0, y: 0 },
     { x: 1, y: 0 },
