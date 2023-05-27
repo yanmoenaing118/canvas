@@ -132,7 +132,7 @@ function drawSprite() {
 
 function loop(time: number) {
   // console.log('h')
-  const sec = (time * 0.001) /  .11289;
+  const sec = (time * 0.001) /  .125;
   sprite.frame = {
     x:0,
     y: 2
