@@ -1,4 +1,9 @@
 export interface Position {
-    x: number,
+    x: number
     y: number
+}
+
+export interface TextStyle {
+    font?: string
+    color?: string
 }

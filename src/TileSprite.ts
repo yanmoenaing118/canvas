@@ -9,5 +9,9 @@ export default class TileSprite extends Sprite {
         super(texture);
         this.tileH = 128;
         this.tileW = 128;
+        this.anchor = {
+            x: this.tileH / 2 * -1,
+            y: this.tileW / 2 * -1
+        }
     }
 }
