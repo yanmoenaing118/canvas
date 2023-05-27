@@ -1,5 +1,6 @@
 import Sprite from "./Sprite";
 import Texture from "./Texture";
+import { w } from "./constants";
 
 export default class Bullet extends Sprite {
     speed: number = 850;
@@ -11,6 +12,9 @@ export default class Bullet extends Sprite {
 
     update(dt: number, t: number) {
         this.pos.x += dt * this.speed;
+        if(this.pos.x >  w) {
+            this.dead = true;
+        }
     }
 
 }

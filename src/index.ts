@@ -10,13 +10,13 @@ import math from "./math";
 import { Position } from "./types";
 import Text from "./Text";
 import { hasCollide } from "./utils";
+import Heart from "./Heart";
+import { h, w } from "./constants";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 context.imageSmoothingEnabled = true;
 
-const w = 1200;
-const h = 480;
 
 canvas.width = w;
 canvas.height = h;
@@ -45,7 +45,7 @@ girl.pos.y = h - girl.h;
 function renderGirl() {
   context.save();
   context.fillStyle = "pink";
-  context.fillRect(girl.pos.x, 0, girl.w, h);
+  // context.fillRect(girl.pos.x, 0, girl.w, h);
   context.restore();
   context.save();
   context.translate(girl.pos.x, girl.pos.y);
@@ -128,7 +128,7 @@ function updateSpiders(dt: number, t: number) {
 // Bullet Starts
 let lastShotFrame = 0;
 let shotRate = 0.05;
-const bullets: Bullet[] = [];
+let bullets: Bullet[] = [];
 function createBullet() {
   const bullet = new Bullet();
   bullet.pos.x = soldier.pos.x + soldier.tileW + 16;
@@ -147,11 +147,35 @@ function renderBullets() {
 }
 
 function updateBullets(dt: number, t: number) {
+  bullets = bullets.filter(bullet => !bullet.dead)
   bullets.forEach((bullet) => {
     bullet.update(dt, t);
   });
 }
 // Bullets end
+
+
+// Girl Life start
+const life: Heart[] = [];
+(function createLife() {
+  for(let i = 0 ; i < 5; i++ ) {
+    const heart = new Heart();
+    heart.pos.x = i * heart.w + i * heart.w / 2;
+    // heart.pos.x = i * 
+    life.push(heart);
+  }
+})()
+function renderLife() {
+  life.forEach(l => {
+    context.save();
+    context.translate(l.pos.x,l.pos.y);
+    context.scale(0.85,0.85);
+    context.drawImage(l.texture.img,0,0);
+    context.restore();
+  })
+}
+
+// Girl life end
 
 // collisions
 function checkCollision() {
@@ -165,13 +189,13 @@ function checkCollision() {
   });
 }
 
+
 function checkGirlHit() {
   spiders.forEach(spider => {
     if(spider.pos.x < girl.pos.x + girl.w) {
       if(hasCollide(spider, girl,100)) {
         spider.speed = 0;
       }
-
     }
   })
 }
@@ -244,6 +268,7 @@ function run(ellapsedTime: number) {
   renderSpiders();
   renderBullets();
   renderScore();
+  renderLife()
   requestAnimationFrame(run);
 }
 
