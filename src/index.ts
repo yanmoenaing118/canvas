@@ -31,6 +31,7 @@ let totalBiteSipders = 0; // number of spiders that are biting the Girl
 let hasBiteGirl = false; // to flag the Gril has been bitten
 let currBittenTime = 0;
 let healthRate = 0.01;
+let isGameOver = false;
 
 /**Background */
 const bg = new Texture("./assets/pyramid.jpg");
@@ -259,6 +260,44 @@ function renderScore() {
 }
 
 renderScore();
+
+function renderGameOver() {
+  if(noOfLife <= 0) {
+    doGameOver();
+  }
+  // doGameOver();
+
+}
+
+function doGameOver() {
+  isGameOver = true;
+  const over = new Text("Game Over!");
+  context.globalAlpha = 0.65;
+  context.save();
+  context.translate(0,0);
+  context.fillStyle = 'black';
+  context.fillRect(0,0,w,h)
+  context.restore();
+
+  context.save();
+  context.fillStyle = 'black';
+  context.font = '68px monospace';
+  context.strokeStyle = 'white';
+  context.lineWidth = 3;
+  context.translate(w / 2 - over.width(context) / 2.25, h / 2 - 34);
+  context.fillText(over.text, 0,0)
+  context.strokeText(over.text, 0,0)
+  context.restore();
+
+  context.save();
+  context.fillStyle = 'white';
+  context.font = '24px monospace';
+  context.strokeStyle = 'white';
+  context.translate(w / 2 - over.width(context) / 2.25, h / 2 + 34);
+  context.fillText(score.text, 0, 0);
+  context.restore();
+}
+
 function run(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
   time = ellapsedTime; // to seconds
@@ -311,10 +350,13 @@ function run(ellapsedTime: number) {
   renderBg();
   renderGirl();
   renderSoldier();
-  renderSpiders();
-  renderBullets();
+  if(!isGameOver) {
+    renderSpiders();
+    renderBullets();
+  }
   renderScore();
   renderLife();
+  renderGameOver();
   requestAnimationFrame(run);
 }
 
