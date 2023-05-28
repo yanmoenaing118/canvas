@@ -8,7 +8,7 @@ import math from "./math";
 import Text from "./Text";
 import { hasCollide } from "./utils";
 import Heart from "./Heart";
-import { h, w } from "./constants";
+import { girlImages, h, w } from "./constants";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -24,8 +24,8 @@ const control = new KeyControls();
 
 /** Game stats */
 let totalScore = 0;
-let noOfLife = 5;// in second
-let healthPerHeart = 300;
+let noOfLife = 5; // in second
+let healthPerHeart = 400;
 let totalHealtAmount = noOfLife * healthPerHeart;
 let totalBiteSipders = 0; // number of spiders that are biting the Girl
 let hasBiteGirl = false; // to flag the Gril has been bitten
@@ -41,8 +41,17 @@ function renderBg() {
 }
 
 /**Girl start */
-const girl = new Girl();
-girl.pos.y = h - girl.h;
+const girls: Girl[] = [];
+(function createGirls() {
+  girlImages.forEach(url => {
+    const girl = new Girl(url);
+    girl.pos.y = h - girl.h;
+    girls.push(girl);
+  })
+})()
+// console.log(girls);
+let girlIndex = 0;
+let girl: Girl = girls[girlIndex];
 function renderGirl() {
   context.save();
   context.fillStyle = "pink";
@@ -53,6 +62,12 @@ function renderGirl() {
   context.scale(girl.scale.x, girl.scale.y);
   context.drawImage(girl.texture.img, girl.pos.x, girl.pos.y);
   context.restore();
+}
+
+function updateGirlIndex() {
+  girlIndex = girls.length - noOfLife;
+  if(!girls[girlIndex]) return;
+  girl = girls[girlIndex];
 }
 /** Girl End */
 
@@ -167,7 +182,7 @@ let life: Heart[] = [];
 })();
 function updateLife() {
   noOfLife = Math.ceil(totalHealtAmount / healthPerHeart);
-  life = life.filter(l => !l.dead)
+  life = life.filter((l) => !l.dead);
 }
 function renderLife() {
   life.forEach((l) => {
@@ -213,11 +228,11 @@ function getNoOfBiteSpiders(): number {
  */
 function updateGirlHealth(time: number) {
   currBittenTime += dt;
-  if(currBittenTime >= healthRate) {
+  if (currBittenTime >= healthRate) {
     const damage = healthRate + totalBiteSipders * 0.1;
     totalHealtAmount -= damage;
     const heartIndex = Math.ceil(totalHealtAmount / healthPerHeart);
-    if(life[heartIndex]) {
+    if (life[heartIndex]) {
       life[heartIndex].dead = true;
     }
     currBittenTime = 0;
@@ -243,7 +258,7 @@ function renderScore() {
   context.restore();
 }
 
-renderScore(); 
+renderScore();
 function run(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
   time = ellapsedTime; // to seconds
@@ -288,6 +303,7 @@ function run(ellapsedTime: number) {
   updateSpiders(dt, second);
   updateBullets(dt, second);
   updateLife();
+  updateGirlIndex();
 
   /**
    * render entites
