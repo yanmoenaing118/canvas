@@ -1,3 +1,4 @@
+import { Position } from "../models";
 // return rand float
 function randf(min?: number, max?: number): number {
   if (max == undefined) {
@@ -32,9 +33,17 @@ function randOneIn(max = 2) {
 function randOneFrom<T>(array: Array<T>): T {
   return array[rand(array.length)];
 }
+
+const distance = (a: Position, b: Position) => {
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
 export default {
   rand,
   randf,
   randOneIn,
-  randOneFrom
+  randOneFrom,
+  distance
 };
