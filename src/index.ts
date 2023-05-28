@@ -14,7 +14,6 @@ const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 context.imageSmoothingEnabled = true;
 
-
 canvas.width = w;
 canvas.height = h;
 
@@ -25,8 +24,13 @@ const control = new KeyControls();
 
 /** Game stats */
 let totalScore = 0;
-let girlAge = 250;
-let totalHit = 0;
+let noOfLife = 5;// in second
+let healthPerHeart = 300;
+let totalHealtAmount = noOfLife * healthPerHeart;
+let totalBiteSipders = 0; // number of spiders that are biting the Girl
+let hasBiteGirl = false; // to flag the Gril has been bitten
+let currBittenTime = 0;
+let healthRate = 0.01;
 
 /**Background */
 const bg = new Texture("./assets/pyramid.jpg");
@@ -78,16 +82,15 @@ let spiders: Spider[] = [];
 let lastSpwanTime = 0;
 let spwanRate = 0.07;
 function createSpiders() {
-  // for (let i = 0; i < 1; i++) {
-    
-  // }
-  const spider = new Spider();
+  for (let i = 0; i < 1; i++) {
+    const spider = new Spider();
     spider.pos.x = w - 64;
     spider.pos.y = math.rand(0, h - spider.h - soldier.tileH / 2);
     spider.tileH = 64;
     spider.tileW = 64;
     spider.frame.y = 3;
     spiders.push(spider);
+  }
 }
 createSpiders();
 
@@ -145,32 +148,35 @@ function renderBullets() {
 }
 
 function updateBullets(dt: number, t: number) {
-  bullets = bullets.filter(bullet => !bullet.dead)
+  bullets = bullets.filter((bullet) => !bullet.dead);
   bullets.forEach((bullet) => {
     bullet.update(dt, t);
   });
 }
 // Bullets end
 
-
 // Girl Life start
-const life: Heart[] = [];
+let life: Heart[] = [];
 (function createLife() {
-  for(let i = 0 ; i < 5; i++ ) {
+  for (let i = 0; i < noOfLife; i++) {
     const heart = new Heart();
-    heart.pos.x = i * heart.w + i * heart.w / 2;
-    // heart.pos.x = i * 
+    heart.pos.x = i * heart.w + (i * heart.w) / 2;
+    // heart.pos.x = i *
     life.push(heart);
   }
-})()
+})();
+function updateLife() {
+  noOfLife = Math.ceil(totalHealtAmount / healthPerHeart);
+  life = life.filter(l => !l.dead)
+}
 function renderLife() {
-  life.forEach(l => {
+  life.forEach((l) => {
     context.save();
-    context.translate(l.pos.x,l.pos.y);
-    context.scale(0.85,0.85);
-    context.drawImage(l.texture.img,0,0);
+    context.translate(l.pos.x, l.pos.y);
+    context.scale(0.85, 0.85);
+    context.drawImage(l.texture.img, 0, 0);
     context.restore();
-  })
+  });
 }
 
 // Girl life end
@@ -179,7 +185,7 @@ function renderLife() {
 function checkCollision() {
   bullets.forEach((bullet) => {
     spiders.forEach((spider) => {
-      if(hasCollide(bullet, spider)) {
+      if (hasCollide(bullet, spider)) {
         spider.dead = true;
         totalScore += 1;
       }
@@ -187,39 +193,57 @@ function checkCollision() {
   });
 }
 
-
 function checkGirlHit() {
-  spiders.forEach(spider => {
-    if(spider.pos.x < girl.pos.x + girl.w) {
-      if(hasCollide(spider, girl,100)) {
+  spiders.forEach((spider) => {
+    if (spider.pos.x < girl.pos.x + girl.w) {
+      if (hasCollide(spider, girl, 100)) {
         spider.speed = 0;
       }
     }
-  })
+  });
+}
+
+function getNoOfBiteSpiders(): number {
+  return spiders.filter((spider) => spider.bite).length;
+}
+
+/**
+ *
+ * @param time in seconds
+ */
+function updateGirlHealth(time: number) {
+  currBittenTime += dt;
+  if(currBittenTime >= healthRate) {
+    const damage = healthRate + totalBiteSipders * 0.1;
+    totalHealtAmount -= damage;
+    const heartIndex = Math.ceil(totalHealtAmount / healthPerHeart);
+    if(life[heartIndex]) {
+      life[heartIndex].dead = true;
+    }
+    currBittenTime = 0;
+  }
 }
 
 // score text
 const score = new Text("Total Kill: 0");
-score.style.color = 'white';
+score.style.color = "white";
 function renderScore() {
   context.save();
-  context.translate(w - score.width(context) * 2 - 1,0);
-  context.fillStyle = 'black';
-  context.fillRect(0,0,score.width(context) * 2,30);
+  context.translate(w - score.width(context) * 2 - 1, 0);
+  context.fillStyle = "black";
+  context.fillRect(0, 0, score.width(context) * 2, 30);
   context.restore();
 
   context.save();
   context.font = score.style.font as string;
   context.fillStyle = score.style.color as string;
-  context.translate(w - score.width(context) - 4,20);
+  context.translate(w - score.width(context) - 4, 20);
   context.fillText(score.text, 0, 0);
-  
-  context.restore();
 
+  context.restore();
 }
 
-renderScore();
-console.log(score)
+renderScore(); 
 function run(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
   time = ellapsedTime; // to seconds
@@ -241,6 +265,7 @@ function run(ellapsedTime: number) {
     lastSpwanTime = 0;
     const rate = Math.random() * 0.5;
     spwanRate = rate > 0.15 ? 0.15 : rate;
+    // spwanRate = 1;
   }
 
   // drawSpider();
@@ -248,14 +273,21 @@ function run(ellapsedTime: number) {
   checkGirlHit();
   score.text = `Total Kill: ${totalScore}`;
 
+  totalBiteSipders = getNoOfBiteSpiders();
+  hasBiteGirl = totalBiteSipders > 0;
+
   /**
    * update entities by self
    */
-  if(control.y) {
+  if (hasBiteGirl) {
+    updateGirlHealth(second);
+  }
+  if (control.y) {
     soldier.update(dt, second);
   }
   updateSpiders(dt, second);
   updateBullets(dt, second);
+  updateLife();
 
   /**
    * render entites
@@ -266,7 +298,7 @@ function run(ellapsedTime: number) {
   renderSpiders();
   renderBullets();
   renderScore();
-  renderLife()
+  renderLife();
   requestAnimationFrame(run);
 }
 
