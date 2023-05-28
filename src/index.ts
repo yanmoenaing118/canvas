@@ -298,6 +298,8 @@ function doGameOver() {
   context.restore();
 }
 
+
+/** GAME LOOP starts here */
 function run(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
   time = ellapsedTime; // to seconds
