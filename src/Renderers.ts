@@ -5,6 +5,7 @@ export const renderTileSprite = <Type extends Sprite>(entity: Type) => {
   ctx.save();
   ctx.translate(entity.pos.x, entity.pos.y);
   ctx.scale(entity.scale.x, entity.scale.y);
+  ctx.translate(entity.anchor.x, entity.anchor.y)
   if (entity instanceof TileSprite) {
     if(!entity.frame) return;
     ctx.drawImage(

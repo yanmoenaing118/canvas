@@ -19,6 +19,8 @@ let time = 0;
 const spider = new Spider(new Texture("./spider10.png"), 64, 64, 0.2);
 spider.pos.x = w / 2;
 
+spider.add("idle", [{ x: 0, y: 0 }]);
+
 spider.add("walkLeft", [
   { x: 0, y: 1 },
   { x: 1, y: 1 },
@@ -35,10 +37,8 @@ spider.add("walkRight", [
   { x: 4, y: 3 },
 ]);
 
-
-// spider.play("walkRight");
+spider.play("idle");
 // spider.play("")
-
 
 function loop(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
@@ -46,20 +46,14 @@ function loop(ellapsedTime: number) {
   ctx.clearRect(0, 0, w, h);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, w, h);
-
-  spider.pos.x += dt * 100 * controls.x;
-  if(controls.x > 0) {
-    spider.play("walkRight");
-  }  else if(controls.x < 0) {
-    spider.play("walkLeft");
-  } else {
-    spider.stop();
-  }
   
+  spider.scale.x = controls.x == 0 ? 1 : controls.x;
+  spider.anchor.x = spider.scale.x == 1 ? 0 : -64;
+
+  spider.pos.x += dt * 20;
+
 
   spider.update(dt);
-
- 
 
   renderTileSprite(spider);
   requestAnimationFrame(loop);

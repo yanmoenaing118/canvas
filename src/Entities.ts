@@ -11,6 +11,7 @@ export class Texture {
 export class Sprite {
   pos: Position = { x: 0, y: 0 };
   scale: Position = { x: 1, y: 1 };
+  anchor: Position = { x: 0, y: 0};
   rotation: number = 0;
   texture: Texture;
 
@@ -44,10 +45,12 @@ export class TileSprite extends Sprite {
   }
 
   play(name: string) {
-    if(this.name == name) return;
-    this.name = name;
     this.isRunning = true;
-    this.frames = this.anims[name];
+    this.name = name;
+    if(this.frames != this.anims[this.name]) {
+      this.frames = this.anims[this.name];
+    }
+    this.currFrame = 0;
     this.frame = this.frames[this.currFrame];
   }
 
