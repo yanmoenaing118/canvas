@@ -35,7 +35,7 @@ spider.add("walkRight", [
   { x: 4, y: 3 },
 ]);
 
-spider.play("walkLeft");
+
 // spider.play("walkRight");
 // spider.play("")
 
@@ -48,8 +48,12 @@ function loop(ellapsedTime: number) {
   ctx.fillRect(0, 0, w, h);
 
   spider.pos.x += dt * 100 * controls.x;
-  if(time * 0.001 > 2) {
+  if(controls.x > 0) {
     spider.play("walkRight");
+  }  else if(controls.x < 0) {
+    spider.play("walkLeft");
+  } else {
+    spider.stop();
   }
   
 

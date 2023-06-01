@@ -31,6 +31,7 @@ export class TileSprite extends Sprite {
   anims: Anims = {};
   frames: Frame[] = [];
   frame: Frame = { x: 0, y: 0 };
+  name: string = "";
 
   constructor(texture: Texture, tileW: number, tileH: number) {
     super(texture);
@@ -43,6 +44,8 @@ export class TileSprite extends Sprite {
   }
 
   play(name: string) {
+    if(this.name == name) return;
+    this.name = name;
     this.isRunning = true;
     this.frames = this.anims[name];
     this.frame = this.frames[this.currFrame];
