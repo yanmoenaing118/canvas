@@ -11,7 +11,7 @@ export class Texture {
 export class Sprite {
   pos: Position = { x: 0, y: 0 };
   scale: Position = { x: 1, y: 1 };
-  anchor: Position = { x: 0, y: 0};
+  anchor: Position = { x: 0, y: 0 };
   rotation: number = 0;
   texture: Texture;
 
@@ -23,63 +23,90 @@ export class Sprite {
 export class TileSprite extends Sprite {
   tileW: number;
   tileH: number;
-
-  isRunning: boolean = true;
-  frameRate: number = 0.1; // in second
-  currTime: number = 0;
-  currFrame = 0;
-  y = 1;
-  anims: Anims = {};
-  frames: Frame[] = [];
-  frame: Frame = { x: 0, y: 0 };
-  name: string = "";
-
+  frame: Frame = {
+    x: 0,
+    y: 0,
+  };
+  anims: AnimationManager;
   constructor(texture: Texture, tileW: number, tileH: number) {
     super(texture);
     this.tileW = tileW;
     this.tileH = tileH;
-  }
-
-  add(name: string, frames: Frame[]) {
-    this.anims[name] = frames;
-  }
-
-  play(name: string) {
-    this.isRunning = true;
-    this.name = name;
-    if(this.frames != this.anims[this.name]) {
-      this.frames = this.anims[this.name];
-    }
-    this.currFrame = 0;
-    this.frame = this.frames[this.currFrame];
-  }
-
-  stop() {
-    this.isRunning = false;
+    this.anims = new AnimationManager(this);
   }
 
   update(dt: number) {
-    this.animate(dt);
-  }
-
-  animate(dt: number) {
-    this.currTime += dt;
-    if (this.currTime > this.frameRate) {
-      if (this.isRunning) {
-        this.frame = this.frames[++this.currFrame % this.frames.length];
-      } else {
-        this.currFrame = this.currFrame;
-        this.frame = this.frame;
-      }
-      this.currTime -= this.frameRate;
-    }
-    // console.log(this.frame);
+    this.anims.update(dt);
   }
 }
 
-export class Spider extends TileSprite {
-  constructor(texture: Texture, tileW: number, tileH: number, speed: number) {
-    super(texture, tileW, tileH);
-    this.frameRate = speed;
+export class Anim {
+  frames: Frame[];
+  speed: number;
+  frame: Frame = { x: 0, y: 0 };
+  currTime: number = 0;
+  currFrameIndex: number = 0;
+
+  constructor(frames: Frame[], speed: number) {
+    this.frames = frames;
+    this.speed = speed;
+    this.reset();
+  }
+
+  update(dt: number) {
+    this.currTime += dt;
+    if (this.currTime > this.speed) {
+      this.currFrameIndex++;
+      this.frame = this.frames[this.currFrameIndex % this.frames.length];
+      this.currTime -= this.speed;
+    }
+  }
+
+  reset() {
+    this.currFrameIndex = 0;
+    this.currTime = 0;
+    this.frame = this.frames[this.currFrameIndex];
+  }
+}
+
+export class AnimationManager {
+  anims: Anims;
+  currentFrames: Frame[];
+  current: Anim | null;
+  frameSource: Frame;
+
+  constructor(frameSource: TileSprite) {
+    this.anims = {};
+    this.currentFrames = [];
+    this.current = null;
+    this.frameSource = frameSource.frame;
+  }
+
+  add(name: string, frames: Frame[], speed: number) {
+    this.anims[name] = new Anim(frames, speed);
+    return this.anims[name];
+  }
+
+  update(dt: number) {
+    if (!this.current) return;
+    this.current.update(dt);
+    const anim = this.current;
+    this.frameSource.x = anim.frame.x;
+    this.frameSource.y = anim.frame.y;
+  }
+
+  play(name: string) {
+    if (this.current == this.anims[name]) {
+      return;
+    }
+    if (this.anims[name]) {
+      this.current = this.anims[name];
+      console.log(this.current);
+      this.current.reset();
+    }
+  }
+
+  stop() {
+    this.current = null;
   }
 }

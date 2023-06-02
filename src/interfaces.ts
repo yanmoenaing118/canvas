@@ -1,3 +1,5 @@
+import { Anim } from "./Entities"
+
 export interface Position {
     x: number,
     y: number
@@ -9,5 +11,5 @@ export interface Frame {
 }
 
 export interface Anims {
-    [key: string]: Frame[]
+    [key: string]: Anim
 }

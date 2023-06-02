@@ -1,4 +1,4 @@
-import { Spider, Texture, TileSprite } from "./Entities";
+import { Texture, TileSprite } from "./Entities";
 import { KeyControls } from "./KeyControls";
 import { renderTileSprite } from "./Renderers";
 
@@ -16,46 +16,98 @@ export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let dt = 1 / 60;
 let time = 0;
 
-const spider = new Spider(new Texture("./spider10.png"), 64, 64, 0.2);
-spider.pos.x = w / 2;
+const texture = new Texture("./spider10.png");
+const spider = new TileSprite(texture, 64, 64);
 
-spider.add("idle", [{ x: 0, y: 0 }]);
+spider.anims.add(
+  "left",
+  [
+    { x: 0, y: 1 },
+    { x: 1, y: 1 },
+    { x: 2, y: 1 },
+    { x: 3, y: 1 },
+    { x: 4, y: 1 },
+  ],
+  0.1
+);
 
-spider.add("walkLeft", [
-  { x: 0, y: 1 },
-  { x: 1, y: 1 },
-  { x: 2, y: 1 },
-  { x: 3, y: 1 },
-  { x: 4, y: 1 },
-]);
+spider.anims.add(
+  "right",
+  [
+    { x: 0, y: 3 },
+    { x: 1, y: 3 },
+    { x: 2, y: 3 },
+    { x: 3, y: 3 },
+    { x: 4, y: 3 },
+  ],
+  0.1
+);
 
-spider.add("walkRight", [
-  { x: 0, y: 3 },
-  { x: 1, y: 3 },
-  { x: 2, y: 3 },
-  { x: 3, y: 3 },
-  { x: 4, y: 3 },
-]);
+spider.anims.add(
+  "walkUp",
+  [
+    { x: 0, y: 0 },
+    { x: 1, y: 0 },
+    { x: 2, y: 0 },
+    { x: 3, y: 0 },
+    { x: 4, y: 0 },
+  ],
+  0.1
+);
 
-spider.play("idle");
-// spider.play("")
+spider.anims.add(
+  "walkDown",
+  [
+    { x: 0, y: 2 },
+    { x: 1, y: 2 },
+    { x: 2, y: 2 },
+    { x: 3, y: 2 },
+    { x: 4, y: 2 },
+  ],
+  0.1
+);
+
+function renderSprite() {
+  ctx.save();
+  ctx.translate(spider.pos.x, spider.pos.y);
+  ctx.drawImage(
+    spider.texture.img,
+    spider.frame.x * spider.tileW,
+    spider.frame.y * spider.tileH,
+    spider.tileW,
+    spider.tileH,
+    0,
+    0,
+    spider.tileW,
+    spider.tileH
+  );
+  ctx.restore();
+}
 
 function loop(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
   time = ellapsedTime;
   ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = "black";
   ctx.fillRect(0, 0, w, h);
-  
-  spider.scale.x = controls.x == 0 ? 1 : controls.x;
-  spider.anchor.x = spider.scale.x == 1 ? 0 : -64;
+  ctx.save();
 
-  spider.pos.x += dt * 20;
-
+  if (controls.x < 0) {
+    spider.anims.play("left");
+  } else if (controls.x > 0) {
+    spider.anims.play("right");
+  } else if (controls.y > 0) {
+    spider.anims.play("walkDown");
+  } else if (controls.y < 0) {
+    spider.anims.play("walkUp");
+  }
+ 
 
   spider.update(dt);
 
-  renderTileSprite(spider);
+  renderSprite();
+
+  ctx.restore();
+
   requestAnimationFrame(loop);
 }
 
