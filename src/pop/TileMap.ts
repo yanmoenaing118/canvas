@@ -14,6 +14,7 @@ export default class TileMap extends Container {
   tileCols: number;
   tileRows: number;
   tileMapSourceTexture: Texture;
+  tileMap: number[] = [];
 
   constructor(
     texture: Texture,
@@ -56,5 +57,10 @@ export default class TileMap extends Container {
         this.children.push(tileSpirte);
       }
     }
+  }
+
+
+  private createMap() {
+    
   }
 }

@@ -18,7 +18,7 @@ const controls = new KeyControls();
 // Game objects
 
 const scene = game.scene;
-scene.add(new Sprite(textures.background));
+// scene.add(new Sprite(textures.background));
 
 const squizz = new Squizz();
 squizz.pos.x = w / 2;
@@ -40,14 +40,42 @@ squizz.anims.add(
   );
 
 
-scene.add(squizz);
+// scene.add(squizz);
 
 const tileSize = 32;
 const tile = new Texture('./images/tiles.png');
 const map = new TileMap(tile,w, h, tileSize,tileSize, tileSize * 5, tileSize * 5);
 
 console.log(map);
-scene.add(map)
+// scene.add(map)
+
+function renderMapGrid() {
+  for(let i = 0; i < map.mapCols; i++ ) {
+    context.save();
+    context.beginPath();
+    context.strokeStyle = 'white';
+    context.translate(i * map.tileCellH, 0);
+    context.moveTo(0, 0);
+    context.lineTo(0, map.mapH);
+    context.stroke();
+    context.restore();
+    
+  }
+
+  for(let j = 0; j < map.mapRows; j++) {
+    context.save();
+    context.beginPath();
+    context.strokeStyle = 'white';
+    context.translate(0, j * map.tileCellW);
+    context.moveTo(0, 0);
+    context.lineTo(map.mapW, 0);
+    context.stroke();
+    context.restore();
+  }
+}
+
+renderMapGrid();
+
 game.run((dt: number, t: number) => {
 
     if(controls.x || controls.y) {
