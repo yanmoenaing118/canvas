@@ -16,7 +16,6 @@ export default class TileSprite extends Sprite {
   }
 
   update(dt: number, t: number): void {
-    console.log('h')
     this.anims.update(dt); 
   }
 }

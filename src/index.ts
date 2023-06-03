@@ -4,6 +4,7 @@ import Game from "./pop/Game";
 import pop from "./pop/index";
 import { Position } from "./pop/models";
 import Sprite from "./pop/Sprite";
+import TileMap from "./pop/TileMap";
 const { textures, Container, KeyControls, Text, Texture, math } = pop;
 
 // Game setup code
@@ -41,6 +42,12 @@ squizz.anims.add(
 
 scene.add(squizz);
 
+const tileSize = 32;
+const tile = new Texture('./images/tiles.png');
+const map = new TileMap(tile,w, h, tileSize,tileSize, tileSize * 5, tileSize * 5);
+
+console.log(map);
+scene.add(map)
 game.run((dt: number, t: number) => {
 
     if(controls.x || controls.y) {
