@@ -13,14 +13,41 @@ const game = new Game(w, h);
 const context = game.renderer.ctx;
 let dt = 1 / 60;
 
-const mouse = new MouseControls(game.renderer.view);
+const controls = new KeyControls();
 // Game objects
 
 const scene = game.scene;
 scene.add(new Sprite(textures.background));
 
+const squizz = new Squizz();
+squizz.pos.x = w / 2;
+squizz.pos.y = h / 2;
+squizz.anims.add(
+  "walk",
+  [0, 1, 2, 3].map((i) => {
+    return { x: i, y: 0 };
+  }),
+  0.1
+);
 
+squizz.anims.add(
+    "up",
+    [0, 1, 2, 3].map((i) => {
+      return { x: i, y: 1 };
+    }),
+    0.1
+  );
+
+
+scene.add(squizz);
 
 game.run((dt: number, t: number) => {
 
+    if(controls.x || controls.y) {
+        squizz.anims.play('walk')
+    } else {
+        squizz.anims.play('up')
+    }
+    
+    
 });
