@@ -40,11 +40,6 @@ export default class Level extends TileMap {
         level.push(empty);
       }
     }
-
-    console.log(level);
-
     super(level, mapW, mapH, tileSize, tileSize, tile);
-
-    // const tileMap = new TileMap(level, mapW, mapH, tileSize, tileSize, tile);
   }
 }
