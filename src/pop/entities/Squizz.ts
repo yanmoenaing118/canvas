@@ -23,6 +23,22 @@ export default class Squizz extends TileSprite {
   constructor(controls: KeyControls) {
     super(new Texture("./images/player-walk.png"), 32, 32);
     this.controls = controls;
+
+    this.anims.add(
+      "walk",
+      [0, 1, 2, 3].map((i) => {
+        return { x: i, y: 0 };
+      }),
+      0.1
+    );
+
+    this.anims.add(
+      "up",
+      [0, 1, 2, 3].map((i) => {
+        return { x: i, y: 1 };
+      }),
+      0.1
+    );
   }
 
   update(dt: number, t: number): void {

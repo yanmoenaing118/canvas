@@ -19,21 +19,6 @@ scene.add(new Sprite(textures.background));
 const squizz = new Squizz(controls);
 squizz.pos.x = w / 2;
 squizz.pos.y = h / 2;
-squizz.anims.add(
-  "walk",
-  [0, 1, 2, 3].map((i) => {
-    return { x: i, y: 0 };
-  }),
-  0.1
-);
-
-squizz.anims.add(
-  "up",
-  [0, 1, 2, 3].map((i) => {
-    return { x: i, y: 1 };
-  }),
-  0.1
-);
 
 
 
