@@ -101,7 +101,6 @@ export class AnimationManager {
     }
     if (this.anims[name]) {
       this.current = this.anims[name];
-      console.log(this.current);
       this.current.reset();
     }
   }
