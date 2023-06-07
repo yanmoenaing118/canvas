@@ -62,6 +62,7 @@ export default class Squizz extends TileSprite {
       }
     }
 
+
     this.pos.x += this.dir.x * (32 / this.speed) * dt;
     this.pos.y += this.dir.y * (32 / this.speed) * dt;
     super.update(dt);
