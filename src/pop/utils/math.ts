@@ -25,6 +25,7 @@ function randOneIn(max = 2) {
   return rand(0, max) == 0;
 }
 
+
 /**
  * 
  * @param array 
@@ -40,10 +41,16 @@ const distance = (a: Position, b: Position) => {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+function clamp(x: number, min: number, max: number) {
+  return Math.max(min, Math.min(x, max));
+}
+
+
 export default {
   rand,
   randf,
   randOneIn,
   randOneFrom,
-  distance
+  distance,
+  clamp
 };

@@ -11,14 +11,20 @@ export default class Squizz extends TileSprite {
     y: 0,
   };
   anchor: Position = {
-    x: -16,
-    y: -16,
+    x: 0,
+    y: 0,
   };
   pivot: Position = {
     x: 32,
     y: 32,
   };
   controls: KeyControls;
+  dir: Position = {
+    x: 1,
+    y: 0,
+  };
+  speed: number = 0.15;
+  nextCell: number = this.speed;
 
   constructor(controls: KeyControls) {
     super(new Texture("./images/player-walk.png"), 32, 32);
@@ -31,6 +37,7 @@ export default class Squizz extends TileSprite {
       }),
       0.1
     );
+    this.anims.play('walk')
 
     this.anims.add(
       "up",
@@ -41,14 +48,22 @@ export default class Squizz extends TileSprite {
     );
   }
 
-  update(dt: number, t: number): void {
-    this.pos.x += dt * 400 * this.controls.x;
-    this.pos.y += dt * 400 * this.controls.y;
-    if (this.controls.x || this.controls.y) {
-      this.anims.play("walk");
-    } else {
-      this.anims.play("up");
+  update(dt: number): void {
+    if ((this.nextCell -= dt) <= 0) {
+      this.nextCell += this.speed;
+      if (this.controls.x && this.controls.x != this.dir.x) {
+        this.dir.x = this.controls.x;
+        this.dir.y = 0;
+        this.pos.y = Math.round(this.pos.y / 32) * 32;
+      } else if (this.controls.y && this.controls.y != this.dir.y) {
+        this.dir.y = this.controls.y;
+        this.dir.x = 0;
+        this.pos.x = Math.round(this.pos.x / 32) * 32;
+      }
     }
-    this.anims.update(dt);
+
+    this.pos.x += this.dir.x * (32 / this.speed) * dt;
+    this.pos.y += this.dir.y * (32 / this.speed) * dt;
+    super.update(dt);
   }
 }
