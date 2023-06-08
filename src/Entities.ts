@@ -28,6 +28,12 @@ export class TileSprite extends Sprite {
     y: 0,
   };
   anims: AnimationManager;
+  dir: Position = {
+    x: 0,
+    y: 0
+  }
+  speed: number = 0.125;
+  canMove: number = this.speed;
   constructor(texture: Texture, tileW: number, tileH: number) {
     super(texture);
     this.tileW = tileW;

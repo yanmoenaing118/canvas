@@ -1,6 +1,8 @@
 import { Texture, TileSprite } from "./Entities";
 import { KeyControls } from "./KeyControls";
 import { renderGrid, renderTileSprite } from "./Renderers";
+import { MAX_FRAME } from "./constants";
+import { clamp } from "./utils";
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 
@@ -43,41 +45,69 @@ const mapH = Math.ceil(h / cellSize);
 const tiles: TileSprite[] = [];
 
 (function createMap() {
-  for (let i = 0; i < mapH * mapW; i++) {
+  for (let i = 0; i < 1; i++) {
     const tileSprite = new TileSprite(texture, cellSize, cellSize);
     tileSprite.pos.x = (i % mapW) * cellSize;
     tileSprite.pos.y = Math.floor(i / mapW) * cellSize;
-    tileSprite.anims.add('walk', [
-      {x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3)},
-      {x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3)},
-      {x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3)},
-      {x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3)},
-      {x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3)},
-    ],0.25)
-    tileSprite.anims.play('walk')
+    tileSprite.anims.add(
+      "walk",
+      [
+        { x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3) },
+        { x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3) },
+        { x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3) },
+        { x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3) },
+        { x: Math.floor(Math.random() * 3), y: Math.floor(Math.random() * 3) },
+      ],
+      0.08
+    );
+    tileSprite.anims.play("walk");
     tiles.push(tileSprite);
   }
 })();
 
 function updateMap(dt: number) {
-  tiles.forEach(tile => tile.update(dt))
+  tiles.forEach((tile) => {
+    tile.update(dt);
+    const { x, y } = tile.dir;
+
+    if ((tile.canMove -= dt) <= 0) {
+      tile.canMove = tile.speed;
+      if (controls.x && controls.x != x) {
+        tile.dir.x = controls.x;
+        tile.dir.y = 0;
+        tile.pos.y = Math.round(tile.pos.y / cellSize) * cellSize;
+      } else if (controls.y && controls.y != y) {
+        tile.dir.y = controls.y;
+        tile.dir.x = 0;
+        tile.pos.x = Math.round(tile.pos.x / cellSize) * cellSize;
+      }
+    }
+
+    tile.pos.x += tile.dir.x * (cellSize / tile.speed) * dt;
+    tile.pos.y += tile.dir.y * (cellSize / tile.speed) * dt;
+
+    tile.pos.x = clamp(tile.pos.x, 0, w - cellSize);
+    tile.pos.y = clamp(tile.pos.y, 0, h - cellSize);
+  });
 }
 
 function renderMap() {
   tiles.forEach((tile) => renderSprite(tile));
 }
 
-
 function loop(ellapsedTime: number) {
-  dt = (ellapsedTime - time) * 0.001;
+  dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
   ctx.clearRect(0, 0, w, h);
 
   updateMap(dt);
 
-  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
-
+  // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
   renderMap();
+
+  ctx.save();
+  ctx.translate(0, 0);
+
   ctx.restore();
   requestAnimationFrame(loop);
 }
