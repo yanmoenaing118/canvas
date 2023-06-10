@@ -2,8 +2,6 @@ import Texture from "../Texture";
 import TileSprite from "../TileSprite";
 import KeyControls from "../controls/KeyControls";
 import { Position } from "../models";
-import { textures } from "../textures";
-import math from "../utils/math";
 
 export default class Squizz extends TileSprite {
   pos: Position = {
@@ -38,17 +36,12 @@ export default class Squizz extends TileSprite {
       0.1
     );
     this.anims.play('walk')
-
-    this.anims.add(
-      "up",
-      [0, 1, 2, 3].map((i) => {
-        return { x: i, y: 1 };
-      }),
-      0.1
-    );
+    this.nextCell = this.speed;
   }
 
   update(dt: number): void {
+    // super.update(dt);
+
     if ((this.nextCell -= dt) <= 0) {
       this.nextCell += this.speed;
       if (this.controls.x && this.controls.x != this.dir.x) {
@@ -63,8 +56,7 @@ export default class Squizz extends TileSprite {
     }
 
 
-    this.pos.x += this.dir.x * (32 / this.speed) * dt;
-    this.pos.y += this.dir.y * (32 / this.speed) * dt;
-    super.update(dt);
+    this.pos.x += this.dir.x * dt * (32 / this.speed);
+    this.pos.y += this.dir.y * dt * (32 / this.speed);
   }
 }

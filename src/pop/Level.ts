@@ -1,5 +1,6 @@
 import Texture from "./Texture";
 import TileMap from "./TileMap";
+import TileSprite from "./TileSprite";
 import { Frame, Position } from "./models";
 import math from "./utils/math";
 
@@ -15,6 +16,11 @@ export default class Level extends TileMap {
     x: 1,
     y: 0,
   };
+  blank: Frame = {
+    x: 0,
+    y: 0,
+  };
+  lastTile!: TileSprite;
   constructor(w: number, h: number) {
     const level: Frame[] = [];
     const tileSize = 32;
@@ -26,8 +32,6 @@ export default class Level extends TileMap {
     const leftFrame = { x: 1, y: 1 };
     const rightFrame = { x: 3, y: 1 };
     const bricks = { x: 4, y: 1 };
-    const empty = { x: 3, y: 0 };
-
     for (let x = 0; x < mapW * mapH; x++) {
       const top = x < mapW;
       const bottom = x >= mapW * mapH - mapW;
@@ -45,7 +49,7 @@ export default class Level extends TileMap {
       } else if (isBrick) {
         level.push(bricks);
       } else {
-        level.push({x: math.rand(1,5),y: 0});
+        level.push({ x: math.rand(1, 5), y: 0 });
       }
     }
     super(level, mapW, mapH, tileSize, tileSize, tile);
@@ -56,5 +60,51 @@ export default class Level extends TileMap {
       top: tileSize * 2,
       bottom: h - tileSize * 2,
     };
+  }
+
+  pixelToMapPosition(pos: Position) {
+    return {
+      x: Math.floor(pos.x / this.tileW),
+      y: Math.floor(pos.y / this.tileH)
+    }
+  }
+
+  mapPositionToPixel(mapPos: Position) {
+    return {
+      x: mapPos.x * this.tileW,
+      y: mapPos.y * this.tileH
+    }
+  }
+
+  tileAtMapPosition(mapPosition: Position): TileSprite {
+    return this.children[mapPosition.y * this.mapW + mapPosition.x];
+  }
+
+  tileAtPixelPosition(pos: Position): TileSprite {
+    return this.tileAtMapPosition(this.pixelToMapPosition(pos))
+  }
+
+  setFrameAtMapPosition(pos: Position, frame: Frame) {
+    const tile = this.tileAtMapPosition(pos);
+    tile.frame = frame;
+    return tile;
+  }
+
+  setFrameAtPixelPosition(pos: Position, frame: Frame) {
+    return this.setFrameAtMapPosition(this.pixelToMapPosition(pos), frame);
+  }
+
+  checkGround(pos: Position) {
+    const tile = this.tileAtPixelPosition(pos);
+    console.log(tile);
+    if(tile == this.lastTile) {
+      return 'checked';
+    }
+    this.lastTile = tile;
+    if(tile.frame != this.blank){
+      this.setFrameAtPixelPosition(pos, this.blank)
+      return 'solid';
+    }
+    return 'cleared';
   }
 }

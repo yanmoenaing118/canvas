@@ -1,11 +1,9 @@
-import MouseControls from "./pop/controls/MouseControls";
 import Squizz from "./pop/entities/Squizz";
 import Game from "./pop/Game";
 import pop from "./pop/index";
 import Level from "./pop/Level";
-import { Frame, Position } from "./pop/models";
 import Sprite from "./pop/Sprite";
-const { textures, Container, KeyControls, Text, Texture, math } = pop;
+const { textures, KeyControls, math } = pop;
 
 const w = 640;
 const h = 480;
@@ -35,4 +33,6 @@ game.run((dt: number, t: number) => {
     level.bounds.top,
     level.bounds.bottom
   );
+
+  const ground = level.checkGround(squizz.pos);
 });
