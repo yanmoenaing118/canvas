@@ -23,6 +23,8 @@ scene.add(level);
 scene.add(squizz);
 console.log(level.bounds);
 game.run((dt: number, t: number) => {
+
+
   squizz.pos.x = math.clamp(
     squizz.pos.x,
     level.bounds.left,
@@ -34,5 +36,8 @@ game.run((dt: number, t: number) => {
     level.bounds.bottom
   );
 
-  const ground = level.checkGround(squizz.pos);
+  level.checkGround(squizz.pos);
+
+
+
 });

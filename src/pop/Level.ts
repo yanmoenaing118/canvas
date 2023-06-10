@@ -64,8 +64,8 @@ export default class Level extends TileMap {
 
   pixelToMapPosition(pos: Position) {
     return {
-      x: Math.floor(pos.x / this.tileW),
-      y: Math.floor(pos.y / this.tileH)
+      x: Math.round(pos.x / this.tileW),
+      y: Math.round(pos.y / this.tileH)
     }
   }
 
