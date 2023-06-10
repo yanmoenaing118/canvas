@@ -13,8 +13,8 @@ export default class Squizz extends TileSprite {
     y: 0,
   };
   pivot: Position = {
-    x: 32,
-    y: 32,
+    x: 0,
+    y: 0,
   };
   controls: KeyControls;
   dir: Position = {
