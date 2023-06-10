@@ -8,9 +8,9 @@ const canvas = document.createElement("canvas") as HTMLCanvasElement;
 
 document.body.appendChild(canvas);
 
-const w = 480;
-const h = 320;
-const cellSize = 32;
+const w = 64 * 10;
+const h = 64 * 8;
+const cellSize = 64;
 
 canvas.width = w;
 canvas.height = h;
@@ -19,7 +19,7 @@ export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let dt = 1 / 60;
 let time = 0;
 
-const texture = new Texture("./log.png");
+const texture = new Texture("./spider10.png");
 console.log(texture);
 
 function renderSprite(tileSprite: TileSprite) {
@@ -60,7 +60,7 @@ const tiles: TileSprite[] = [];
       ],
       0.08
     );
-    tileSprite.anims.play("walk");
+    // tileSprite.anims.play("walk");
     tiles.push(tileSprite);
   }
 })();
@@ -75,11 +75,11 @@ function updateMap(dt: number) {
       if (controls.x && controls.x != x) {
         tile.dir.x = controls.x;
         tile.dir.y = 0;
-        tile.pos.y = Math.round(tile.pos.y / cellSize) * cellSize;
+        // tile.pos.y = Math.round(tile.pos.y / cellSize) * cellSize;
       } else if (controls.y && controls.y != y) {
         tile.dir.y = controls.y;
         tile.dir.x = 0;
-        tile.pos.x = Math.round(tile.pos.x / cellSize) * cellSize;
+        // tile.pos.x = Math.round(tile.pos.x / cellSize) * cellSize;
       }
     }
 
@@ -102,13 +102,9 @@ function loop(ellapsedTime: number) {
 
   updateMap(dt);
 
-  // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
   renderMap();
 
-  ctx.save();
-  ctx.translate(0, 0);
-
-  ctx.restore();
   requestAnimationFrame(loop);
 }
 

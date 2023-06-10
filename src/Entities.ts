@@ -32,7 +32,7 @@ export class TileSprite extends Sprite {
     x: 0,
     y: 0
   }
-  speed: number = 0.125;
+  speed: number = 0.15;
   canMove: number = this.speed;
   constructor(texture: Texture, tileW: number, tileH: number) {
     super(texture);
