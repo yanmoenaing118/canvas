@@ -40,7 +40,7 @@ export default class Squizz extends TileSprite {
   }
 
   update(dt: number): void {
-    // super.update(dt);
+    super.update(dt);
 
     if ((this.nextCell -= dt) <= 0) {
       this.nextCell += this.speed;
