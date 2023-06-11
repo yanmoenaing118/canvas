@@ -1,8 +1,8 @@
-import Texture from "./Texture";
-import TileMap from "./TileMap";
-import TileSprite from "./TileSprite";
-import { Frame, Position } from "./models";
-import math from "./utils/math";
+import Texture from "./pop/Texture";
+import TileMap from "./pop/TileMap";
+import TileSprite from "./pop/TileSprite";
+import { Frame, Position } from "./pop/models";
+import math from "./pop/utils/math";
 
 export default class Level extends TileMap {
   bounds = {

@@ -1,7 +1,7 @@
 import Squizz from "./pop/entities/Squizz";
 import Game from "./pop/Game";
 import pop from "./pop/index";
-import Level from "./pop/Level";
+import Level from "./Level";
 import Sprite from "./pop/Sprite";
 const { textures, KeyControls, math } = pop;
 

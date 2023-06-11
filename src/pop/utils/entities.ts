@@ -1,12 +1,6 @@
 import { Position } from "../models";
 import math from "./math";
-
-type Entity = {
-  pos: Position;
-  w: number;
-  h: number;
-};
-
+import { Entity } from "../models";
 function center<T extends Entity>(entity: T): Position {
   return {
     x: entity.pos.x + entity.w / 2,

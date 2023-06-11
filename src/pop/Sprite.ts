@@ -9,6 +9,8 @@ class Sprite {
   anchor: Position = { x: 0, y: 0};
   pivot: Position = {x: 0, y: 0};
   rotation: number = 0;
+  w!: number;
+  h!: number;
   constructor(texture: Texture) {
     this.texture = texture;
     this.pos = { x: 0, y: 0 };
