@@ -64,7 +64,6 @@ export default class Level extends TileMap {
 
   checkGround(pos: Position) {
     const tile = this.tileAtPixelPosition(pos);
-    console.log(tile);
     if(tile == this.lastTile) {
       return 'checked';
     }

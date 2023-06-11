@@ -17,11 +17,11 @@ scene.add(new Sprite(textures.background));
 const squizz = new Squizz(controls);
 
 
-const level = new Level(w, h);
+const level = new Level(w * 2, h * 2);
 
 scene.add(level);
 scene.add(squizz);
-console.log(level.bounds);
+console.log(scene);
 game.run((dt: number, t: number) => {
 
 

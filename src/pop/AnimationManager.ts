@@ -59,7 +59,6 @@ export default class AnimationManager {
     if(name == this.current) return;
     this.current = name;
     this.anims[name].reset();
-    // console.log(this.anims[name])
   }
 
 
