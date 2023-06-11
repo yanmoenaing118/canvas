@@ -12,7 +12,7 @@ const game = new Game(w, h);
 const controls = new KeyControls();
 
 const scene = game.scene;
-scene.add(new Sprite(textures.background));
+// scene.add(new Sprite(textures.background));
 
 const squizz = new Squizz(controls);
 
