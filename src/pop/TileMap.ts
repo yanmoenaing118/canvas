@@ -1,8 +1,7 @@
 import Container from "./Container";
 import Texture from "./Texture";
 import TileSprite from "./TileSprite";
-import { Frame } from "./models";
-import math from "./utils/math";
+import { Frame, Position } from "./models";
 
 export default class TileMap extends Container {
   mapW: number;
@@ -34,5 +33,37 @@ export default class TileMap extends Container {
       tileSprite.pos.y = Math.floor(i / this.mapW) * this.tileH;
       return tileSprite;
     });
+  }
+
+  pixelToMapPosition(pos: Position) {
+    return {
+      x: Math.round(pos.x / this.tileW),
+      y: Math.round(pos.y / this.tileH)
+    }
+  }
+
+  mapPositionToPixel(mapPos: Position) {
+    return {
+      x: mapPos.x * this.tileW,
+      y: mapPos.y * this.tileH
+    }
+  }
+
+  tileAtMapPosition(mapPosition: Position): TileSprite {
+    return this.children[mapPosition.y * this.mapW + mapPosition.x];
+  }
+
+  tileAtPixelPosition(pos: Position): TileSprite {
+    return this.tileAtMapPosition(this.pixelToMapPosition(pos))
+  }
+
+  setFrameAtMapPosition(pos: Position, frame: Frame) {
+    const tile = this.tileAtMapPosition(pos);
+    tile.frame = frame;
+    return tile;
+  }
+
+  setFrameAtPixelPosition(pos: Position, frame: Frame) {
+    return this.setFrameAtMapPosition(this.pixelToMapPosition(pos), frame);
   }
 }

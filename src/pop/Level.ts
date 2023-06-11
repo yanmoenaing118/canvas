@@ -62,38 +62,6 @@ export default class Level extends TileMap {
     };
   }
 
-  pixelToMapPosition(pos: Position) {
-    return {
-      x: Math.round(pos.x / this.tileW),
-      y: Math.round(pos.y / this.tileH)
-    }
-  }
-
-  mapPositionToPixel(mapPos: Position) {
-    return {
-      x: mapPos.x * this.tileW,
-      y: mapPos.y * this.tileH
-    }
-  }
-
-  tileAtMapPosition(mapPosition: Position): TileSprite {
-    return this.children[mapPosition.y * this.mapW + mapPosition.x];
-  }
-
-  tileAtPixelPosition(pos: Position): TileSprite {
-    return this.tileAtMapPosition(this.pixelToMapPosition(pos))
-  }
-
-  setFrameAtMapPosition(pos: Position, frame: Frame) {
-    const tile = this.tileAtMapPosition(pos);
-    tile.frame = frame;
-    return tile;
-  }
-
-  setFrameAtPixelPosition(pos: Position, frame: Frame) {
-    return this.setFrameAtMapPosition(this.pixelToMapPosition(pos), frame);
-  }
-
   checkGround(pos: Position) {
     const tile = this.tileAtPixelPosition(pos);
     console.log(tile);
