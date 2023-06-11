@@ -7,12 +7,12 @@ import { CameraViewport, Position } from "./models";
  * The entity must be an object with pos property in it - a Sprite mostly.
  */
 
-export default class Camera<T extends Position & Sprite> extends Container {
+export default class Camera<T extends Sprite> extends Container {
   subject!: T | Position;
   w: number;
   h: number;
   worldSize: CameraViewport;
-
+  offset!: Position;
   /**
    *
    * @param subject Position to be followed by the Camera
@@ -36,11 +36,27 @@ export default class Camera<T extends Position & Sprite> extends Container {
    */
   setSubject(e: T) {
     this.subject = e ? e.pos || e : this.pos;
+    this.offset = { x: 0, y: 0 };
+    if (e && e.w) {
+      this.offset.x += e.w / 2;
+      this.offset.y += e.h / 2;
+    }
+
+    // if (e && e.anchor) {
+    //   this.offset.x -= e.anchor.x;
+    //   this.offset.y -= e.anchor.y;
+    // }
   }
 
   focus() {}
 
   update(dt: number, t: number): void {
     super.update(dt, t);
+    if(this.subject) {
+        this.focus();
+    }
   }
 }
+
+
+// new Camera({ x: 0, y:0}, {w: 0, h: 0})
