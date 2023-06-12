@@ -39,6 +39,13 @@ let player = {
   h: 32,
 };
 
+let playerBounds = {
+  left: wallSize,
+  right: camera.w - wallSize,
+  top: wallSize,
+  bottom: camera.h - wallSize,
+};
+
 
 const renderWorld = () => {
   ctx.save();
@@ -86,6 +93,9 @@ const renderPlayer = () => {
 const updatePlayer = () => {
   player.pos.x += controls.x * dt * SPEED;
   player.pos.y += controls.y * dt * SPEED;
+
+  player.pos.x = clamp(player.pos.x, playerBounds.left, playerBounds.right);
+  player.pos.y = clamp(player.pos.y, playerBounds.top, playerBounds.bottom);
 }
 
 const updateCamera = () => {
@@ -113,12 +123,19 @@ const loop = (ellapsedTime: number) => {
 
   ctx.clearRect(0,0,w,h);
 
+  ctx.globalAlpha = 0.5;
+
   updateCamera();
   updatePlayer();
   updateCamera();
 
-  console.log(camera.pos);
+  if(player.pos.x >= world.w) {
+    console.log(player.pos);
+  }
 
+  console.log('player: ',player.pos.x, player.pos.y);
+  console.log('world: ',world.pos.x, world.pos.y);
+  console.log('camera: ', camera.pos.x, camera.pos.y);
   renderWorld();
   renderPlayer();
   renderCamera();
