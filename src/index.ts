@@ -68,13 +68,13 @@ const renderWorld = () => {
 
   ctx.save();
   ctx.fillStyle = 'blue';
-  ctx.translate(camera.pos.x + world.w - wallSize, 0);
+  ctx.translate(camera.pos.x + world.w - wallSize * 2, 0);
   ctx.fillRect(0,0,wallSize, world.h);
   ctx.restore();
 
   ctx.save();
   ctx.fillStyle = 'gold';
-  ctx.translate(0,camera.pos.y + world.h - wallSize);
+  ctx.translate(0,camera.pos.y + world.h - wallSize * 2);
   ctx.fillRect(0,0,world.w, wallSize);
   ctx.restore();
 
@@ -99,11 +99,11 @@ const updatePlayer = () => {
 }
 
 const updateCamera = () => {
-  camera.offset.x = w - player.pos.x;
-  camera.offset.y = h - player.pos.y;
+  // camera.offset.x = w - player.pos.x;
+  // camera.offset.y = h - player.pos.y;
 
-  camera.pos.x = player.pos.x - camera.offset.x;
-  camera.pos.y = player.pos.y - camera.offset.y;
+  camera.pos.x = player.pos.x + wallSize/2 -  w / 2;
+  camera.pos.y = player.pos.y + wallSize/2 - h / 2;
   
   
   camera.pos.x = -clamp(camera.pos.x, 0, world.w  - w);
@@ -123,7 +123,7 @@ const loop = (ellapsedTime: number) => {
 
   ctx.clearRect(0,0,w,h);
 
-  ctx.globalAlpha = 0.5;
+  // ctx.globalAlpha = 0.5;
 
   updateCamera();
   updatePlayer();
