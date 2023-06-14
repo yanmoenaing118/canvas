@@ -1,10 +1,11 @@
 import KeyControls from "./KeyControls";
+import Wall from "./Walls";
 import { clamp } from "./helpers";
 
 const SPEED = 320;
 const MAX_FRAME = 1 / 60;
-const w = 640;
-const h = 480;
+const w = 480;
+const h = 320;
 const controls = new KeyControls();
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
@@ -30,7 +31,7 @@ let camera = {
   pos: { x: 0, y: 0 },
   w: w,
   h: h,
-  offset: { x: 0, y: 0}
+  offset: { x: 0, y: 0 },
 };
 
 let player = {
@@ -46,104 +47,20 @@ let playerBounds = {
   bottom: camera.h - wallSize,
 };
 
+// top / right / bottom / left
 
-const renderWorld = () => {
-  ctx.save();
-  ctx.fillStyle = 'red';
-  ctx.translate(world.pos.x,world.pos.y);
-  ctx.fillRect(0,0, world.w, world.h);
-  ctx.restore();
-
-  ctx.save();
-  ctx.fillStyle = 'pink';
-  ctx.translate(camera.pos.x,camera.pos.y);
-  ctx.fillRect(0,0,world.w,wallSize);
-  ctx.restore();
-
-  ctx.save();
-  ctx.fillStyle = 'green';
-  ctx.translate(camera.pos.x,camera.pos.y);
-  ctx.fillRect(0,0,wallSize,world.h);
-  ctx.restore();
-
-  ctx.save();
-  ctx.fillStyle = 'blue';
-  ctx.translate(camera.pos.x + world.w - wallSize, 0);
-  ctx.fillRect(0,0,wallSize, world.h);
-  ctx.restore();
-
-  ctx.save();
-  ctx.fillStyle = 'gold';
-  ctx.translate(0,camera.pos.y + world.h - wallSize);
-  ctx.fillRect(0,0,world.w, wallSize);
-  ctx.restore();
-
-  console.log(camera.pos.x + world.w - wallSize);
-  console.log(camera.pos.y + world.h - wallSize)
-
-}
-
-const renderPlayer = () => {
-  ctx.save();
-  ctx.fillStyle = 'purple';
-  ctx.translate(player.pos.x, player.pos.y);
-  ctx.fillRect(0,0,wallSize,wallSize);
-  ctx.restore();
-
-}
-
-
-const updatePlayer = () => {
-  player.pos.x += controls.x * dt * SPEED;
-  player.pos.y += controls.y * dt * SPEED;
-
-  player.pos.x = clamp(player.pos.x, playerBounds.left, playerBounds.right);
-  player.pos.y = clamp(player.pos.y, playerBounds.top, playerBounds.bottom);
-}
-
-const updateCamera = () => {
-  // camera.offset.x = w - player.pos.x;
-  // camera.offset.y = h - player.pos.y;
-
-  camera.pos.x = player.pos.x + wallSize/2 -  w / 2;
-  camera.pos.y = player.pos.y + wallSize/2 - h / 2;
-  
-  
-  camera.pos.x = -clamp(camera.pos.x, 0, world.w  - w);
-  camera.pos.y = -clamp(camera.pos.y, 0, world.h - h );
-}
-
-const renderCamera = () => {
-  ctx.save();
-  ctx.translate(camera.pos.x,camera.pos.y);
-  ctx.restore();
-}
-
+const walls = new Wall(world.w, world.h, wallSize);
 
 const loop = (ellapsedTime: number) => {
+  requestAnimationFrame(loop);
   dt = Math.min(MAX_FRAME, (ellapsedTime - time) * 0.001);
   time = ellapsedTime;
 
-  ctx.clearRect(0,0,w,h);
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = "black";
+  ctx.strokeRect(0, 0, w, h);
 
-  // ctx.globalAlpha = 0.5;
-
-  updateCamera();
-  updatePlayer();
-  updateCamera();
-
-  if(player.pos.x >= world.w) {
-    console.log(player.pos);
-  }
-
-  // console.log('player: ',player.pos.x, player.pos.y);
-  // console.log('world: ',world.pos.x, world.pos.y);
-  // console.log('camera: ', camera.pos.x, camera.pos.y);
-  renderWorld();
-  renderPlayer();
-  renderCamera();
-
-  requestAnimationFrame(loop);
+  walls.render(ctx);
 };
 
 requestAnimationFrame(loop);
