@@ -60,11 +60,18 @@ export default class Renderer {
             // console.log("(-|-)")
         }
 
+        // for debuggine purpose we will draw camera position
+        if(child instanceof Camera) {
+          this.drawRect(child.w,child.h);
+        }
+
         
 
         if (child instanceof Container && child.children.length > 0) {
           renderChildren(child);
         }
+
+        // restore() only after rendering all children to effect the children's position by their parent
         ctx.restore();
       });
     };

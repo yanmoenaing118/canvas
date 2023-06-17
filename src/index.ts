@@ -38,6 +38,10 @@ function loop(ellapsedTime: number) {
   time = ellapsedTime;
 
   ctx.clearRect(0, 0, w, h);
+  ctx.globalAlpha = 0.5;
+
+  camera.pos.x += dt * 32;
+  camera.pos.y += dt * 32;
 
 
   renderer.render(scene);
