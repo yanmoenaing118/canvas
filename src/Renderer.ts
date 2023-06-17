@@ -1,3 +1,4 @@
+import Camera from "./Camera";
 import Container from "./Container";
 import Entity from "./Entity";
 
@@ -24,6 +25,7 @@ export default class Renderer {
    * renders a collection of entities 'The Container Class'
    */
   render(container: Container) {
+    
     const renderChildren = (container: Container) => {
       const { ctx } = this;
       container.children.forEach((child: Entity | Container) => {
@@ -41,6 +43,10 @@ export default class Renderer {
 
         if (child.pos) {
           ctx.translate(child.pos.x, child.pos.y);
+          if(container instanceof Camera) {
+    
+            console.log(container.pos.x)
+          }
         }
 
         // actually draw the shapes
@@ -51,14 +57,15 @@ export default class Renderer {
           case "circle":
             break;
           default:
-            console.log("(-|-)")
+            // console.log("(-|-)")
         }
 
-        ctx.restore();
+        
 
         if (child instanceof Container && child.children.length > 0) {
           renderChildren(child);
         }
+        ctx.restore();
       });
     };
 

@@ -14,17 +14,22 @@ let time = 0;
 const renderer = new Renderer(w, h);
 const { ctx } = renderer;
 
+const scene = new Container(0, 0, w, h);
+const camera = new Camera(0, 0, w, h);
+const player = new Player(0, 0, CELLSIZE, CELLSIZE);
+const player2 = new Player(0, 0, CELLSIZE, CELLSIZE);
 
-const scene = new Container(0,0,w, h);
-const camera = new Camera(0,0,w,h);
-const player = new Player(0,0,CELLSIZE, CELLSIZE);
+player.shape = "rect";
+player.style.fillStyle = "green";
 
-player.shape = 'rect';
+player2.shape = "rect";
+player2.style.fillStyle = "red";
+player2.pos.x = CELLSIZE * 4;
 
 
 camera.add(player);
+camera.add(player2);
 scene.add(camera);
-
 
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
@@ -37,8 +42,6 @@ function loop(ellapsedTime: number) {
 
   renderer.render(scene);
   drawDebugGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE);
-
-
 }
 
 requestAnimationFrame(loop);

@@ -5,7 +5,10 @@ export default class Entity {
   w: number;
   h: number;
   shape?: 'rect' | 'circle';
-  style?: { fillStyle: string, strokeStyle: string };
+  style: { fillStyle?: string, strokeStyle?: string } = {
+    fillStyle: '',
+    strokeStyle: ''
+  };
 
   constructor(x: number, y: number, w: number, h: number) {
     this.pos = {
