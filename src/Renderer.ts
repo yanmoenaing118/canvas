@@ -1,6 +1,7 @@
 import Camera from "./Camera";
 import Container from "./Container";
 import Entity from "./Entity";
+import Texture from "./Texture";
 
 export default class Renderer {
   canvasWidth: number;
@@ -25,7 +26,6 @@ export default class Renderer {
    * renders a collection of entities 'The Container Class'
    */
   render(container: Container) {
-    
     const renderChildren = (container: Container) => {
       const { ctx } = this;
       container.children.forEach((child: Entity | Container) => {
@@ -43,12 +43,14 @@ export default class Renderer {
 
         if (child.pos) {
           ctx.translate(child.pos.x, child.pos.y);
-          if(container instanceof Camera) {
-    
-            console.log(container.pos.x)
+          if (container instanceof Camera) {
+            console.log(container.pos.x);
           }
         }
 
+        if (child instanceof Texture) {
+          ctx.drawImage(child.img, 0, 0, child.w,child.h);
+        }
         // actually draw the shapes
         switch (child.shape) {
           case "rect":
@@ -57,15 +59,14 @@ export default class Renderer {
           case "circle":
             break;
           default:
-            // console.log("(-|-)")
+          // console.log("(-|-)")
         }
 
         // for debuggine purpose we will draw camera position
-        if(child instanceof Camera) {
-          this.drawRect(child.w,child.h);
+        if (child instanceof Camera) {
+          this.drawRect(child.w, child.h);
+          ctx.strokeRect(0,0, child.w, child.h);
         }
-
-        
 
         if (child instanceof Container && child.children.length > 0) {
           renderChildren(child);
@@ -79,7 +80,7 @@ export default class Renderer {
     renderChildren(container);
   }
 
-  private drawRect(this: Renderer ,w: number, h: number) {
+  private drawRect(this: Renderer, w: number, h: number) {
     this.ctx.fillRect(0, 0, w, h);
   }
 }
