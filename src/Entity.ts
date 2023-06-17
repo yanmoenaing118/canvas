@@ -4,6 +4,8 @@ export default class Entity {
   pos: Position;
   w: number;
   h: number;
+  shape?: 'rect' | 'circle';
+  style?: { fillStyle: string, strokeStyle: string };
 
   constructor(x: number, y: number, w: number, h: number) {
     this.pos = {

@@ -3,23 +3,23 @@ import Container from "./Container";
 import drawDebugGrid from "./DebugGrid";
 import KeyControls from "./KeyControls";
 import Player from "./Player";
+import Renderer from "./Renderer";
 import { CELLSIZE, HEIGHT, SPEED, WIDTH } from "./constants";
 const speed = SPEED;
 const w = WIDTH;
 const h = HEIGHT;
 let dt = 0;
 let time = 0;
-const canvas = document.createElement("canvas") as HTMLCanvasElement;
-document.body.appendChild(canvas);
-canvas.width = w;
-canvas.height = h;
-canvas.style.margin = '32px';
-const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+const renderer = new Renderer(w, h);
+const { ctx } = renderer;
 
 
 const scene = new Container(0,0,w, h);
 const camera = new Camera(0,0,w,h);
 const player = new Player(0,0,CELLSIZE, CELLSIZE);
+
+player.shape = 'rect';
 
 
 camera.add(player);
@@ -35,6 +35,7 @@ function loop(ellapsedTime: number) {
   ctx.clearRect(0, 0, w, h);
 
 
+  renderer.render(scene);
   drawDebugGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE);
 
 
