@@ -14,13 +14,13 @@ const h = HEIGHT;
 let dt = 0;
 let time = 0;
 
-const worldSize = {
-  w: w + w * 0.5,
-  h: h + h * 0.25
-}
 
 const renderer = new Renderer(w, h);
-const { ctx } = renderer;
+
+const worldSize = {
+  w: renderer.canvas.width + renderer.canvas.width * 0.5,
+  h: renderer.canvas.height + renderer.canvas.height * 0.75
+}
 
 
 const bgTexture = new Texture('bg.jpeg');
@@ -32,10 +32,6 @@ player.w = CELLSIZE;
 player.h = CELLSIZE;
 const camera = new Camera(0, 0, w, h, worldSize, player);
 
-const player2 = new Player(0,0,CELLSIZE,CELLSIZE);
-player2.shape = 'rect';
-player2.pos.x = w / 2 - player2.w * 0.5;
-player2.pos.y = h / 2 - player2.h * 0.5;
 
 // debugger rect for Camera
 const cameraRect = new Entity(camera.pos.x, camera.pos.y, camera.w, camera.h);
@@ -55,12 +51,11 @@ pStats.pos.x =  4;
 pStats.pos.y =  45;
 
 camera.add(bgTexture);
-camera.add(player2);
 camera.add(player);
 
 
 scene.add(camera);
-scene.add(cameraRect);
+// scene.add(cameraRect);
 scene.add(pStats);
 scene.add(camStats)
 
@@ -82,19 +77,27 @@ function loop(ellapsedTime: number) {
   cameraRect.pos.x = camera.pos.x;
   cameraRect.pos.y = camera.pos.y;
 
-  player.pos.x =clamp(player.pos.x,0,worldSize.w - player.w);
-  player.pos.y = clamp(player.pos.y, 0, worldSize.h - player.h);
+
 
 
   pStats.text = `player: (${Math.round(player.pos.x)},${Math.round(player.pos.y)})`;
   camStats.text = `camera: (${Math.round(camera.pos.x)}, ${Math.round(player.pos.y)})`
+
+  // worldSize.w = renderer.canvas.width + renderer.canvas.width
+  // worldSize.h = renderer.canvas.height + renderer.canvas.height 
+  
+  player.pos.x =clamp(player.pos.x,0,worldSize.w - player.w);
+  player.pos.y = clamp(player.pos.y, 0, worldSize.h - player.h);
+
+  bgTexture.w = worldSize.w;
+  bgTexture.h = worldSize.h;
   // UPDATE operations end
 
 
 
   // renderers and  grid debugger
   renderer.render(scene);
-  // drawDebugGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE);
+  // drawDebugGrid(renderer.ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE);
 
 }
 

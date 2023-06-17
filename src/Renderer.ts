@@ -19,8 +19,12 @@ export default class Renderer {
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     this.canvas.width = w;
     this.canvas.height = h;
-
     document.body.appendChild(this.canvas);
+
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   this.canvas.width = window.innerWidth;
+    //   this.canvas.height = window.innerHeight;
+    // })
   }
 
   /**
