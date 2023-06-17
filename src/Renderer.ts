@@ -26,9 +26,12 @@ export default class Renderer {
   /**
    * renders a collection of entities 'The Container Class'
    */
-  render(container: Container) {
+  render(this: Renderer,container: Container) {
+    const { ctx } = this;
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
     const renderChildren = (container: Container) => {
-      const { ctx } = this;
+
       container.children.forEach((child: Entity | Container) => {
         ctx.save();
 
@@ -42,11 +45,16 @@ export default class Renderer {
           }
         }
 
+        if(child instanceof Text) {
+          ctx.font = child.font;
+          ctx.shadowOffsetY = 1;
+          ctx.shadowOffsetY = 1;
+          ctx.shadowBlur = 4;
+          ctx.shadowColor = 'black';
+        }
+
         if (child.pos) {
           ctx.translate(child.pos.x, child.pos.y);
-          if (container instanceof Camera) {
-            console.log(container.pos.x);
-          }
         }
 
         if (child instanceof Texture) {
@@ -76,6 +84,8 @@ export default class Renderer {
     };
 
     renderChildren(container);
+
+
   }
 
   private drawRect(this: Renderer, w: number, h: number) {

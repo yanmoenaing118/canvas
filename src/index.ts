@@ -2,9 +2,9 @@ import Camera from "./Camera";
 import Container from "./Container";
 import drawDebugGrid from "./DebugGrid";
 import Entity from "./Entity";
-import KeyControls from "./KeyControls";
 import Player from "./Player";
 import Renderer from "./Renderer";
+import Stats from "./Stats";
 import Texture from "./Texture";
 import { CELLSIZE, HEIGHT, SPEED, WIDTH, controls } from "./constants";
 import { clamp } from "./helpers";
@@ -40,14 +40,19 @@ player2.pos.y = h / 2 - player2.h * 0.5;
 // debugger rect for Camera
 const cameraRect = new Entity(camera.pos.x, camera.pos.y, camera.w, camera.h);
 cameraRect.shape = 'rect';
-cameraRect.style.fillStyle = 'rgba(0,0,0,0.3)';
+cameraRect.style.fillStyle = 'rgba(0,0,0,0.2)';
 
 // player.shape = "rect";
 player.style.fillStyle = "darkgreen";
 player.pos.x = camera.pos.x + camera.w / 2 - CELLSIZE / 2;
 player.pos.y = camera.pos.y + camera.h / 2 - CELLSIZE / 2;
 
-
+const camStats = new Stats('')
+camStats.pos.x =  4;
+camStats.pos.y =  20;
+const pStats = new Stats('')
+pStats.pos.x =  4;
+pStats.pos.y =  45;
 
 camera.add(bgTexture);
 camera.add(player2);
@@ -56,17 +61,15 @@ camera.add(player);
 
 scene.add(camera);
 scene.add(cameraRect);
+scene.add(pStats);
+scene.add(camStats)
+
 
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
   dt = (ellapsedTime - time) * 0.001;
   time = ellapsedTime;
-
-  ctx.clearRect(0, 0, w, h);
-
-
-
 
   // UPDATE operations start
 
@@ -79,22 +82,19 @@ function loop(ellapsedTime: number) {
   cameraRect.pos.x = camera.pos.x;
   cameraRect.pos.y = camera.pos.y;
 
-  // UPDATE operations end
-
-
-
-  // update
   player.pos.x =clamp(player.pos.x,0,worldSize.w - player.w);
   player.pos.y = clamp(player.pos.y, 0, worldSize.h - player.h);
 
 
+  pStats.text = `player: (${Math.round(player.pos.x)},${Math.round(player.pos.y)})`;
+  camStats.text = `camera: (${Math.round(camera.pos.x)}, ${Math.round(player.pos.y)})`
+  // UPDATE operations end
 
 
 
-
-  // renders and  grid debugger
+  // renderers and  grid debugger
   renderer.render(scene);
-  drawDebugGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE);
+  // drawDebugGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE);
 
 }
 
