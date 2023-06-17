@@ -1,6 +1,7 @@
 import Camera from "./Camera";
 import Container from "./Container";
 import Entity from "./Entity";
+import Text from "./Text";
 import Texture from "./Texture";
 
 export default class Renderer {
@@ -51,6 +52,9 @@ export default class Renderer {
         if (child instanceof Texture) {
           ctx.drawImage(child.img, 0, 0, child.w,child.h);
         }
+        if (child instanceof Text) {
+          ctx.fillText(child.text, 0,0);
+        }
         // actually draw the shapes
         switch (child.shape) {
           case "rect":
@@ -60,12 +64,6 @@ export default class Renderer {
             break;
           default:
           // console.log("(-|-)")
-        }
-
-        // for debuggine purpose we will draw camera position
-        if (child instanceof Camera) {
-          this.drawRect(child.w, child.h);
-          ctx.strokeRect(0,0, child.w, child.h);
         }
 
         if (child instanceof Container && child.children.length > 0) {
