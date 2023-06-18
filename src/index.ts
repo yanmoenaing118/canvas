@@ -1,12 +1,14 @@
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import Game from "./pop/Game";
 import MouseControls from "./pop/controls/MouseControls";
 import pop from "./pop/index";
+import GameOverScreent from "./screens/GameOverScreen";
 import GameScreen from "./screens/GameScreen";
 import StartScreen from "./screens/StartScreen";
 const { KeyControls, math } = pop;
 
-const w = 640;
-const h = 480;
+const w = CANVAS_WIDTH;
+const h = CANVAS_HEIGHT;
 const game = new Game(w, h);
 const controls = new KeyControls();
 const mouseControls = new MouseControls(game.renderer.view);
@@ -26,12 +28,13 @@ function showStartScreen() {
 }
 
 function playGame() {
-    const gameScreen = new GameScreen(game,controls);
+    const gameScreen = new GameScreen(game,controls, showGameOverScreen);
     game.scene = gameScreen;
 }
 
 function showGameOverScreen() {
-
+    const gameOverScreen  = new GameOverScreent(mouseControls, playGame);
+    game.scene = gameOverScreen;
 }
 
 

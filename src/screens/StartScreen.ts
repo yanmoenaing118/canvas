@@ -1,8 +1,11 @@
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../constants";
 import Container from "../pop/Container";
 import Text from "../pop/Text";
-import KeyControls from "../pop/controls/KeyControls";
+import Texture from "../pop/Texture";
+import TileSprite from "../pop/TileSprite";
 import MouseControls from "../pop/controls/MouseControls";
 
+const background = new TileSprite(new Texture('images/bg.png'), CANVAS_WIDTH, CANVAS_HEIGHT);
 export default class StartScreen extends Container {
   readonly text: Text;
   readonly controls: MouseControls;
@@ -18,11 +21,14 @@ export default class StartScreen extends Container {
   constructor(title: string, w: number, h: number,controls: MouseControls, onStart: () => void) {
     super();
     this.controls = controls;
+    this.add(background);
     this.text = this.add(new Text(title));
     this.text.style = {
-      fill: "green",
+      fill: "white",
       font: '28px monospace'
     };
+    this.text.pos.y = CANVAS_HEIGHT /2 - 10;
+    this.text.pos.x = 115;
 
     this.onStart = onStart;
   }

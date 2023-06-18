@@ -20,8 +20,9 @@ export default class GameScreen extends Container {
   level: Level;
   squizz: Squizz;
   baddies: Container;
+  onGameOver: (arg?: any) => void;
 
-  constructor(game: Game, controls: KeyControls) {
+  constructor(game: Game, controls: KeyControls, onGameOver: (arg?: any) => void) {
     super();
     this.game = game;
     this.controls = controls;
@@ -42,7 +43,9 @@ export default class GameScreen extends Container {
 
     camera.add(this.level);
     camera.add(this.squizz);
-    camera.add(this.baddies)
+    camera.add(this.baddies);
+
+    this.onGameOver =onGameOver;
 
 }
 
@@ -65,6 +68,7 @@ export default class GameScreen extends Container {
       const { pos } = b;
       if (entity.distance(this.squizz as TileSprite, b as TileSprite) < 32) {
         this.squizz.dead = true;
+        this.doGameOver();
         if (b.xSpeed) pos.x = -this.level.w;
         else pos.y = -this.level.h;
       }
@@ -93,5 +97,9 @@ export default class GameScreen extends Container {
       if(ground == 'cleared') {
         this.squizz.dead = true;
       }
+  }
+
+  doGameOver() {
+    this.onGameOver();
   }
 }
