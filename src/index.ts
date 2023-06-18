@@ -4,6 +4,7 @@ import pop from "./pop/index";
 import Level from "./Level";
 import Sprite from "./pop/Sprite";
 import Camera from "./pop/Camera";
+import Buddie from "./pop/entities/Buddie";
 const { textures, KeyControls, math } = pop;
 
 const w = 640;
@@ -15,14 +16,19 @@ const controls = new KeyControls();
 const scene = game.scene;
 // scene.add(new Sprite(textures.background));
 
+const wrold = {
+  w: w + w * 0.5,
+  h: w + h * 0.4
+}
+
+const level = new Level(wrold.w, wrold.h);
 const squizz = new Squizz(controls);
-
-
-const level = new Level(w * 2, h * 2);
-const camera = new Camera(squizz, { w, h}, { w: w * 2, h: h * 2});
+const camera = new Camera(squizz, { w, h}, wrold);
+const buddie = new Buddie(320,0);
 
 camera.add(level);
 camera.add(squizz);
+camera.add(buddie);
 scene.add(camera);
 game.run((dt: number, t: number) => {
 
