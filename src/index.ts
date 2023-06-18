@@ -2,12 +2,12 @@ import Squizz from "./pop/entities/Squizz";
 import Game from "./pop/Game";
 import pop from "./pop/index";
 import Level from "./Level";
-import Sprite from "./pop/Sprite";
 import Camera from "./pop/Camera";
 import Container from "./pop/Container";
 import Baddie from "./pop/entities/Baddie";
-const { textures, KeyControls, math } = pop;
-
+import entity from "./pop/utils/entities";
+import TileSprite from "./pop/TileSprite";
+const { KeyControls, math } = pop;
 
 const w = 640;
 const h = 480;
@@ -16,16 +16,17 @@ const game = new Game(w, h);
 const controls = new KeyControls();
 
 const scene = game.scene;
-// scene.add(new Sprite(textures.background));
 
 const wrold = {
   w: w + w * 0.5,
-  h: w + h * 0.4
-}
+  h: w + h * 0.4,
+};
 
 const level = new Level(wrold.w, wrold.h);
 const squizz = new Squizz(controls);
-const camera = new Camera(squizz, { w, h}, wrold);
+squizz.pos.x = w / 2 - squizz.w * 0.5;
+squizz.pos.y = h / 2 - squizz.h * 0.5;
+const camera = new Camera(squizz, { w, h }, wrold);
 const baddies = addBaddies(level);
 
 camera.add(level);
@@ -41,14 +42,27 @@ function addBaddies(level: Level): Container {
   }
   for (let i = 0; i < 10; i++) {
     const b = baddies.add(new Baddie(0, 32 * 5));
-    b.frame = {x: 1, y: 0};
+    b.frame = { x: 1, y: 0 };
     b.pos.x = Math.floor(level.w / 10) * i + level.tileW;
   }
   return baddies;
 }
 
-game.run((dt: number, t: number) => {
+function updateBaddies() {
+  baddies.map((b: Baddie) => {
+    const { pos } = b;
+    if (entity.distance(squizz as TileSprite, b as TileSprite) < 32) {
+      squizz.dead = true;
+      if (b.xSpeed) pos.x = -level.w;
+      else pos.y = -level.h;
+    }
 
+    if (pos.x > level.w) pos.x = -32;
+    if (pos.y > level.h) pos.y = -32;
+  });
+}
+
+game.run((dt: number, t: number) => {
   squizz.pos.x = math.clamp(
     squizz.pos.x,
     level.bounds.left,
@@ -60,8 +74,10 @@ game.run((dt: number, t: number) => {
     level.bounds.bottom
   );
 
-  level.checkGround(squizz.pos);
+  updateBaddies();
 
-
-
+  const ground = level.checkGround(squizz.pos);
+  if(ground == 'cleared') {
+    squizz.dead = true;
+  }
 });
