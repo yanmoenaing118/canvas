@@ -1,6 +1,7 @@
 import Container from "./Container";
 import Sprite from "./Sprite";
 import { CameraViewport, Position } from "./models";
+import math from './utils/math';
 
 /**
  * This is the Camera which will follow the entity type 'T'
@@ -8,7 +9,7 @@ import { CameraViewport, Position } from "./models";
  */
 
 export default class Camera<T extends Sprite> extends Container {
-  subject!: T | Position;
+  subject!: Position;
   w: number;
   h: number;
   worldSize: CameraViewport;
@@ -48,7 +49,17 @@ export default class Camera<T extends Sprite> extends Container {
     // }
   }
 
-  focus() {}
+  focus() {
+    const maxX = this.worldSize.w - this.w;
+    const centeredX = this.subject.x + this.offset.x - this.w/2;
+    const x = -math.clamp(centeredX, 0, maxX);
+
+    const maxY = this.worldSize.h - this.h;
+    const centeredY = this.subject.y + this.offset.y - this.h / 2;
+    const y = -math.clamp(centeredY, 0, maxY);
+    this.pos.x = x;
+    this.pos.y = y;
+  }
 
   update(dt: number, t: number): void {
     super.update(dt, t);
