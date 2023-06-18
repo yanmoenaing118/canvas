@@ -35,14 +35,13 @@ scene.add(camera);
 
 function addBaddies(level: Level): Container {
   const baddies = new Container();
-   // Horizontal bad guys
-   for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     const b = baddies.add(new Baddie(32 * 5, 0));
     b.pos.y = Math.floor(level.h / 5) * i + level.tileH * 2;
   }
-  // Vertical bad guys
   for (let i = 0; i < 10; i++) {
     const b = baddies.add(new Baddie(0, 32 * 5));
+    b.frame = {x: 1, y: 0};
     b.pos.x = Math.floor(level.w / 10) * i + level.tileW;
   }
   return baddies;
