@@ -3,7 +3,7 @@ import TileSprite from "../TileSprite";
 
 const texture = new Texture("./images/baddie-walk.png");
 
-export default class Buddie extends TileSprite {
+export default class Baddie extends TileSprite {
   xSpeed: number;
   ySpeed: number;
 
