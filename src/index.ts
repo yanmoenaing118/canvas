@@ -4,8 +4,10 @@ import pop from "./pop/index";
 import Level from "./Level";
 import Sprite from "./pop/Sprite";
 import Camera from "./pop/Camera";
-import Buddie from "./pop/entities/Buddie";
+import Container from "./pop/Container";
+import Baddie from "./pop/entities/Baddie";
 const { textures, KeyControls, math } = pop;
+
 
 const w = 640;
 const h = 480;
@@ -24,14 +26,29 @@ const wrold = {
 const level = new Level(wrold.w, wrold.h);
 const squizz = new Squizz(controls);
 const camera = new Camera(squizz, { w, h}, wrold);
-const buddie = new Buddie(320,0);
+const baddies = addBaddies(level);
 
 camera.add(level);
 camera.add(squizz);
-camera.add(buddie);
+camera.add(baddies);
 scene.add(camera);
-game.run((dt: number, t: number) => {
 
+function addBaddies(level: Level): Container {
+  const baddies = new Container();
+   // Horizontal bad guys
+   for (let i = 0; i < 5; i++) {
+    const b = baddies.add(new Baddie(32 * 5, 0));
+    b.pos.y = Math.floor(level.h / 5) * i + level.tileH * 2;
+  }
+  // Vertical bad guys
+  for (let i = 0; i < 10; i++) {
+    const b = baddies.add(new Baddie(0, 32 * 5));
+    b.pos.x = Math.floor(level.w / 10) * i + level.tileW;
+  }
+  return baddies;
+}
+
+game.run((dt: number, t: number) => {
 
   squizz.pos.x = math.clamp(
     squizz.pos.x,
