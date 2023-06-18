@@ -96,6 +96,7 @@ export default class GameScreen extends Container {
       const ground = this.level.checkGround(this.squizz.pos);
       if(ground == 'cleared') {
         this.squizz.dead = true;
+        this.doGameOver();
       }
   }
 
