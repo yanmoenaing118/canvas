@@ -1,4 +1,4 @@
-import { KeyControls } from "./KeyControls";
+import KeyControls from "./KeyControls";
 import { renderGrid } from "./DebugGrid";
 import { CELLSIZE, HEIGHT, MAX_FRAME, WIDTH } from "./constants";
 import { clamp, distance } from "./utils";
@@ -19,23 +19,18 @@ export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let dt = 1 / 60;
 let time = 0;
 
-
 const rect = new Rect();
-rect.style.fill = 'pink';
-
+rect.style.fill = "pink";
 const rect2 = new Rect();
-rect2.style.fill = 'red';
-rect2.pos.x = w - CELLSIZE;
-
+rect2.style.fill = "red";
+rect2.center(w, h);
 
 function updateRect(dt: number) {
   rect.pos.x += controls.x * 320 * dt;
 }
 
-
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
-
 
   dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
@@ -46,15 +41,13 @@ function loop(ellapsedTime: number) {
   renderRect(rect, ctx);
   renderRect(rect2, ctx);
 
-
-  const dis = distance(rect, rect2);
+  const dis = Math.round(distance(rect, rect2));
   console.log(dis);
-  if(distance(rect2, rect) == 0) {
-    console.log('collide')
+  if (dis == 0) {
+    console.log("collide");
   }
 
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
-  
 }
 
 requestAnimationFrame(loop);
