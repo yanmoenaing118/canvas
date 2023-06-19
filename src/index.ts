@@ -23,6 +23,10 @@ let time = 0;
 const rect = new Rect();
 rect.style.fill = 'pink';
 
+const rect2 = new Rect();
+rect2.style.fill = 'red';
+rect2.pos.x = CELLSIZE;
+
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
@@ -32,6 +36,7 @@ function loop(ellapsedTime: number) {
   ctx.clearRect(0, 0, w, h);
 
   renderRect(rect, ctx);
+  renderRect(rect2, ctx);
 
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
   
