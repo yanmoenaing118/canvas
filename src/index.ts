@@ -1,7 +1,7 @@
 import { KeyControls } from "./KeyControls";
 import { renderGrid } from "./DebugGrid";
 import { CELLSIZE, HEIGHT, MAX_FRAME, WIDTH } from "./constants";
-import { clamp } from "./utils";
+import { clamp, distance } from "./utils";
 import Rect from "./Rect";
 import { renderRect } from "./renderers";
 
@@ -25,7 +25,13 @@ rect.style.fill = 'pink';
 
 const rect2 = new Rect();
 rect2.style.fill = 'red';
-rect2.pos.x = CELLSIZE;
+rect2.pos.x = w - CELLSIZE;
+
+
+function updateRect(dt: number) {
+  rect.pos.x += controls.x * 320 * dt;
+}
+
 
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
@@ -35,8 +41,17 @@ function loop(ellapsedTime: number) {
   time = ellapsedTime;
   ctx.clearRect(0, 0, w, h);
 
+  updateRect(dt);
+
   renderRect(rect, ctx);
   renderRect(rect2, ctx);
+
+
+  const dis = distance(rect, rect2);
+  console.log(dis);
+  if(distance(rect2, rect) == 0) {
+    console.log('collide')
+  }
 
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
   

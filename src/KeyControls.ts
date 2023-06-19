@@ -2,7 +2,7 @@ export class KeyControls {
   keys = new Map();
   constructor() {
     document.addEventListener("keydown", (e: KeyboardEvent) => {
-      console.log(e.code);
+      // console.log(e.code);
       this.keys.set(e.code, true);
     });
     document.addEventListener("keyup", (e: KeyboardEvent) => {
