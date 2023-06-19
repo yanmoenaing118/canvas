@@ -1,32 +1,26 @@
-import { ctx } from ".";
-import { Sprite } from "./Entities";
+import Rect from "./Rect";
 
-export const renderTileSprite = () => {};
 
-export const renderGrid = (
-  rows: number,
-  cols: number,
-  cellW: number,
-  cellH: number
-) => {
-    for(let i = 0; i < cols; i++) {
-        ctx.save();
-        ctx.translate(i * cellW, 0);
-        ctx.beginPath();
-        ctx.moveTo(0,0);
-        ctx.lineTo(0,rows * cellH);
-        ctx.stroke();
-        ctx.restore();
-    }
-
-    for(let i = 0; i < rows; i++) {
-        ctx.save();
-        
-        ctx.translate(0, i * cellH);
-        ctx.beginPath();
-        ctx.moveTo(0,0);
-        ctx.lineTo(cols * cellW,0);
-        ctx.stroke();
-        ctx.restore();
-    }
+/**
+ * 
+ * @param rect Rect to be rendered
+ * @param ctx Canvas Context getContext('2d')
+ */
+export const renderRect = (rect: Rect, ctx: CanvasRenderingContext2D) => {
+  const { pos, w, h, style } = rect;
+  ctx.save();
+  if (style.fill) {
+    ctx.fillStyle = style.fill;
+  }
+  if (style.stroke) {
+    ctx.strokeStyle = style.stroke;
+  }
+  ctx.translate(pos.x, pos.y);
+  if (style.fill) {
+    ctx.fillRect(0, 0, w, h);
+  }
+  if (style.stroke) {
+    ctx.strokeRect(0, 0, w, h);
+  }
+  ctx.restore();
 };
