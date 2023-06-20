@@ -20,39 +20,37 @@ export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let dt = 1 / 60;
 let time = 0;
 
-const rect = new Rect();
-rect.style.fill = "pink";
+
 const rect2 = new Rect();
 rect2.style.fill = "red";
-rect2.w = CELLSIZE;
-rect2.h = CELLSIZE;
+rect2.w = CELLSIZE * 2;
+rect2.h = CELLSIZE * 2;
 rect2.center(w, h);
 
 function updateRect(dt: number) {
-return
-  rect.pos.x += controls.x * SPEED * dt;
-  rect.pos.y += controls.y * SPEED * dt;
+
 }
 
 const img = new Image();
 img.src = "logo.ico";
-const love = new Sprite(img, CELLSIZE, CELLSIZE);
+const love = new Sprite(img, CELLSIZE * 2, CELLSIZE * 2);
+love.center(w,h);
 
 function updateSprite(dt: number) {
-  love.pos.x = CELLSIZE;
-  love.scale.x = controls.x == 0 ? 1 : controls.x;
+    const isFlip = controls.x == -1;
+    if(isFlip) {
+      console.log(love.pos);
+      love.anchor = { x: love.w, y: 0 }
+      love.scale.x = controls.x;
+    } else if(love.scale.x == -1 && controls.x == 1) {
+      love.anchor = { x: 0, y: 0};
+      love.scale.x = 1;
+      console.log('hi')
+    }
 
-  if(love.scale.x == -1) {
-    love.anchor = {
-      x: -cellSize/2,
-      y: -cellSize/2
-    }
-  } else {
-    love.anchor = {
-      x: 0,
-      y: 0
-    }
-  }
+    console.log(love.anchor, love.scale);
+
+   love.pos.x += dt * 100 * controls.x;
 }
 
 function loop(ellapsedTime: number) {
@@ -66,15 +64,9 @@ function loop(ellapsedTime: number) {
   updateRect(dt);
   updateSprite(dt);
 
-  renderRect(rect, ctx);
   renderRect(rect2, ctx);
   renderImg(love, ctx);
 
-  const dis = Math.round(distance(rect, rect2));
-  console.log(dis);
-  if (dis <= CELLSIZE) {
-    console.log("collide");
-  }
 
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
