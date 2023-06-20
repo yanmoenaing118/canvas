@@ -3,3 +3,8 @@ export type Styles = {
     stroke?: string,
     font?: string
 }
+
+export type Frame = {
+    x: number,
+    y: number
+}

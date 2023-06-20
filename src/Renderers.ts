@@ -1,19 +1,42 @@
 import Rect from "./Rect";
 import Sprite from "./Sprite";
-
+import TileSprite from "./TileSprite";
 
 /**
- * 
+ *
  * @param sprite Sprite instance
  * @param ctx Canvas Context getContext('2d')
  */
 export const renderImg = (sprite: Sprite, ctx: CanvasRenderingContext2D) => {
-  const {scale, anchor, pos, w, h } = sprite;
+  const { scale, anchor, pos, w, h } = sprite;
   ctx.save();
   ctx.translate(pos.x, pos.y);
-  ctx.translate(anchor.x,anchor.y);
-  ctx.scale(scale.x,scale.y);
-  ctx.drawImage(sprite.img, 0,0,w,h);
+  ctx.translate(anchor.x, anchor.y);
+  ctx.scale(scale.x, scale.y);
+  ctx.drawImage(sprite.img, 0, 0, w, h);
+  ctx.restore();
+};
+
+export const renderTileSprite = (
+  tileSprite: TileSprite,
+  ctx: CanvasRenderingContext2D
+) => {
+  const { scale, anchor, pos, tileW, tileH, frame } = tileSprite;
+  ctx.save();
+  ctx.translate(pos.x, pos.y);
+  ctx.translate(anchor.x, anchor.y);
+  ctx.scale(scale.x, scale.y);
+  ctx.drawImage(
+    tileSprite.img,
+    frame.x * tileW,
+    frame.y * tileH,
+    tileW,
+    tileH,
+    0,
+    0,
+    tileW,
+    tileH
+  );
   ctx.restore();
 };
 
