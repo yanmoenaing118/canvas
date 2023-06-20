@@ -59,7 +59,7 @@ function loop(ellapsedTime: number) {
   dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
   ctx.clearRect(0, 0, w, h);
-  ctx.globalAlpha = 0.6;
+  ctx.globalAlpha = 0.9;
 
   updateRect(dt);
   updateSprite(dt);
