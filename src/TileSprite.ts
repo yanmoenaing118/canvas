@@ -10,7 +10,5 @@ export default class TileSprite extends Sprite {
     this.tileW = w;
     this.tileH = h;
     this.frame = frame || { x: 0, y: 0};
-  }
-
-  
+  } 
 }

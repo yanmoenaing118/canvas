@@ -5,7 +5,7 @@ import { clamp, distance } from "./utils";
 import TileSprite from "./TileSprite";
 import { renderRect, renderTileSprite } from "./renderers";
 import Rect from "./Rect";
-
+import Spider from "./Spider";
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 document.body.appendChild(canvas);
@@ -21,40 +21,19 @@ export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let dt = 1 / 60;
 let time = 0;
 
-const img  = new Image();
-img.src = 'wall.png';
+const spider = new Spider(controls);
+spider.frame = { x: 0, y: 3};
 
-const tileSprite = new TileSprite(img, w, cellSize);
-
-tileSprite.frame = { 
-  x: 0,
-  y: 0
-}
-tileSprite.pos.y = cellSize * 7
-let framRate = 1;
-let lastFrameUpdate = 0;
-
-const rect = new Rect();
-rect.w = tileSprite.tileW;
-rect.h = tileSprite.tileH;
-rect.style.fill = 'pink';
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
   dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
 
-  // if((lastFrameUpdate = lastFrameUpdate + dt) >= framRate) {
-  //   tileSprite.frame.x = Math.fround(ellapsedTime) % Math.round(w / cellSize);
-  //   lastFrameUpdate = 0;
-  // } 
-
   ctx.clearRect(0, 0, w, h);
-  ctx.globalAlpha = 0.6;
+  spider.update(dt, time);
 
-
-  renderRect(rect,ctx);
-  renderTileSprite(tileSprite, ctx);
+  renderTileSprite(spider, ctx);
 
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
