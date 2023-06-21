@@ -16,7 +16,6 @@ export default class TileSprite extends Sprite {
     this.frame = frame || { x: 0, y: 0};
   } 
 
-
   update(dt: number, t: number): void {
     let { frameTime, frame } = this;
     if((this.currentFrameTime += dt ) >= frameTime) {
