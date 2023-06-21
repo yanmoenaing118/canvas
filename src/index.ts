@@ -31,7 +31,7 @@ function loop(ellapsedTime: number) {
   time = ellapsedTime;
 
   ctx.clearRect(0, 0, w, h);
-  spider.update(dt, time);
+  spider.update(dt, time * 0.001);
 
   renderTileSprite(spider, ctx);
 

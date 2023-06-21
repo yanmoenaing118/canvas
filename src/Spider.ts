@@ -14,7 +14,8 @@ export default class Spider extends TileSprite {
   }
 
   update(dt: number, t: number): void {
-      this.pos.x += dt * this.controls.x * this.speed;
-      this.pos.y += dt * this.controls.y * this.speed;
+    super.update(dt, t);
+    this.pos.x += dt * this.controls.x * this.speed;
+    this.pos.y += dt * this.controls.y * this.speed;
   }
 }
