@@ -2,12 +2,6 @@ import AnimationManager from "./AnimationManager";
 import Sprite from "./Sprite";
 import { Frame } from "./types";
 
-const walkLeft = new Array(10).fill(0).map((_, i) => ({
-  x: i,
-  y: 3,
-}));
-
-console.log(walkLeft)
 
 export default class TileSprite extends Sprite {
   tileW: number;
@@ -25,14 +19,11 @@ export default class TileSprite extends Sprite {
     this.tileH = h;
     this.frame = frame || { x: 0, y: 0 };
     this.anim = new AnimationManager(this);
-    this.anim.add('walkLeft', walkLeft, 0.1);
-    this.anim.play('walkLeft');
   }
 
   update(dt: number, t: number): void {
     if (this.anim) {
       this.anim.update(dt, t);
     }
-    console.log(this.frame)
   }
 }

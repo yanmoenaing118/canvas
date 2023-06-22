@@ -24,6 +24,7 @@ let time = 0;
 const spider = new Spider(controls);
 spider.frame = { x: 0, y: 3};
 
+
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
@@ -35,7 +36,7 @@ function loop(ellapsedTime: number) {
 
   renderTileSprite(spider, ctx);
 
-  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
 
 requestAnimationFrame(loop);

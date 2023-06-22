@@ -20,16 +20,9 @@ class Anim {
     }
 
     update(this: Anim,dt: number, t: number) {
-        // console.log(this.frames)
-        // console.log(Math.round(t / this.frameRate) % this.frames.length)
         if((this.currentTime += dt) >= this.frameRate) {
             this.currentTime -= this.frameRate;
-            // this.frame = this.frames[Math.round(t / this.frameRate) % this.frames.length - 1 ]; 
-            // console.log(this.frame)
-        // console.log(Math.round(t / this.frameRate) % this.frames.length )
             this.frame = this.frames[Math.round(t / this.frameRate) % this.frames.length ]; 
-
-            // console.log(this.frame)
         }
     }
 }
@@ -51,6 +44,10 @@ export default class AnimationManager {
             return;
         }
         this.currentAnim = name;
+    }
+
+    pause() {
+        this.currentAnim = '';
     }
 
     update(dt: number, t: number) {
