@@ -1,6 +1,6 @@
 import KeyControls from "./KeyControls";
 import TileSprite from "./TileSprite";
-import { CELLSIZE, WIDTH, HEIGHT } from "./constants";
+import { CELLSIZE, WIDTH, HEIGHT, WORLD_W, WORLD_H, SPEED } from "./constants";
 import { clamp } from "./utils";
 
 const spiderImg = new Image();
@@ -25,7 +25,7 @@ const walkUp = new Array(10).fill(0).map((_,i)=>({
 
 export default class Spider extends TileSprite {
   controls: KeyControls;
-  speed: number = 320;
+  speed: number = SPEED;
   animSpeed: number = 0.05;
   constructor(controls: KeyControls) {
     super(spiderImg, CELLSIZE, CELLSIZE);
@@ -42,8 +42,8 @@ export default class Spider extends TileSprite {
     this.pos.x += dt * this.controls.x * this.speed;
     this.pos.y += dt * this.controls.y * this.speed;
 
-    this.pos.x = clamp(this.pos.x, 0, WIDTH - this.tileW);
-    this.pos.y = clamp(this.pos.y, 0, HEIGHT - this.tileH);
+    this.pos.x = clamp(this.pos.x, 0, WORLD_W - this.tileW);
+    this.pos.y = clamp(this.pos.y, 0, WORLD_H - this.tileH);
 
 
     if(this.controls.x == 1) {

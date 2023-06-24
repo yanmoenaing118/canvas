@@ -1,13 +1,15 @@
 import Texture from "./Texture";
 import TileMap from "./TileMap";
 import TileSprite from "./TileSprite";
+import { CELLSIZE } from "./constants";
 
 const texture = new Texture('dungeon.png');
 export default class Dungeon extends TileMap {
-    constructor() {
-        super(texture.img, 16, 10,64,64);
+    constructor(w: number, h: number) {
+        const mapW = w / CELLSIZE;
+        const mapH = h/ CELLSIZE;
+        super(texture.img, mapW, mapH,CELLSIZE,CELLSIZE);
         this.createMap();
-        console.log(this.w,this.h)
     }
 
     createMap() {

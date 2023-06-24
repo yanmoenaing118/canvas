@@ -1,3 +1,4 @@
+import Camera from "./Camera";
 import Rect from "./Rect";
 import Sprite from "./Sprite";
 import TileMap from "./TileMap";
@@ -70,6 +71,24 @@ export const renderTileMap = (map: TileMap, ctx: CanvasRenderingContext2D) => {
   ctx.translate(map.pos.x, map.pos.y);
   for (let i = 0; i < map.chldren.length; i++) {
     renderTileSprite(map.chldren[i], ctx);
+  }
+  ctx.restore();
+};
+
+export const renderCamera = (camera: Camera, ctx: CanvasRenderingContext2D) => {
+  ctx.save();
+  ctx.translate(camera.pos.x, camera.pos.y);
+  for (let i = 0; i < camera.children.length; i++) {
+    const child = camera.children[i];
+    if (child instanceof TileMap) {
+      renderTileMap(child, ctx);
+    } else if (child instanceof TileSprite) {
+      renderTileSprite(child, ctx);
+    } else if (child instanceof Rect) {
+      renderRect(child,ctx);
+    } else {
+      console.log('hi')
+    }
   }
   ctx.restore();
 };

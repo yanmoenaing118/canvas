@@ -1,3 +1,4 @@
+import Entity from "./Entity";
 import TileSprite from "./TileSprite";
 import Vec2 from "./Vec2";
 
@@ -5,7 +6,7 @@ import Vec2 from "./Vec2";
  * a TileMap is just a container with TileSprite children
  */
 
-export default class TileMap {
+export default class TileMap extends Entity{
   pos: Vec2 = new Vec2(0, 0);
   chldren: TileSprite[] = [];
   mapW: number;
@@ -21,6 +22,7 @@ export default class TileMap {
     tileW: number,
     tileH: number
   ) {
+    super();
     this.mapW = mapW;
     this.mapH = mapH;
     this.tileW = tileW;

@@ -1,12 +1,14 @@
 import KeyControls from "./KeyControls";
 import { renderGrid } from "./DebugGrid";
-import { CELLSIZE, HEIGHT, MAX_FRAME, SPEED, WIDTH } from "./constants";
+import { CELLSIZE, HEIGHT, MAX_FRAME, SPEED, WIDTH, WORLD_H, WORLD_W } from "./constants";
 import { clamp, distance } from "./utils";
-import { renderRect, renderTileMap, renderTileSprite } from "./renderers";
+import { renderCamera, renderRect, renderTileMap, renderTileSprite } from "./renderers";
 import Rect from "./Rect";
 import Spider from "./Spider";
 import Dungeon from "./Dungeon";
 import Vec2 from "./Vec2";
+import Camera from "./Camera";
+import Entity from "./Entity";
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 document.body.appendChild(canvas);
@@ -28,10 +30,21 @@ const rect = new Rect();
 rect.w = spider.w;
 rect.h = spider.h;
 rect.style = {
-  fill: 'white'
+  fill: 'white',
+  stroke: 'black'
 }
-const dungeon = new Dungeon();
+const dungeon = new Dungeon(WORLD_W, WORLD_H);
 
+const camera = new Camera(w,h, WORLD_W, WORLD_H);
+
+camera.add(dungeon as Entity);
+camera.add(rect)
+camera.add(spider as Entity);
+
+camera.setEntity(spider as Entity);
+
+
+console.log(camera)
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
@@ -44,16 +57,20 @@ function loop(ellapsedTime: number) {
   const spiderPosPixel = dungeon.mapToPixelPosition(spiderMapPos);
   const tileAtSpiderPositon = dungeon.tileAtPixelPosition(spider.pos);
 
-  console.log(`map: `, spiderMapPos.x, spiderMapPos.y);
-  console.log(`pix: `, spiderPosPixel.x, spiderPosPixel.y)
-  console.log(tileAtSpiderPositon === dungeon.chldren[15]);
+  // console.log(`map: `, spiderMapPos.x, spiderMapPos.y);
+  // console.log(`pix: `, spiderPosPixel.x, spiderPosPixel.y)
+  // console.log(tileAtSpiderPositon === dungeon.chldren[15]);
 
-  spider.update(dt, time * 0.001);
   rect.pos = {...spider.pos}
+  
+  console.log(camera.pos)
+  
+  spider.update(dt, time * 0.001);
+  camera.update(dt, time * 0.001);
+  renderCamera(camera, ctx);
 
-  renderTileMap(dungeon, ctx);
-  renderRect(rect,ctx)
-  renderTileSprite(spider,ctx);
+  // renderTileMap(dungeon, ctx);
+  // renderTileSprite(spider,ctx);
 
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
