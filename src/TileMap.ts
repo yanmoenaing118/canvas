@@ -32,13 +32,25 @@ export default class TileMap {
 
   /**
    * 
-   * @param pos pixel position of an object
+   * @param pos pixel position of an entity
    * @returns map position (x,y)
    */
   pixelToMapPosition(pos: Vec2): Vec2 {
     return {
         x: Math.round(pos.x / this.tileW),
         y: Math.round(pos.y / this.tileH)
+    }
+  }
+
+  /**
+   * 
+   * @param pos map position of an entity
+   * @returns pixel position of that entity
+   */
+  mapToPixelPosition(pos: Vec2): Vec2 {
+    return {
+        x: pos.x * this.tileW,
+        y: pos.y * this.tileH
     }
   }
 }
