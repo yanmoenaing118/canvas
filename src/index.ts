@@ -40,12 +40,13 @@ function loop(ellapsedTime: number) {
 
   ctx.clearRect(0, 0, w, h);
 
-  const spiderMapPos: Vec2 = dungeon.pixelToMapPosition(spider.pos);
-
-  const spiderPosPixel = dungeon.mapToPixelPosition(spiderMapPos)
+  const spiderMapPos = dungeon.pixelToMapPosition(spider.pos);
+  const spiderPosPixel = dungeon.mapToPixelPosition(spiderMapPos);
+  const tileAtSpiderPositon = dungeon.tileAtPixelPosition(spider.pos);
 
   console.log(`map: `, spiderMapPos.x, spiderMapPos.y);
   console.log(`pix: `, spiderPosPixel.x, spiderPosPixel.y)
+  console.log(tileAtSpiderPositon === dungeon.chldren[15]);
 
   spider.update(dt, time * 0.001);
   rect.pos = {...spider.pos}

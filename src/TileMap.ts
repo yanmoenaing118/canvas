@@ -53,4 +53,20 @@ export default class TileMap {
         y: pos.y * this.tileH
     }
   }
+
+  /**
+   * Tile at map position
+   */
+  tileAtMapPosition(pos: Vec2): TileSprite {
+    return this.chldren[this.mapW * pos.y + pos.x];
+  }
+  
+  /**
+   * 
+   * @param pos pixel positon of the tile
+   * @returns tile at that position
+   */
+  tileAtPixelPosition(pos: Vec2): TileSprite {
+    return this.tileAtMapPosition(this.pixelToMapPosition(pos));
+  }
 }
