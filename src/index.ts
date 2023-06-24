@@ -24,6 +24,9 @@ let time = 0;
 const spider = new Spider(controls);
 spider.frame = { x: 0, y: 3};
 
+const dungeonImage = new Image();
+dungeonImage.src = 'dungeon.png';
+const dungeonSprite = new TileSprite(dungeonImage, 64, 64);
 
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
@@ -34,7 +37,9 @@ function loop(ellapsedTime: number) {
   ctx.clearRect(0, 0, w, h);
   spider.update(dt, time * 0.001);
 
-  renderTileSprite(spider, ctx);
+  renderTileSprite(dungeonSprite,ctx);
+
+  // renderTileSprite(spider, ctx);
 
   // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
