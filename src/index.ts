@@ -44,7 +44,7 @@ camera.add(spider as Entity);
 camera.setEntity(spider as Entity);
 
 
-console.log(camera)
+// console.log(camera)
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
@@ -59,11 +59,18 @@ function loop(ellapsedTime: number) {
 
   // console.log(`map: `, spiderMapPos.x, spiderMapPos.y);
   // console.log(`pix: `, spiderPosPixel.x, spiderPosPixel.y)
-  // console.log(tileAtSpiderPositon === dungeon.chldren[15]);
+  
+  // if(tileAtSpiderPositon === dungeon.chldren[12]) {
+  //   console.log('12', tileAtSpiderPositon);
+  // } 
+
+  // if(tileAtSpiderPositon === dungeon.chldren[11]) {
+  //   console.log('11', tileAtSpiderPositon)
+  // }
 
   rect.pos = {...spider.pos}
   
-  console.log(camera.pos)
+  // console.log(camera.pos)
   
   spider.update(dt, time * 0.001);
   camera.update(dt, time * 0.001);
@@ -72,7 +79,7 @@ function loop(ellapsedTime: number) {
   // renderTileMap(dungeon, ctx);
   // renderTileSprite(spider,ctx);
 
-  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
 
 requestAnimationFrame(loop);
