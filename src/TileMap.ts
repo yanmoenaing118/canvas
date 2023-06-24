@@ -28,4 +28,17 @@ export default class TileMap {
     this.w = mapW * tileW;
     this.h = mapH * tileH;
   }
+
+
+  /**
+   * 
+   * @param pos pixel position of an object
+   * @returns map position (x,y)
+   */
+  pixelToMapPosition(pos: Vec2): Vec2 {
+    return {
+        x: Math.round(pos.x / this.tileW),
+        y: Math.round(pos.y / this.tileH)
+    }
+  }
 }

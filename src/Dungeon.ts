@@ -7,6 +7,7 @@ export default class Dungeon extends TileMap {
     constructor() {
         super(texture.img, 16, 10,64,64);
         this.createMap();
+        console.log(this.w,this.h)
     }
 
     createMap() {
