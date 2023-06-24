@@ -1,5 +1,6 @@
 import Rect from "./Rect";
 import Sprite from "./Sprite";
+import TileMap from "./TileMap";
 import TileSprite from "./TileSprite";
 
 /**
@@ -60,6 +61,15 @@ export const renderRect = (rect: Rect, ctx: CanvasRenderingContext2D) => {
   }
   if (style.stroke) {
     ctx.strokeRect(0, 0, w, h);
+  }
+  ctx.restore();
+};
+
+export const renderTileMap = (map: TileMap, ctx: CanvasRenderingContext2D) => {
+  ctx.save();
+  ctx.translate(map.pos.x, map.pos.y);
+  for (let i = 0; i < map.chldren.length; i++) {
+    renderTileSprite(map.chldren[i], ctx);
   }
   ctx.restore();
 };

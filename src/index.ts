@@ -3,9 +3,10 @@ import { renderGrid } from "./DebugGrid";
 import { CELLSIZE, HEIGHT, MAX_FRAME, SPEED, WIDTH } from "./constants";
 import { clamp, distance } from "./utils";
 import TileSprite from "./TileSprite";
-import { renderRect, renderTileSprite } from "./renderers";
+import { renderRect, renderTileMap, renderTileSprite } from "./renderers";
 import Rect from "./Rect";
 import Spider from "./Spider";
+import Dungeon from "./Dungeon";
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 document.body.appendChild(canvas);
@@ -22,11 +23,9 @@ let dt = 1 / 60;
 let time = 0;
 
 const spider = new Spider(controls);
-spider.frame = { x: 0, y: 3};
+spider.frame = { x: 0, y: 3 };
 
-const dungeonImage = new Image();
-dungeonImage.src = 'dungeon.png';
-const dungeonSprite = new TileSprite(dungeonImage, 64, 64);
+const dungeon = new Dungeon();
 
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
@@ -37,11 +36,10 @@ function loop(ellapsedTime: number) {
   ctx.clearRect(0, 0, w, h);
   spider.update(dt, time * 0.001);
 
-  renderTileSprite(dungeonSprite,ctx);
-
+  renderTileMap(dungeon, ctx);
   // renderTileSprite(spider, ctx);
 
-  // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
 
 requestAnimationFrame(loop);
