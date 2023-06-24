@@ -2,7 +2,6 @@ import KeyControls from "./KeyControls";
 import { renderGrid } from "./DebugGrid";
 import { CELLSIZE, HEIGHT, MAX_FRAME, SPEED, WIDTH } from "./constants";
 import { clamp, distance } from "./utils";
-import TileSprite from "./TileSprite";
 import { renderRect, renderTileMap, renderTileSprite } from "./renderers";
 import Rect from "./Rect";
 import Spider from "./Spider";
@@ -37,7 +36,7 @@ function loop(ellapsedTime: number) {
   spider.update(dt, time * 0.001);
 
   renderTileMap(dungeon, ctx);
-  // renderTileSprite(spider, ctx);
+  
 
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }

@@ -16,13 +16,12 @@ export default class Dungeon extends TileMap {
             const frameX = Math.round(Math.random() * this.mapW);
             const frameY = Math.round(Math.random() * this.mapH);
             const posX = (i % this.mapW) * tile.tileW;
-            const posY = (i / this.mapH) * tile.tileH;
+            const posY = Math.round( i / this.mapW) * tile.tileH;
             tile.pos = {
                 x: posX,
                 y: posY
             }
             tile.frame = { x: frameX, y: frameY};
-            console.log(tile)
             this.chldren.push(tile);
         }
     }
