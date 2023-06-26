@@ -25,8 +25,11 @@ const walkUp = new Array(10).fill(0).map((_,i)=>({
 
 export default class Spider extends TileSprite {
   controls: KeyControls;
-  speed: number = SPEED;
+  speed: number = SPEED /2 ;
   animSpeed: number = 0.05;
+
+  onCellTime: number = 0.25;
+  nextCell: number = this.onCellTime;
   constructor(controls: KeyControls) {
     super(spiderImg, CELLSIZE, CELLSIZE);
     this.controls = controls;
@@ -39,11 +42,6 @@ export default class Spider extends TileSprite {
 
   update(dt: number, t: number): void {
     super.update(dt, t);
-    this.pos.x += dt * this.controls.x * this.speed;
-    this.pos.y += dt * this.controls.y * this.speed;
-
-    this.pos.x = clamp(this.pos.x, 0, WORLD_W - this.tileW);
-    this.pos.y = clamp(this.pos.y, 0, WORLD_H - this.tileH);
 
 
     if(this.controls.x == 1) {
@@ -57,5 +55,23 @@ export default class Spider extends TileSprite {
     } else {
       this.anim.pause();
     }
+
+
+    this.pos.x = Math.round(this.pos.x / CELLSIZE) * CELLSIZE;
+    this.pos.y = Math.round(this.pos.y / CELLSIZE) * CELLSIZE;
+  //  if((this.nextCell -= dt) < 0) {
+  //     this.nextCell += this.onCellTime;
+
+  //     console.log(this.pos);
+  //  }
+
+   this.pos.x += dt * this.controls.x * this.speed;
+   this.pos.y += dt * this.controls.y * this.speed;
+
+   this.pos.x = clamp(this.pos.x, 0, WORLD_W - this.tileW);
+   this.pos.y = clamp(this.pos.y, 0, WORLD_H - this.tileH);
+
+    
+
   }
 }

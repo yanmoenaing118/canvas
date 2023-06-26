@@ -2,7 +2,7 @@ import KeyControls from "./KeyControls";
 import { renderGrid } from "./DebugGrid";
 import { CELLSIZE, HEIGHT, MAX_FRAME, SPEED, WIDTH, WORLD_H, WORLD_W } from "./constants";
 import { clamp, distance } from "./utils";
-import { renderCamera, renderRect, renderTileMap, renderTileSprite } from "./renderers";
+import { renderCamera, renderRect, renderTileMap, renderTileSprite } from "./Renderers";
 import Rect from "./Rect";
 import Spider from "./Spider";
 import Dungeon from "./Dungeon";
@@ -37,8 +37,8 @@ const dungeon = new Dungeon(WORLD_W, WORLD_H);
 
 const camera = new Camera(w,h, WORLD_W, WORLD_H);
 
-camera.add(dungeon as Entity);
-camera.add(rect)
+// camera.add(dungeon as Entity);
+// camera.add(rect)
 camera.add(spider as Entity);
 
 camera.setEntity(spider as Entity);
@@ -79,7 +79,7 @@ function loop(ellapsedTime: number) {
   // renderTileMap(dungeon, ctx);
   // renderTileSprite(spider,ctx);
 
-  // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
 
 requestAnimationFrame(loop);
