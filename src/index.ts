@@ -37,7 +37,7 @@ const dungeon = new Dungeon(WORLD_W, WORLD_H);
 
 const camera = new Camera(w,h, WORLD_W, WORLD_H);
 
-// camera.add(dungeon as Entity);
+camera.add(dungeon as Entity);
 // camera.add(rect)
 camera.add(spider as Entity);
 

@@ -16,8 +16,8 @@ export default class Dungeon extends TileMap {
     createMap() {
         for(let i = 0;  i < this.mapW * this.mapH ; i++) {
             const tile = new TileSprite(texture.img, this.tileW,this.tileH);
-            const frameX =0;
-            const frameY = 3;
+            const frameX = 5;
+            const frameY = 8;
             const posX = (i % this.mapW) * tile.tileW;
             const posY = Math.floor( i / this.mapW) * tile.tileH;
             tile.pos = {

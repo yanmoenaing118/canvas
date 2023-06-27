@@ -10,6 +10,7 @@ class Anim {
     currentTime: number;
     frames: Frame[];
     frame: Frame;
+    currIdx: number = 0;
 
     constructor(frames: Frame[], speed: number) {
         this.frames = frames;
@@ -22,8 +23,15 @@ class Anim {
     update(this: Anim,dt: number, t: number) {
         if((this.currentTime += dt) >= this.frameRate) {
             this.currentTime -= this.frameRate;
-            this.frame = this.frames[Math.round(t / this.frameRate) % this.frames.length ]; 
+            this.frame = this.frames[ this.currIdx++ % this.frames.length]; 
         }
+    }
+
+
+    reset() {
+        this.currentTime = 0;
+        this.currIdx = 0;
+        this.frame =this.frames[this.currIdx];
     }
 }
 
@@ -47,6 +55,9 @@ export default class AnimationManager {
     }
 
     pause() {
+        if(this.anims[this.currentAnim]) {
+            this.anims[this.currentAnim].reset();
+        }
         this.currentAnim = '';
     }
 
