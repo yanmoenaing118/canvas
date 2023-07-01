@@ -26,8 +26,10 @@ entities.debug(mouse)
 
 game.run(() => {
   
-  const { pos: mousePos, hitBox: mouseHitBox } = mouse;
+  let { pos: mousePos, hitBox: mouseHitBox } = mouse;
   const { pos: cheesePos } = cheese;
+
+  
   
   if(
     mousePos.x + mouseHitBox.x <= cheesePos.x + cheese.w &&
