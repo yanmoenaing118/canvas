@@ -4,8 +4,8 @@ import Container from "../pop/Container";
 import Game from "../pop/Game";
 import TileSprite from "../pop/TileSprite";
 import KeyControls from "../pop/controls/KeyControls";
-import Baddie from "../pop/entities/Baddie";
-import Squizz from "../pop/entities/Squizz";
+import Baddie from "../entities/Baddie";
+import Squizz from "./../entities/Squizz";
 import entity from "../pop/utils/entities";
 import math from "../pop/utils/math";
 
