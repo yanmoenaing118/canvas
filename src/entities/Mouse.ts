@@ -37,8 +37,8 @@ class Mouse extends Sprite {
   }
 
   update(dt: number): void {
-    this.pos.x += dt * 640 * this.controls.x;
-    this.pos.y += dt * 640 * this.controls.y;
+    this.pos.x += dt * 200 * this.controls.x;
+    this.pos.y += dt * 200 * this.controls.y;
 
     this.pos.x = math.clamp(this.pos.x, 0, CANVAS_WIDTH - this.w);
     this.pos.y = math.clamp(this.pos.y, 0, CANVAS_HEIGHT - this.h);

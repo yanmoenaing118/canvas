@@ -20,6 +20,8 @@ const cheese = new Cheese();
 scene.add(cheese);
 scene.add(mouse);
 
+entities.debug(cheese)
+entities.debug(cheese)
 entities.debug(mouse)
 
 game.run(() => {
@@ -27,6 +29,16 @@ game.run(() => {
   const { pos: mousePos, hitBox: mouseHitBox } = mouse;
   const { pos: cheesePos } = cheese;
   
+  if(
+    mousePos.x + mouseHitBox.x <= cheesePos.x + cheese.w &&
+    mousePos.x + mouseHitBox.x + mouseHitBox.w >= cheesePos.x &&
+    mousePos.y + mouseHitBox.y <= cheesePos.y + cheese.h &&
+    mousePos.y + mouseHitBox.y + mouse.h >= cheesePos.y
+  ) {
+
+    cheese.pos.x = math.rand(CANVAS_WIDTH - cheese.w);
+    cheese.pos.y = math.rand(CANVAS_HEIGHT - cheese.h)
+  }
 
   
 });

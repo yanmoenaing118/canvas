@@ -3,9 +3,18 @@ import Texture from "../pop/Texture";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../constants";
 import math from "../pop/utils/math";
 import { Position } from "../pop/models";
+import Rect from "../pop/Rect";
 
 class Cheese extends Sprite {
   pos2: Position;
+  hitBox = {
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0,
+  };
+  // debug rects
+  children: Rect[] = [];
   constructor() {
     super(new Texture("./images/cheese.png"));
     this.pos = {
@@ -19,6 +28,14 @@ class Cheese extends Sprite {
       x: this.pos.x + this.w,
       y: this.pos.y + this.h,
     };
+
+    this.hitBox = {
+      x: 0,
+      y: 18,
+      w: 100,
+      h: 35,
+    };
+    console.log(this.pos)
   }
 
   update(): void {

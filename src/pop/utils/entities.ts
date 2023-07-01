@@ -3,6 +3,7 @@ import math from "./math";
 import { Entity } from "../models";
 import Sprite from "../Sprite";
 import Rect from "../Rect";
+import Cheese from "../../entities/Cheese";
 function center<T extends Entity>(entity: T): Position {
   return {
     x: entity.pos.x + entity.w / 2,
@@ -16,20 +17,25 @@ function distance<T extends Entity>(a: T, b: T): number {
 
 function debug(e: any) {
   try {
-    const { pos, hitBox } = e;
+    const { hitBox } = e;
 
+   
     const boundingRect = new Rect(e.w, e.h, {
-      fill: "rgba(225,225,225,0.5)",
+      fill: "rgba(225,225,225,0.2)",
     });
-    boundingRect.pos = { ...pos };
+
 
     const hitRect = new Rect(hitBox.w, hitBox.h, {
-      fill: "rgba(33,33,45,0.3)",
+      fill: "rgba(9,9,9,0.3)",
     });
     hitRect.pos = {
       x: hitBox.x,
       y: hitBox.y,
     };
+
+    if(e instanceof Cheese) {
+      console.log(boundingRect)
+    }
 
     e.children.push(boundingRect);
     e.children.push(hitRect);
