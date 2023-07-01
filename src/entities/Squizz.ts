@@ -1,7 +1,7 @@
-import Texture from "../Texture";
-import TileSprite from "../TileSprite";
-import KeyControls from "../controls/KeyControls";
-import { Position } from "../models";
+import Texture from "../pop/Texture";
+import TileSprite from "../pop/TileSprite";
+import KeyControls from "../pop/controls/KeyControls";
+import { Position } from "../pop/models";
 
 export default class Squizz extends TileSprite {
   pos: Position = {

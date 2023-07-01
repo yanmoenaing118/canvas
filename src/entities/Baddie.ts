@@ -1,5 +1,5 @@
-import Texture from "../Texture";
-import TileSprite from "../TileSprite";
+import Texture from "../pop/Texture";
+import TileSprite from "../pop/TileSprite";
 
 const texture = new Texture("./images/baddie-walk.png");
 
