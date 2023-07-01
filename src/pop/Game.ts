@@ -28,7 +28,7 @@ export default class Game {
       last = t;
       this.scene.update(dt, t);
       gameUpdate(dt, t);
-      this.renderer.render(this.scene, false);
+      this.renderer.render(this.scene);
     };
     requestAnimationFrame(loopy);
   }

@@ -81,6 +81,7 @@ class CanvasRenderer {
 
         // Render any child sub-nodes
         if (child.children) {
+          console.log('hello')
           renderRec(child);
         }
         ctx.restore();
