@@ -1,4 +1,5 @@
 import Container from "../Container";
+import Rect from "../Rect";
 
 class CanvasRenderer {
   w: number;
@@ -78,7 +79,11 @@ class CanvasRenderer {
             ctx.drawImage(child.texture.img, 0, 0);
           }
         }
-
+        
+        if(child instanceof Rect) {
+          ctx.fillStyle = child.style.fill;
+          ctx.fillRect(0,0,child.w,child.h);
+        }
         // Render any child sub-nodes
         if (child.children) {
           console.log('hello')
