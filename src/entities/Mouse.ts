@@ -19,7 +19,7 @@ class Mouse extends Sprite {
     this.controls = controls;
   }
 
-  update(dt: number, t: number): void {
+  update(dt: number): void {
     this.pos.x += dt * 1200 * this.controls.x;
     this.pos.y += dt * 1200 * this.controls.y;
 

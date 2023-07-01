@@ -21,7 +21,7 @@ class Cheese extends Sprite {
     };
   }
 
-  update(dt: number, t: number): void {
+  update(): void {
       this.pos2.x = this.pos.x + this.w;
       this.pos2.y = this.pos.y + this.h;
   }
