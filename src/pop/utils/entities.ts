@@ -11,32 +11,35 @@ function center<T extends Entity>(entity: T): Position {
 }
 
 function distance<T extends Entity>(a: T, b: T): number {
-  return math.distance(center(a), center(b)
-  );
+  return math.distance(center(a), center(b));
 }
 
-function  debug(e: any) {
-  const { pos, hitBox } = e;
+function debug(e: any) {
+  try {
+    const { pos, hitBox } = e;
 
-  const boundingRect = new Rect(e.w,e.h, {
-    fill: 'rgba(225,225,225,0.5)'
-  });
-  boundingRect.pos = {...pos};
+    const boundingRect = new Rect(e.w, e.h, {
+      fill: "rgba(225,225,225,0.5)",
+    });
+    boundingRect.pos = { ...pos };
 
-  const hitRect = new Rect(hitBox.w,hitBox.h, {
-    fill: 'rgba(33,33,45,0.3)'
-  });
-  hitRect.pos = {
-    x: hitBox.x,
-    y: hitBox.y
+    const hitRect = new Rect(hitBox.w, hitBox.h, {
+      fill: "rgba(33,33,45,0.3)",
+    });
+    hitRect.pos = {
+      x: hitBox.x,
+      y: hitBox.y,
+    };
+
+    e.children.push(boundingRect);
+    e.children.push(hitRect);
+  } catch (error) {
+    console.log(error);
   }
-
-  e.children.push(boundingRect);
-  e.children.push(hitRect);
 }
 
 export default {
   center,
   distance,
-  debug
+  debug,
 };
