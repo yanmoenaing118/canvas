@@ -1,6 +1,7 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import Cheese from "./entities/Cheese";
 import Mouse from "./entities/Mouse";
+import Container from "./pop/Container";
 import Game from "./pop/Game";
 import Rect from "./pop/Rect";
 import pop from "./pop/index";
@@ -14,33 +15,25 @@ const h = CANVAS_HEIGHT;
 const game = new Game(w, h);
 const { scene } = game;
 const mouse = new Mouse(controls);
-const cheese = new Cheese();
+
+const cheeses = new Container();
+
+for (let i = 0; i < 10; i++) {
+ const cheese = cheeses.add(new Cheese());
+ entities.debug(cheese);
+}
 
 
-scene.add(cheese);
+scene.add(cheeses);
 scene.add(mouse);
 
-entities.debug(cheese)
-entities.debug(cheese)
 entities.debug(mouse)
 
 game.run(() => {
   
-  let { pos: mousePos, hitBox: mouseHitBox } = mouse;
-  const { pos: cheesePos } = cheese;
-
-  
-  
-  if(
-    mousePos.x + mouseHitBox.x <= cheesePos.x + cheese.w &&
-    mousePos.x + mouseHitBox.x + mouseHitBox.w >= cheesePos.x &&
-    mousePos.y + mouseHitBox.y <= cheesePos.y + cheese.h &&
-    mousePos.y + mouseHitBox.y + mouse.h >= cheesePos.y
-  ) {
-
-    cheese.pos.x = math.rand(CANVAS_WIDTH - cheese.w);
-    cheese.pos.y = math.rand(CANVAS_HEIGHT - cheese.h)
-  }
+  entities.hits(mouse, cheeses, (cheese: Cheese) => {
+    cheese.pos = entities.relocate(CANVAS_WIDTH - cheese.w, CANVAS_HEIGHT - cheese.h);
+  })
 
   
 });

@@ -31,9 +31,9 @@ class Cheese extends Sprite {
 
     this.hitBox = {
       x: 0,
-      y: 18,
+      y: 10,
       w: 100,
-      h: 35,
+      h: 40,
     };
     console.log(this.pos)
   }

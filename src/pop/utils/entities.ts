@@ -19,11 +19,9 @@ function debug(e: any) {
   try {
     const { hitBox } = e;
 
-   
     const boundingRect = new Rect(e.w, e.h, {
       fill: "rgba(225,225,225,0.2)",
     });
-
 
     const hitRect = new Rect(hitBox.w, hitBox.h, {
       fill: "rgba(9,9,9,0.3)",
@@ -33,8 +31,8 @@ function debug(e: any) {
       y: hitBox.y,
     };
 
-    if(e instanceof Cheese) {
-      console.log(boundingRect)
+    if (e instanceof Cheese) {
+      console.log(boundingRect);
     }
 
     e.children.push(boundingRect);
@@ -44,7 +42,6 @@ function debug(e: any) {
   }
 }
 
-
 function bounds(entity: any) {
   const { w, h, pos, hitBox } = entity;
   const hit = hitBox || { x: 0, y: 0, w, h };
@@ -52,12 +49,46 @@ function bounds(entity: any) {
     x: hit.x + pos.x,
     y: hit.y + pos.y,
     w: hit.w - 1,
-    h: hit.h - 1
-}; }
+    h: hit.h - 1,
+  };
+}
+
+function hit(e1: any, e2: any) {
+  const a = bounds(e1);
+  const b = bounds(e2);
+  return (
+    a.x + a.w >= b.x && a.x <= b.x + b.w && a.y + a.h >= b.y && a.y <= b.y + b.h
+  );
+}
+
+function hits(e: any, container: any, hitCallback: Function) {
+  const a = bounds(e);
+  container.map((e2: any) => {
+    const b = bounds(e2);
+    if(
+      a.x <= b.x + b.w &&
+      a.x + a.w >= b.x &&
+      a.y <= b.y + b.h &&
+      a.y + a.h >= b.y 
+     ){
+      hitCallback(e2);
+    }
+  })
+}
+
+function relocate(w: number, h: number) {
+  return {
+    x: math.rand(w),
+    y: math.rand(h)
+  }
+}
 
 export default {
   center,
   distance,
   debug,
-  bounds
+  bounds,
+  hit,
+  hits,
+  relocate
 };
