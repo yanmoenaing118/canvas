@@ -31,9 +31,6 @@ function debug(e: any) {
       y: hitBox.y,
     };
 
-    if (e instanceof Cheese) {
-      console.log(boundingRect);
-    }
 
     e.children.push(boundingRect);
     e.children.push(hitRect);

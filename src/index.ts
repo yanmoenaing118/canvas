@@ -1,5 +1,6 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import Cheese from "./entities/Cheese";
+import Dungeon from "./entities/Dungeon";
 import Mouse from "./entities/Mouse";
 import Container from "./pop/Container";
 import Game from "./pop/Game";
@@ -24,10 +25,13 @@ for (let i = 0; i < 10; i++) {
 }
 
 
-scene.add(cheeses);
-scene.add(mouse);
+// scene.add(cheeses);
+// scene.add(mouse);
 
-entities.debug(mouse)
+const dungeon = scene.add(new Dungeon());
+
+console.log(dungeon)
+// entities.debug(mouse)
 
 game.run(() => {
   

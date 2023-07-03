@@ -35,7 +35,6 @@ class Cheese extends Sprite {
       w: 100,
       h: 40,
     };
-    console.log(this.pos)
   }
 
   update(): void {
