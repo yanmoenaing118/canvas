@@ -1,11 +1,12 @@
+import { TILE_SIZE } from "../constants";
 import Texture from "../pop/Texture";
 import TileMap from "../pop/TileMap";
 import { Frame } from "../pop/models";
 import math from "../pop/utils/math";
 
-const mapW = 14;
-const mapH = 10;
-const tileSize = 48;
+const mapW = 20;
+const mapH = 12;
+const tileSize = TILE_SIZE;
 const texture = new Texture("images/bravedigger-tiles.png");
 
 function getById(id: string | number): any {
@@ -24,11 +25,11 @@ class Dungeon extends TileMap {
 
     for (let y = 0; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
-        level[y * mapW + x] = math.randOneFrom([0, 0, 1]);
+        level[y * mapW + x] = math.randOneFrom(["empty", "empty", "wall"]);
       }
     }
 
-    super(level.map(i => tileIndexes[i]), mapW, mapH, tileSize, tileSize, texture);
+    super(level.map(i => getById(i)), mapW, mapH, tileSize, tileSize, texture);
   }
 }
 
