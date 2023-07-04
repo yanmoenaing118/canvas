@@ -15,29 +15,14 @@ const w = CANVAS_WIDTH;
 const h = CANVAS_HEIGHT;
 const game = new Game(w, h);
 const { scene } = game;
-const mouse = new Mouse(controls);
-
-const cheeses = new Container();
-
-for (let i = 0; i < 10; i++) {
- const cheese = cheeses.add(new Cheese());
- entities.debug(cheese);
-}
 
 
-// scene.add(cheeses);
-// scene.add(mouse);
 
 const dungeon = scene.add(new Dungeon());
 
-console.log(dungeon)
-// entities.debug(mouse)
 
 game.run(() => {
   
-  entities.hits(mouse, cheeses, (cheese: Cheese) => {
-    cheese.pos = entities.relocate(CANVAS_WIDTH - cheese.w, CANVAS_HEIGHT - cheese.h);
-  })
 
   
 });

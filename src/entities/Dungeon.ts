@@ -4,8 +4,8 @@ import TileMap from "../pop/TileMap";
 import { Frame } from "../pop/models";
 import math from "../pop/utils/math";
 
-const mapW = 20;
-const mapH = 12;
+const mapW = 19;
+const mapH = 11;
 const tileSize = TILE_SIZE;
 const texture = new Texture("images/bravedigger-tiles.png");
 
@@ -38,7 +38,7 @@ class Dungeon extends TileMap {
          * if 1 skip the rest and continue the next loop
          * if 0 continue the rest
          */
-        if (y % 2 || x % 2 || math.rand(4)) {
+        if (y % 2 || x % 2 || math.rand(3)) {
           continue;
         }
 
