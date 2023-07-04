@@ -5,7 +5,7 @@ import { Frame } from "../pop/models";
 import math from "../pop/utils/math";
 
 const mapW = 20;
-const mapH = 8;
+const mapH = 12;
 const tileSize = TILE_SIZE;
 const texture = new Texture("images/bravedigger-tiles.png");
 
@@ -25,23 +25,21 @@ class Dungeon extends TileMap {
     console.log('x,y,index')
     for (let y = 0; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
-        if (y === 0 || x === 0 || y === mapH - 1 || x === mapW - 1) {
-          level[y * mapW + x] = "wall";
-          continue;
+        const index = y * mapW + x;
+        console.log(x,y,index)
+
+        if(y == 0 || x == 0 || y == mapH - 1 || x == mapW - 1) {
+          level[index] = 'wall'
         }
 
-        console.log(x,y, y * mapW + x)
-
-        if(y % 2 || x % 2 || math.rand(2)) {
-            continue;
-        } 
- 
-        level[y * mapW + x] = "wall"
-   
-        const [xo, yo] = math.randOneFrom([[0, -1], [0, 1], [1, 0], [-1,
-            0]]);
-        level[(y + yo) * mapW + (x + xo)] = "wall_end";
-        
+        /**
+         * index % 2 will result in 0 or 1
+         * if 1 skip the rest and continue the next loop
+         * if 0 continue the rest
+         */
+        if(math.randOneIn(3)) { 
+          continue;
+        }
       }
     }
 
