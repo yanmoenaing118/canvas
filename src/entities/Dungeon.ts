@@ -29,7 +29,7 @@ class Dungeon extends TileMap {
         console.log(x, y, index);
 
         if (y == 0 || x == 0 || y == mapH - 1 || x == mapW - 1) {
-          level[index] = "wall";
+          level[y * mapW + x] = "wall";
           continue;
         }
 
@@ -38,11 +38,11 @@ class Dungeon extends TileMap {
          * if 1 skip the rest and continue the next loop
          * if 0 continue the rest
          */
-        if (y % 2 || x % 2 || math.rand(3)) {
+        if (y % 2 || x % 2 || math.randOneIn(4)) {
           continue;
         }
 
-        level[index] = "wall";
+        level[y * mapW + x] = "wall";
 
         const [xo, yo] = math.randOneFrom([
           [0, -1],
