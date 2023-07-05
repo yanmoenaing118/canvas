@@ -15,7 +15,7 @@ document.body.appendChild(canvas);
 
 const w = WIDTH;
 const h = HEIGHT;
-const cellSize = CELLSIZE;
+let cellSize = CELLSIZE;
 
 canvas.width = w;
 canvas.height = h;
@@ -24,62 +24,40 @@ export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let dt = 1 / 60;
 let time = 0;
 
-
-const spider = new Spider(controls);
 const rect = new Rect();
-rect.w = spider.w;
-rect.h = spider.h;
-rect.style = {
-  fill: 'white',
-  stroke: 'black'
-}
-const dungeon = new Dungeon(WORLD_W, WORLD_H);
 
-const camera = new Camera(w,h, WORLD_W, WORLD_H);
+rect.update = (dt) => {
+  rect.pos.x += dt * rect.w;
+  rect.pos.y += dt * rect.h;
+};
 
-camera.add(dungeon as Entity);
-// camera.add(rect)
-camera.add(spider as Entity);
-
-camera.setEntity(spider as Entity);
-
-
-// console.log(camera)
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
   dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
 
+  // updates
+  cellSize += dt * 10;
+
+  // rendering
   ctx.clearRect(0, 0, w, h);
 
-  const spiderMapPos = dungeon.pixelToMapPosition(spider.pos);
-  const spiderPosPixel = dungeon.mapToPixelPosition(spiderMapPos);
-  const tileAtSpiderPositon = dungeon.tileAtPixelPosition(spider.pos);
+  ctx.fillStyle = "red";
 
-  // console.log(`map: `, spiderMapPos.x, spiderMapPos.y);
-  // console.log(`pix: `, spiderPosPixel.x, spiderPosPixel.y)
-  
-  // if(tileAtSpiderPositon === dungeon.chldren[12]) {
-  //   console.log('12', tileAtSpiderPositon);
-  // } 
+  // ctx.beginPath();
 
-  // if(tileAtSpiderPositon === dungeon.chldren[11]) {
-  //   console.log('11', tileAtSpiderPositon)
-  // }
+  ctx.beginPath();
+  ctx.moveTo(cellSize, cellSize);
+  ctx.lineTo(cellSize * 2, cellSize);
+  ctx.lineTo(cellSize * 2, cellSize * 2);
+  ctx.lineTo(cellSize, cellSize * 2);
+  ctx.lineTo(cellSize, cellSize);
+  ctx.fill();
+  ctx.stroke();
 
-  rect.pos = {...spider.pos}
-  
-  // console.log(camera.pos)
-  
-  spider.update(dt, time * 0.001);
-  camera.update(dt, time * 0.001);
-  renderCamera(camera, ctx);
 
-  // renderTileMap(dungeon, ctx);
-  // renderTileSprite(spider,ctx);
-
-  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
 
 requestAnimationFrame(loop);
