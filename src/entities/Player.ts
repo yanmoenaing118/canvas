@@ -43,17 +43,16 @@ class Player extends TileSprite {
     if (x) {
       this.scale.x = x;
       this.anchor.x = x > 0 ? 0 : 48;
-      this.anims.play("walk");
+    } 
+
+    if(x || y) {
+        this.anims.play('walk');
     } else {
-      this.anims.play("hangout");
+        this.anims.play('hangout')
     }
 
     this.pos.x += x * (1 / this.speed);
-
-
-
-
-    console.log(1/this.speed)
+    this.pos.y += y * (1 / this.speed);
   }
 }
 
