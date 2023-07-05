@@ -2,6 +2,7 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import Cheese from "./entities/Cheese";
 import Dungeon from "./entities/Dungeon";
 import Mouse from "./entities/Mouse";
+import Player from "./entities/Player";
 import Container from "./pop/Container";
 import Game from "./pop/Game";
 import Rect from "./pop/Rect";
@@ -19,6 +20,8 @@ const { scene } = game;
 
 
 const dungeon = scene.add(new Dungeon());
+const player = scene.add(new Player(controls));
+
 
 
 game.run(() => {
