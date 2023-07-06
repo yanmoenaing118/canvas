@@ -36,6 +36,33 @@ rect.style = {
   fill: 'red'
 }
 rect.update = (dt) => {
+
+  const rMap = dungeon.pixelToMapPosition(rect.pos)
+  // console.log(rMap);
+
+  const topTile = dungeon.tileAtMapPosition({
+    x: rMap.x,
+    y: rMap.y - 1
+  })
+  const bottomTile = dungeon.tileAtMapPosition({
+    x: rMap.x,
+    y: rMap.y + 1
+  })
+  const leftTile = dungeon.tileAtMapPosition({
+    x: rMap.x -1,
+    y: rMap.y
+  })
+  const rightTile = dungeon.tileAtMapPosition({
+    x: rMap.x + 1,
+    y: rMap.y
+  })
+
+  // console.log(`top:  ${topTile.frame.meta?.walkable}`)
+  // console.log(`bottom: ${bottomTile.frame.meta?.walkable}`)
+
+
+  rect.pos.x += dt * 320 * controls.x;
+  rect.pos.y += dt * 320 * controls.y;
 };
 
 
