@@ -13,7 +13,7 @@ const frames: Frame[] = [
   { id: "right-border", x: 2, y: 1, meta: { walkable: false } },
   { id: "bottom-border", x: 7, y: 8, meta: { walkable: false } },
   { id: 'top-border', x: 8, y: 0, meta: { walkable: false }},
-  { id: "empty", x: 1, y: 1 },
+  { id: "empty", x: 1, y: 1, meta: { walkable: true } },
 ];
 
 const getById = (id: string) => frames.find((f) => f.id === id);
