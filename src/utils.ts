@@ -19,3 +19,15 @@ export function distance(e1: Entity, e2: Entity) {
       (e1.pos.y - e2.pos.y) * (e1.pos.y - e2.pos.y)
   );
 }
+
+export function rand(min: number, max?:number) {
+  if(!max) {
+    max = min;
+    return Math.floor(Math.random() * max);
+  };
+  return Math.floor((max  - min) * Math.random() + min);
+}
+
+export function randInOne(value: number) {
+  return rand(0, value) == 0;
+}
