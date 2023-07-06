@@ -19,8 +19,9 @@ export default class Camera extends Entity {
     this.worldH = worldH;
   }
 
-  add<T extends Entity>(e: T) {
+  add<T extends Entity>(e: T): T {
     this.children.push(e);
+    return e;
   }
 
   setEntity<T extends Entity>(e: T) {

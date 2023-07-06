@@ -25,13 +25,19 @@ let dt = 1 / 60;
 let time = 0;
 const camera = new Camera(w,h,w,h);
 
-const rect = new Rect();
-rect.update = (dt) => {
-  rect.pos.x += dt * rect.w;
-  rect.pos.y += dt * rect.h;
-};
+
 
 const dungeon = camera.add(new Dungeon(w,h));
+
+const rect = camera.add(new Rect());
+rect.pos.x = CELLSIZE;
+rect.pos.y = CELLSIZE;
+rect.style = {
+  fill: 'red'
+}
+rect.update = (dt) => {
+};
+
 
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
@@ -54,7 +60,7 @@ function loop(ellapsedTime: number) {
 
 
   renderCamera(camera,ctx);
-  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize, 'white');
 }
 
 requestAnimationFrame(loop);

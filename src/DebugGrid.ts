@@ -4,10 +4,12 @@ export const renderGrid = (
   rows: number,
   cols: number,
   cellW: number,
-  cellH: number
+  cellH: number,
+  color: string = 'black'
 ) => {
     for(let i = 0; i < cols; i++) {
         ctx.save();
+        ctx.strokeStyle = color;
         ctx.translate(i * cellW, 0);
         ctx.beginPath();
         ctx.moveTo(0,0);
@@ -19,7 +21,7 @@ export const renderGrid = (
 
     for(let i = 0; i < rows; i++) {
         ctx.save();
-        
+        ctx.strokeStyle = color;
         ctx.translate(0, i * cellH);
         ctx.beginPath();
         ctx.moveTo(0,0);
