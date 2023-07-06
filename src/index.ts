@@ -75,12 +75,17 @@ rect.update = (dt) => {
   ) {
     // walk right or left
     rect.pos.x += controls.x * dt * speed;
+    rect.pos.x = Math.floor(rect.pos.x / CELLSIZE) * CELLSIZE;
   } else if (
     (controls.y == 1 && bottomTile.frame.meta?.walkable) ||
     (controls.y == -1 && topTile.frame.meta?.walkable)
   ) {
     rect.pos.y += controls.y * dt * speed;
+    rect.pos.y = Math.floor(rect.pos.y / CELLSIZE) * CELLSIZE;
   }
+
+ 
+  
 
   // console.log(`top:  ${topTile.frame.meta?.walkable}`)
   // console.log(`bottom: ${bottomTile.frame.meta?.walkable}`)
