@@ -10,7 +10,9 @@ export default class TileSprite extends Sprite {
 
   frameTime: number = 0.1;
   currentFrameTime: number = 0;
-
+  metaData: {
+    [key: string]: string | boolean | number;
+  } = {};
   anim: AnimationManager;
 
   constructor(img: HTMLImageElement, w: number, h: number, frame?: Frame) {

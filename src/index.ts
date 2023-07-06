@@ -23,13 +23,15 @@ const controls = new KeyControls();
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let dt = 1 / 60;
 let time = 0;
+const camera = new Camera(w,h,w,h);
 
 const rect = new Rect();
-
 rect.update = (dt) => {
   rect.pos.x += dt * rect.w;
   rect.pos.y += dt * rect.h;
 };
+
+const dungeon = camera.add(new Dungeon(w,h));
 
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
@@ -38,26 +40,21 @@ function loop(ellapsedTime: number) {
   time = ellapsedTime;
 
   // updates
-  cellSize += dt * 10;
+
 
   // rendering
   ctx.clearRect(0, 0, w, h);
 
   ctx.fillStyle = "red";
 
-  // ctx.beginPath();
-
-  ctx.beginPath();
-  ctx.moveTo(cellSize, cellSize);
-  ctx.lineTo(cellSize * 2, cellSize);
-  ctx.lineTo(cellSize * 2, cellSize * 2);
-  ctx.lineTo(cellSize, cellSize * 2);
-  ctx.lineTo(cellSize, cellSize);
-  ctx.fill();
-  ctx.stroke();
 
 
-  // renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  rect.update(dt,time);
+
+
+
+  renderCamera(camera,ctx);
+  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
 
 requestAnimationFrame(loop);

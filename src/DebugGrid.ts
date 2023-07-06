@@ -13,6 +13,7 @@ export const renderGrid = (
         ctx.moveTo(0,0);
         ctx.lineTo(0,rows * cellH);
         ctx.stroke();
+        ctx.closePath();
         ctx.restore();
     }
 
@@ -24,6 +25,7 @@ export const renderGrid = (
         ctx.moveTo(0,0);
         ctx.lineTo(cols * cellW,0);
         ctx.stroke();
+        ctx.closePath()
         ctx.restore();
     }
 };

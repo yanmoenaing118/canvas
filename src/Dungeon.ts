@@ -1,6 +1,7 @@
 import Texture from "./Texture";
 import TileMap from "./TileMap";
 import TileSprite from "./TileSprite";
+import Vec2 from "./Vec2";
 import { CELLSIZE } from "./constants";
 
 const texture = new Texture('dungeon.png');
@@ -14,18 +15,13 @@ export default class Dungeon extends TileMap {
     }
 
     createMap() {
-        for(let i = 0;  i < this.mapW * this.mapH ; i++) {
-            const tile = new TileSprite(texture.img, this.tileW,this.tileH);
-            const frameX = 5;
-            const frameY = 8;
-            const posX = (i % this.mapW) * tile.tileW;
-            const posY = Math.floor( i / this.mapW) * tile.tileH;
-            tile.pos = {
-                x: posX,
-                y: posY
-            }
-            tile.frame = { x: frameX, y: frameY};
+        for (let y = 0; y < this.mapH; y++) {
+          for (let x = 0; x < this.mapW; x++) {
+            const index = y * this.mapW + x;
+            const tile = new TileSprite(texture.img, CELLSIZE, CELLSIZE);
+            tile.pos = new Vec2(x * CELLSIZE, y * CELLSIZE);
             this.chldren.push(tile);
+          }
         }
 
     }
