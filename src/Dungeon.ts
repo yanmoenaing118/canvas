@@ -42,12 +42,13 @@ export default class Dungeon extends TileMap {
             tile.frame = getById('empty') as Frame;
 
             if(x == 0 || y == 0 || x == this.mapW - 1 || y == this.mapH - 1) {
+                tile.frame = getById("bottom-border") as Frame;
                 continue;
             }
 
             if( x % 2 ) continue;
 
-            if(y % 2 ||  randInOne(2)) {
+            if(y % 2 ||  randInOne(5)) {
                 tile.frame = getById('bottom-border') as Frame;
             }
 
