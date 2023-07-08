@@ -20,12 +20,37 @@ const { scene } = game;
 
 
 const dungeon = scene.add(new Dungeon());
-const player = scene.add(new Player(controls));
+const player = new Player(controls);
+const bounds = entities.bounds(player);
+
+const boundRects = dungeon.tilesAtCorners(bounds, 0, 0).map((tile) => {
+  const r = scene.add(new Rect(tile.w, tile.h, {
+    fill: 'rgba(3,55,5,0.3)'
+  }));
+  r.pos.x = tile.pos.x;
+  r.pos.y = tile.pos.y;
+  return r;
+});
+
+scene.add(player);
+
+player.pos.x = player.w;
+player.pos.y = player.h;
 
 
+
+
+
+// console.log(player.pos);
+// console.log(bounds);
+// console.log(collidingTiles.map((t) => t.frame));
 
 game.run(() => {
-  
-
-  
+  const bounds = entities.bounds(player);
+  const collidingTiles = dungeon.tilesAtCorners(bounds, -player.w * 0.4, -player.h * 0.4);
+  collidingTiles.forEach((tile, index) => {
+    if(!tile) return;
+    boundRects[index].pos.x = tile.pos.x;
+    boundRects[index].pos.y = tile.pos.y;
+  })
 });

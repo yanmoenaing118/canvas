@@ -1,30 +1,37 @@
 import { Anim } from "./AnimationManager";
 
-export type Position = {
+export interface Position {
   x: number;
   y: number;
-};
+}
 
-export type PositionedEntity = {
+export interface PositionedEntity {
     pos: Position
 }
 
-export type Frame = {
+export interface Frame {
   x: number;
   y: number;
-};
+}
 
-export type AnimSignature = {
+export interface AnimSignature {
   [key: string]: Anim;
-};
+}
 
-export type Entity = {
+export interface Entity {
   pos: Position;
   w: number;
   h: number;
-};
+}
 
-export type CameraViewport = {
+export interface CameraViewport {
   w: number;
   h: number;
 };
+
+export interface TileBound {
+  x: number,
+  y: number,
+  w: number,
+  h: number
+}

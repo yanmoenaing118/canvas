@@ -14,7 +14,7 @@ function getById(id: string | number): any {
 }
 
 const tileIndexes = [
-  { id: "empty", x: 0, y: 2 },
+  { id: "empty", x: 0, y: 2, walkabel: true },
   { id: "wall", x: 2, y: 2 },
   { id: "wall_end", x: 3, y: 2 },
 ];
@@ -26,7 +26,7 @@ class Dungeon extends TileMap {
     for (let y = 0; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
         const index = y * mapW + x;
-        console.log(x, y, index);
+        // console.log(x, y, index);
 
         if (y == 0 || x == 0 || y == mapH - 1 || x == mapW - 1) {
           level[y * mapW + x] = "wall";
@@ -53,6 +53,9 @@ class Dungeon extends TileMap {
         level[(y + yo) * mapW + (x + xo)] = "wall";
       }
     }
+
+
+
 
     // "3d-ify" if no wall below a tile
     for (let y = 0; y < mapH - 1; y++) {
