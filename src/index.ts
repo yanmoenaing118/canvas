@@ -59,7 +59,7 @@ game.run(() => {
     playerRect.pos = player.pos;
 
   const bounds = entities.bounds(player);
-  const collidingTiles = dungeon.tilesAtCorners(bounds, 0, 0);
+  const collidingTiles = dungeon.tilesAtCorners(bounds, -48/2, -48/2);
   collidingTiles.forEach((tile, index) => {
     if (!tile) return;
     boundRects[index].pos.x = tile.pos.x;
