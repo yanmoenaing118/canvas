@@ -1,4 +1,6 @@
 import Entity from "./Entity";
+import TileMap from "./TileMap";
+import TileSprite from "./TileSprite";
 
 /**
  *
@@ -20,14 +22,38 @@ export function distance(e1: Entity, e2: Entity) {
   );
 }
 
-export function rand(min: number, max?:number) {
-  if(!max) {
+export function rand(min: number, max?: number) {
+  if (!max) {
     max = min;
     return Math.floor(Math.random() * max);
-  };
-  return Math.floor((max  - min) * Math.random() + min);
+  }
+  return Math.floor((max - min) * Math.random() + min);
 }
 
 export function randInOne(value: number) {
   return rand(0, value) == 0;
+}
+
+export function bounds(e: Entity) {
+  return {
+    x: e.pos.x,
+    y: e.pos.y,
+    w: e.w,
+    h: e.h,
+  };
+}
+
+export function tilesAtCorners(
+  e: Entity,
+  map: TileMap,
+  xo = 0,
+  yo = 0
+): TileSprite[] {
+  const b = bounds(e);
+  return [
+    [b.x, b.y], // TL - top left
+    [b.x + b.w, b.y], // TR - top right
+    [b.x, b.y + b.h], // BL - bottom left
+    [b.x + b.w, b.y + b.h], // BR - bottom righ
+  ].map(([x, y]) => map.tileAtPixelPosition({ x: x + xo, y: y + yo }));
 }

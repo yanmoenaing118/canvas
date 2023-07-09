@@ -23,6 +23,7 @@ import Vec2 from "./Vec2";
 import Camera from "./Camera";
 import Entity from "./Entity";
 import Player from "./Player";
+import Text from "./Text";
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 document.body.appendChild(canvas);
@@ -49,21 +50,37 @@ rect.style = {
   fill: "rgba(255,0,0,0.5)",
 };
 
+const text = camera.add(
+  new Text("", {
+    fill: "white",
+  })
+);
 
+text.pos.x = 20;
+text.pos.y = 30;
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
 
   dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
 
+  const rectMapPos = dungeon.pixelToMapPosition(rect.pos);
+
   // updates
+  text.text = `pixel: (${rect.pos.x.toFixed(2)}, ${rect.pos.y.toFixed(
+    2
+  )}) | map: (${rectMapPos.x}, ${rectMapPos.y})
+  `;
+
+  rect.update(dt, time);
 
   // rendering
   ctx.clearRect(0, 0, w, h);
 
   ctx.fillStyle = "red";
 
-  rect.update(dt, time);
+
+
 
   renderCamera(camera, ctx);
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize, "white");

@@ -3,6 +3,7 @@ import Rect from "./Rect";
 import Sprite from "./Sprite";
 import TileMap from "./TileMap";
 import TileSprite from "./TileSprite";
+import Text from "./Text";
 
 /**
  *
@@ -86,9 +87,23 @@ export const renderCamera = (camera: Camera, ctx: CanvasRenderingContext2D) => {
       renderTileSprite(child, ctx);
     } else if (child instanceof Rect) {
       renderRect(child,ctx);
-    } else {
-      console.log('hi')
+    } else if( child instanceof Text){
+      renderText(child, ctx);
     }
   }
+  ctx.restore();
+};
+
+
+export const renderText = (text: Text,ctx: CanvasRenderingContext2D) => {
+  const width = ctx.measureText(text.text).width;
+  ctx.save();
+  ctx.shadowColor = 'white';
+  ctx.shadowOffsetX = .3;
+  ctx.shadowOffsetY = .3;
+  ctx.fillStyle = text.style.fill;
+  ctx.font = "20px monospace";
+  ctx.translate(text.pos.x, text.pos.y);
+  ctx.fillText(text.text, 0, 0);
   ctx.restore();
 };

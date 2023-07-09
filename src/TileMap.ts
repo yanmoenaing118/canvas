@@ -71,4 +71,6 @@ export default class TileMap extends Entity{
   tileAtPixelPosition(pos: Vec2): TileSprite {
     return this.tileAtMapPosition(this.pixelToMapPosition(pos));
   }
+
+  
 }
