@@ -50,6 +50,11 @@ rect.style = {
   fill: "rgba(255,0,0,0.5)",
 };
 
+rect.cornerTiles.forEach(t => {
+  console.log(t);
+  camera.add(t);
+});
+
 const text = camera.add(
   new Text("", {
     fill: "white",
