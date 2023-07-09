@@ -36,7 +36,7 @@ class Player extends TileSprite {
   }
 
   update(dt: number): void {
-    this.anims.update(dt);
+    this.anims.update(dt);    
 
     const { x, y } = this.controls;
 
