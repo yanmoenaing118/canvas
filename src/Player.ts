@@ -30,6 +30,7 @@ class Player extends Rect {
       this.cornerTiles[i].pos.y = tile.pos.y;
     });
 
+    const corners = cornerTiles.map(t => t.frame.meta?.walkable);
     const blocked = cornerTiles.some((t) => t && !t.frame.meta?.walkable);
 
     const move = { x: 0, y: 0 };
@@ -37,11 +38,11 @@ class Player extends Rect {
     if (blocked) {
       move.x = 0;
       move.y = 0;
-      console.log('blocking to move', this.pos.x, this.pos.y, cornerTiles[0].pos.x)
+      console.log('blocking to move', this.pos.x, this.pos.y, cornerTiles[0].pos.x,corners)
     } else {
       move.x = ox;
       move.y = oy;
-      console.log("no one is blocking you to move", this.pos.x, this.pos.y, cornerTiles[0].pos.x);
+      console.log("no one is blocking you to move", this.pos.x, this.pos.y, cornerTiles[0].pos.x,corners);
     }
 
     if(ox || oy) {

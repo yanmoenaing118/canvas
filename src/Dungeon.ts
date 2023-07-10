@@ -46,7 +46,11 @@ export default class Dungeon extends TileMap {
                 continue;
             }
 
+            if(x % 2 || y % 2 || randInOne(4)) {
+              continue;
+            }
 
+            tile.frame = getById("bottom-border") as Frame;
           }
         }
 
