@@ -1,29 +1,8 @@
 import KeyControls from "./KeyControls";
 import { renderGrid } from "./DebugGrid";
-import {
-  CELLSIZE,
-  HEIGHT,
-  MAX_FRAME,
-  SPEED,
-  WIDTH,
-  WORLD_H,
-  WORLD_W,
-} from "./constants";
-import { clamp, distance } from "./utils";
-import {
-  renderCamera,
-  renderRect,
-  renderTileMap,
-  renderTileSprite,
-} from "./Renderers";
-import Rect from "./Rect";
-import Spider from "./Spider";
-import Dungeon from "./Dungeon";
-import Vec2 from "./Vec2";
-import Camera from "./Camera";
+import { CELLSIZE, HEIGHT, MAX_FRAME, SPEED, WIDTH } from "./constants";
 import Entity from "./Entity";
-import Player from "./Player";
-import Text from "./Text";
+import { clamp } from "./utils";
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 document.body.appendChild(canvas);
@@ -38,73 +17,143 @@ const controls = new KeyControls();
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let dt = 1 / 60;
 let time = 0;
-const camera = new Camera(w, h, w, h);
 
-const dungeon = camera.add(new Dungeon(w, h));
+class TileMap extends Entity {
+  cols: number = 0;
+  rows: number = 0;
+  tileSize: number = CELLSIZE;
+  wallCoordinates = [
+    [2,0],
+    [2,1],
+    [2,3],
+    [4,1]
+  ]
 
-const rect = camera.add(new Player(controls, dungeon));
-rect.pos.x = CELLSIZE;
-rect.pos.y = CELLSIZE;
-const speed = 320;
-rect.style = {
-  fill: "rgba(255,0,0,0.5)",
-};
+  constructor(img: HTMLImageElement, w: number, h: number, tileSize: number) {
+    super();
 
-rect.cornerTiles.forEach((t) => {
-  camera.add(t);
-});
+    this.tileSize = tileSize;
+    this.cols = w / tileSize;
+    this.rows = h / tileSize;
 
-const text = camera.add(
-  new Text("", {
-    fill: "white",
-  })
-);
+    this.init();
+  }
 
-text.update = (dt: number, t: number) => {
-  const topLeftTile = dungeon.pixelToMapPosition(rect.pos);
-  const topRightTile = dungeon.pixelToMapPosition({
-    x: rect.pos.x + rect.w,
-    y: rect.pos.y,
-  });
-  const bottomLeftTile = dungeon.pixelToMapPosition({
-    x: rect.pos.x,
-    y: rect.pos.y + rect.h,
-  });
-  const bottomRightTile = dungeon.pixelToMapPosition({
-    x: rect.pos.x + rect.w,
-    y: rect.pos.y + rect.h,
-  });
+  init() {
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        const index = row * this.cols + col;
+      }
+    }
+  }
 
-  text.text = `pixel: (${rect.pos.x.toFixed(2)}, ${rect.pos.y.toFixed(
-    2
-  )}) | map: TL(${topLeftTile.x}, ${topLeftTile.y}), TR(${topRightTile.x}, ${
-    topRightTile.y
-  }), BL(${bottomLeftTile.x}, ${bottomLeftTile.y}), BR(${bottomRightTile.x}, ${
-    bottomLeftTile.y
-  })
-  `;
-};
+  /**
+   *
+   * @param y y position of the player
+   * @returns the row where the player is
+   */
+  getRow(y: number) {
+    return Math.round(y / this.tileSize);
+  }
 
-text.pos.x = 20;
-text.pos.y = 30;
+  /**
+   *
+   * @param x position of the player
+   * @returns the col where the player is
+   */
+  getCol(x: number) {
+    return Math.round(x / this.tileSize);
+  }
+
+
+  render(ctx: CanvasRenderingContext2D) {
+    for(let row = 0; row < this.rows ; row++) {
+      for(let col = 0; col < this.cols; col++) {
+
+        const rect = new Rect();
+        if(this.checkWall(row,col)) {
+          rect.pos.x = col * this.w;
+          rect.pos.y = row * this.h;
+          rect.render(ctx);
+        }
+        
+
+      }
+    }
+  }
+
+  checkWall(row: number,col: number) {
+    return this.wallCoordinates.some(([x,y]) => {
+      if(x == col && y == row) return true;
+    } )
+  }
+}
+
+class Rect extends Entity {
+  fill = "purple";
+  constructor() {
+    super();
+    this.w = CELLSIZE;
+    this.h = CELLSIZE;
+  }
+
+  render(ctx: CanvasRenderingContext2D) {
+    ctx.save();
+    ctx.fillStyle = this.fill;
+    ctx.translate(this.pos.x, this.pos.y);
+    ctx.fillRect(0, 0, this.w, this.h);
+    ctx.restore();
+  }
+}
+
+class Player extends Rect {
+  fill = "rgba(0,0,0,.3)";
+  controls: KeyControls;
+  map: TileMap;
+  constructor(controls: KeyControls, map: TileMap) {
+    super();
+    this.w = CELLSIZE;
+    this.h = CELLSIZE;
+    this.controls = controls;
+    this.map = map;
+  }
+
+  update(dt: number) {
+    this.pos.x += dt * SPEED * controls.x;
+    this.pos.y += dt * SPEED * controls.y;
+
+    const row = this.map.getRow(this.pos.y);
+    const col = this.map.getCol(this.pos.x);
+
+
+
+
+    console.log(`Player is at (x,y) => (${col},${row})`);
+
+    this.pos.x = clamp(this.pos.x, 0, WIDTH);
+    this.pos.y = clamp(this.pos.y, 0, HEIGHT);
+  }
+}
+
+const texture = new Image();
+texture.src = "forest.png";
+
+const map = new TileMap(texture, w, h, CELLSIZE);
+const player = new Player(controls, map);
+
 function loop(ellapsedTime: number) {
   requestAnimationFrame(loop);
+  ctx.clearRect(0, 0, w, h);
 
   dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
 
-  // updates
+  
+  player.update(dt);
 
-  rect.update(dt, time);
-  text.update(dt, time);
-
-  // rendering
-  ctx.clearRect(0, 0, w, h);
-
-  ctx.fillStyle = "red";
-
-  renderCamera(camera, ctx);
-  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize, "white");
+  map.render(ctx);
+  player.render(ctx);
+  renderGrid(ctx, h / cellSize, w / cellSize, cellSize, cellSize, "black");
 }
 
 requestAnimationFrame(loop);
