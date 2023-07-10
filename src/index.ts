@@ -65,6 +65,16 @@ class TileMap extends Entity {
     return Math.round(x / this.tileSize);
   }
 
+  /**
+   * 
+   * @param x x position of the tile
+   * @param y y position of the tile
+   * @returns [x,y] or [col,row] Coordinate of the tile
+   */
+  getTileCoordinateAtXY(x: number, y: number) {
+    return [this.getCol(x), this.getRow(y)];
+  }
+
 
   render(ctx: CanvasRenderingContext2D) {
     for(let row = 0; row < this.rows ; row++) {
@@ -125,7 +135,32 @@ class Player extends Rect {
     const row = this.map.getRow(this.pos.y);
     const col = this.map.getCol(this.pos.x);
 
+    
+    const top = -this.h/2 + this.pos.y;
+    const bottom = this.h/2 + this.pos.y + this.h - 1;
+    const left = -this.w/2 + this.pos.x;
+    const right = this.w/2 + this.pos.x + this.w - 1;
 
+
+    const topLeft = this.map.getTileCoordinateAtXY(left,top);
+    const topRight = this.map.getTileCoordinateAtXY(right,top);
+    const bottomLeft = this.map.getTileCoordinateAtXY(left, bottom);
+    const bottomRight = this.map.getTileCoordinateAtXY(right, bottom);
+
+    const collided = [topLeft,topRight,bottomLeft,bottomRight].map(([x,y]) => {
+      if(this.map.checkWall(x,y)) {
+        const rect = new Rect();
+      rect.pos.x = x * this.w;
+      rect.pos.y = y * this.h;
+      rect.fill = 'red';
+      rect.render(ctx);
+      }
+      return this.map.checkWall(x,y);
+    })
+
+    console.log(collided);
+    
+    
 
 
     console.log(`Player is at (x,y) => (${col},${row})`);
