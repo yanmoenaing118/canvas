@@ -7,7 +7,7 @@ import { clamp, tilesAtCorners } from "./utils";
 class Player extends Rect {
   cornerTiles: Rect[] = [];
   printed = false;
-  speed = 160;
+  speed = 640;
   controls: KeyControls;
   map: TileMap;
   constructor(controls: KeyControls, map: TileMap) {
@@ -19,29 +19,42 @@ class Player extends Rect {
   }
 
   update(dt: number, t: number): void {
-
-
     /**
      * can move to left
      * - get the distance the player is going to make = (ox)
-     * - get TR corner of the player (TR.x)
-     * - By using the going to move distance + TR.x positon, 
+     * - get TR corner corner of the player (TR.x)
+     * - By using the going to move distance + TR.x positon,
      *   get tile at the TR corner of the player (tileAtLeft)
      * - if tileAtLeft is walkable tile, move.x = ox (the player move ox pixel)
-     *   else move.x = 0 (the player make no move)
+     *   else 
+     *    get the gap between TR.x and tileAtLeft (gap)
+     *    gap = math.abs(pos.x - tileAtleft.pos.x) - w
+     *    move.x = 0 (the player make no move), 
      */
     const ox = dt * this.speed * this.controls.x;
 
-
     const move = { x: 0, y: 0 };
     const TRPos = { x: this.pos.x + this.w, y: this.pos.y };
+    const TRTile = this.map.tileAtPixelPosition({
+      x: TRPos.x + ox,
+      y: TRPos.y,
+    });
+
   
 
-    move.x = ox;
+    const canwalkLeft = TRTile.frame.meta?.walkable;
 
+    if(canwalkLeft){
+      move.x = ox;
+    } else {
+      const gap = Math.abs(this.pos.x - TRTile.pos.x) - this.w;
+      move.x = gap;
+    }
+
+    const infoText = `${TRTile.frame.meta?.walkable ? 'Can move ' + ox : 'Cannot move ' + ox}`
+    console.log(infoText)
 
     this.pos.x += move.x;
-
 
     this.pos.x = clamp(this.pos.x, 0, this.map.w - this.w);
     // this.pos.y = clamp(this.pos.y, 0, this.map.h - this.h);
