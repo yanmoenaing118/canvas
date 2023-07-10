@@ -102,7 +102,7 @@ export const renderText = (text: Text,ctx: CanvasRenderingContext2D) => {
   ctx.shadowOffsetX = .3;
   ctx.shadowOffsetY = .3;
   ctx.fillStyle = text.style.fill;
-  ctx.font = "20px monospace";
+  ctx.font = "18px monospace";
   ctx.translate(text.pos.x, text.pos.y);
   ctx.fillText(text.text, 0, 0);
   ctx.restore();

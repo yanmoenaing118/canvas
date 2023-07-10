@@ -50,8 +50,7 @@ rect.style = {
   fill: "rgba(255,0,0,0.5)",
 };
 
-rect.cornerTiles.forEach(t => {
-  console.log(t);
+rect.cornerTiles.forEach((t) => {
   camera.add(t);
 });
 
@@ -61,6 +60,31 @@ const text = camera.add(
   })
 );
 
+text.update = (dt: number, t: number) => {
+  const topLeftTile = dungeon.pixelToMapPosition(rect.pos);
+  const topRightTile = dungeon.pixelToMapPosition({
+    x: rect.pos.x + rect.w,
+    y: rect.pos.y,
+  });
+  const bottomLeftTile = dungeon.pixelToMapPosition({
+    x: rect.pos.x,
+    y: rect.pos.y + rect.h,
+  });
+  const bottomRightTile = dungeon.pixelToMapPosition({
+    x: rect.pos.x + rect.w,
+    y: rect.pos.y + rect.h,
+  });
+
+  text.text = `pixel: (${rect.pos.x.toFixed(2)}, ${rect.pos.y.toFixed(
+    2
+  )}) | map: TL(${topLeftTile.x}, ${topLeftTile.y}), TR(${topRightTile.x}, ${
+    topRightTile.y
+  }), BL(${bottomLeftTile.x}, ${bottomLeftTile.y}), BR(${bottomRightTile.x}, ${
+    bottomLeftTile.y
+  })
+  `;
+};
+
 text.pos.x = 20;
 text.pos.y = 30;
 function loop(ellapsedTime: number) {
@@ -69,23 +93,15 @@ function loop(ellapsedTime: number) {
   dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
 
-  const rectMapPos = dungeon.pixelToMapPosition(rect.pos);
-
   // updates
-  text.text = `pixel: (${rect.pos.x.toFixed(2)}, ${rect.pos.y.toFixed(
-    2
-  )}) | map: (${rectMapPos.x}, ${rectMapPos.y})
-  `;
 
   rect.update(dt, time);
+  text.update(dt, time);
 
   // rendering
   ctx.clearRect(0, 0, w, h);
 
   ctx.fillStyle = "red";
-
-
-
 
   renderCamera(camera, ctx);
   renderGrid(h / cellSize, w / cellSize, cellSize, cellSize, "white");

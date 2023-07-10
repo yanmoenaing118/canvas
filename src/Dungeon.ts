@@ -25,7 +25,6 @@ export default class Dungeon extends TileMap {
         const mapH = Math.ceil(h/ CELLSIZE);
         super(texture.img, mapW, mapH,CELLSIZE,CELLSIZE);
         this.createMap();
-        console.log(mapW, mapH)
     }
 
     createMap() {
