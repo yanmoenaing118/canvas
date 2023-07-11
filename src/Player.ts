@@ -38,7 +38,7 @@ export default class Player {
   }
 
   update(dt: number) {
-    // this.pos.y = CELLSIZE / 2;
+    this.pos.y += this.controls.y * dt * this.speed;
 
     let mx = this.controls.x * dt * this.speed;
 
