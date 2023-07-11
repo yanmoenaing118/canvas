@@ -1,102 +1,85 @@
+import { ctx } from ".";
 import KeyControls from "./KeyControls";
-import Rect from "./Rect";
-import TileMap from "./TileMap";
-import TileSprite from "./TileSprite";
-import { CELLSIZE } from "./constants";
-import { clamp, tilesAtCorners } from "./utils";
+import Level from "./Level";
+import Vec2 from "./Vec2";
+import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
+import { clamp } from "./utils";
 
-class Player extends Rect {
-  cornerTiles: Rect[] = [];
-  printed = false;
-  speed = 640;
+export default class Player {
+  pos: Vec2 = { x: 0, y: 0 };
+  w: number = CELLSIZE;
+  h: number = CELLSIZE;
   controls: KeyControls;
-  map: TileMap;
-  constructor(controls: KeyControls, map: TileMap) {
-    super();
+  map: Level;
+  speed: number = 320;
+
+  topleft_pos: Vec2 = {
+    x: this.pos.x,
+    y: this.pos.y,
+  };
+  topright_pos: Vec2 = {
+    x: this.pos.x + this.w,
+    y: this.pos.y,
+  };
+  bottomleft_pos: Vec2 = {
+    x: this.pos.x,
+    y: this.pos.y + this.h,
+  };
+  bottomright_pos: Vec2 = {
+    x: this.pos.x + this.w,
+    y: this.pos.y + this.h,
+  };
+
+  constructor(controls: KeyControls, map: Level) {
     this.controls = controls;
     this.map = map;
-
-    this.cornerTiles = [0, 1, 2, 3].map(() => new Rect());
+    this.pos.x = CELLSIZE * 2;
+    this.pos.y = CELLSIZE * 1;
   }
 
-  update(dt: number, t: number): void {
-    /**
-     * for left / right
-     * - get the distance the player is going to make = (ox)
-     *
-     * can move to left
-     * - get TR corner of the player (TR.x)
-     * - By using the going to move distance + TR.x positon,
-     *   get tile at the TR corner of the player (tileAtLeft)
-     * - if tileAtLeft is walkable tile, move.x = ox (the player move ox pixel)
-     *   else
-     *    get the gap between TR.x and tileAtLeft (gap)
-     *    gap = math.abs(pos.x - tileAtleft.pos.x) - w
-     *    move.x = 0 (the player make no move),
-     *
-     * can move to right
-     * - get TL corner of the player (TL.x)
-     * - By using ox + TL.x, get tile at TL corner of the player (tileAtRight)
-     * - if tileAtLeft is walkabe tile, move.x = ox (the player move ox pixel)
-     *   else 
-     *    get the gap between TL.x and tileAtRight (gap)
-     *    gap = (tileAtLeft.pox.x + tileAtLeft.w) - TL.x 
-     *
-     */
-    const ox = dt * this.speed * this.controls.x;
-    const oy = dt * this.speed * this.controls.y;
+  update(dt: number) {
+    // this.pos.y = CELLSIZE / 2;
 
-    const move = { x: ox, y: oy };
+    let mx = this.controls.x * dt * this.speed;
 
     /**
-     * Moving Left
+     * from pixel position to map position
+     * using map position x*y get the tile
      */
-    const TRPos = { x: this.pos.x + this.w, y: this.pos.y };
-    const TRTile = this.map.tileAtPixelPosition({
-      x: TRPos.x + ox,
-      y: TRPos.y,
-    });
-    const canwalkLeft = TRTile.frame.meta?.walkable;
 
-    /**
-     * Moving Right
-     */
-    const TLPos = { x: this.pos.x, y: this.pos.y };
-    const TLTile = this.map.tileAtPixelPosition({ x: TLPos.x + ox - CELLSIZE, y: TLPos.y });
-    const canwalkRight = TLTile.frame.meta?.walkable;
+    let topLeftXY = this.map.getMapXY(this.pos.x - this.w / 2 + mx, this.pos.y);
+    let topRightXY = this.map.getMapXY(
+      this.pos.x + this.w / 2 + mx,
+      this.pos.y
+    );
 
+    // console.log('topleft', JSON.stringify(topLeftXY), mx);
+    console.log("topright", JSON.stringify(topRightXY));
 
-    if(this.controls.x == 1 && canwalkLeft){
-      console.log('h',ox)
-      move.x = ox;
-    } else if (this.controls.x == 1 && !canwalkLeft) {
-      const gap = Math.abs(this.pos.x - TRTile.pos.x) - this.w;
-      move.x = gap;
+    let topLeftTile = this.map.getTileAtMapXY(topLeftXY.x, topLeftXY.y);
+    let topRightTile = this.map.getTileAtMapXY(topRightXY.x, topRightXY.y);
+
+    if (topLeftTile.solid) {
+      console.log("left is solid ", topLeftTile.solid);
+      mx = 0;
+    } else if (topRightTile.solid) {
+      mx = 0;
     }
 
-    if(this.controls.x == -1 &&  canwalkRight) {
-      console.log('rh',ox)
-      move.x = ox;
-    } else if(this.controls.x == - 1 && !canwalkRight ){
-      const gap =( TLTile.pos.x + TLTile.w ) - TLPos.x 
-      move.x = gap;
-      console.log('cannot move right')
-    }
+    /**
+     * Move
+     */
+    this.pos.x += mx;
 
-    const infoTextLeft = `${
-      TRTile.frame.meta?.walkable ? "Can move left " + ox : "Cannot move left" + ox
-    }`;
-    // console.log(infoTextLeft)
+    this.pos.x = clamp(this.pos.x, 0, WIDTH - this.w);
+    this.pos.y = clamp(this.pos.y, 0, HEIGHT - this.h);
+  }
 
-    console.log(move.x);
-    
-    this.pos.x += move.x;
-    this.pos.y += move.y;
-
-    this.pos.x = clamp(this.pos.x, 0, this.map.w - this.w);
-    this.pos.y = clamp(this.pos.y, 0, this.map.h - this.h);
+  render() {
+    ctx.save();
+    ctx.strokeStyle = "red";
+    ctx.translate(this.pos.x, this.pos.y);
+    ctx.strokeRect(0, 0, this.w, this.h);
+    ctx.restore();
   }
 }
-
-
-export default Player;

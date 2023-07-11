@@ -16,8 +16,8 @@ class Rect {
 
   render() {
     ctx.save();
-    if(this.fill) {  
-        ctx.fillStyle = this.fill;      
+    if (this.fill) {
+      ctx.fillStyle = this.fill;
     }
     ctx.translate(this.pos.x, this.pos.y);
     ctx.fillRect(0, 0, this.w, this.h);
@@ -29,35 +29,51 @@ class Level {
   tiles: Rect[] = [];
   cols: number = WIDTH / CELLSIZE;
   rows: number = HEIGHT / CELLSIZE;
-  solid_tiles_index = [2,3,8,9,20,21];
+  solid_tiles_index = [6, 3, 9, 10, 20, 21];
+  w: number = this.cols * CELLSIZE;
+  h: number = this.rows * CELLSIZE;
 
   constructor() {
-    for(let row = 0; row < this.rows; row++) {
-        for(let col = 0; col < this.cols; col++) {
-            const index = row * this.cols + col;
-            let fill = 'lightgreen';
-            if(this.solid_tiles_index.includes(index)) {
-                fill = 'pink';
-            }
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        const index = row * this.cols + col;
+        let fill = "lightgreen";
 
-            const x = col * CELLSIZE;
-            const y = row * CELLSIZE;
-            const rect = new Rect(fill);
-            rect.pos.x = x;
-            rect.pos.y = y;
+        const x = col * CELLSIZE;
+        const y = row * CELLSIZE;
+        const rect = new Rect(fill);
+        rect.pos.x = x;
+        rect.pos.y = y;
 
-            this.tiles.push(rect);
+        if (this.solid_tiles_index.includes(index)) {
+          rect.fill = "pink";
+          rect.solid = true;
         }
+
+        this.tiles.push(rect);
+      }
     }
   }
 
+  /**
+   * giving the pixel positon (x,y) get map postion (x,y)
+   * @param x pixel positon
+   * @param y pixel position
+   */
+  getMapXY(x: number, y: number) {
+    return new Vec2(Math.round(x / CELLSIZE), Math.round(y / CELLSIZE));
+  }
+
+  getTileAtMapXY(x: number, y: number) {
+    return this.tiles[y * this.cols + x];
+  }
 
   update() {}
 
   render() {
-    this.tiles.forEach(r => {
-        r.render();
-    })
+    this.tiles.forEach((r) => {
+      r.render();
+    });
   }
 }
 
