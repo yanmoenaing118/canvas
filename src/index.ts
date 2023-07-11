@@ -22,12 +22,12 @@ class TileMap extends Entity {
   cols: number = 0;
   rows: number = 0;
   tileSize: number = CELLSIZE;
-  wallCoordinates = [
-    [2,0],
-    [2,1],
-    [2,3],
-    [4,1]
-  ]
+  wallCoordinates: number[][] = [
+    // [2, 0],
+    // [2, 1],
+    // [2, 3],
+    // [4, 1],
+  ];
 
   constructor(img: HTMLImageElement, w: number, h: number, tileSize: number) {
     super();
@@ -66,7 +66,33 @@ class TileMap extends Entity {
   }
 
   /**
-   * 
+   *
+   * @param col col positon of the player
+   * @param row row position of the player
+   * @returns return the top coordinate of (col,row)
+   */
+  getTopXYCoordinate(col: number, row: number) {
+    const p = row - 1 > 0 ? row - 1 : 0;
+    return [col, p];
+  }
+
+  getBottomXYCoordinate(col: number, row: number) {
+    const p = row + 1 > this.rows ? this.rows : row + 1;
+    return [col, p];
+  }
+
+  getLeftXYCoordinate(col: number, row: number) {
+    const p = col - 1 > 0 ? col - 1 : 0;
+    return [p, row];
+  }
+
+  getRightXYCoordinate(col: number, row: number) {
+    const p = col + 1 > this.cols ? this.cols : col + 1;
+    return [p, row];
+  }
+
+  /**
+   *
    * @param x x position of the tile
    * @param y y position of the tile
    * @returns [x,y] or [col,row] Coordinate of the tile
@@ -75,27 +101,23 @@ class TileMap extends Entity {
     return [this.getCol(x), this.getRow(y)];
   }
 
-
   render(ctx: CanvasRenderingContext2D) {
-    for(let row = 0; row < this.rows ; row++) {
-      for(let col = 0; col < this.cols; col++) {
-
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
         const rect = new Rect();
-        if(this.checkWall(row,col)) {
+        if (this.checkWall(row, col)) {
           rect.pos.x = col * this.w;
           rect.pos.y = row * this.h;
           rect.render(ctx);
         }
-        
-
       }
     }
   }
 
-  checkWall(row: number,col: number) {
-    return this.wallCoordinates.some(([x,y]) => {
-      if(x == col && y == row) return true;
-    } )
+  checkWall(row: number, col: number) {
+    return this.wallCoordinates.some(([x, y]) => {
+      if (x == col && y == row) return true;
+    });
   }
 }
 
@@ -135,33 +157,18 @@ class Player extends Rect {
     const row = this.map.getRow(this.pos.y);
     const col = this.map.getCol(this.pos.x);
 
-    
-    const top = -this.h/2 + this.pos.y;
-    const bottom = this.h/2 + this.pos.y + this.h - 1;
-    const left = -this.w/2 + this.pos.x;
-    const right = this.w/2 + this.pos.x + this.w - 1;
+    const top = this.map.getTopXYCoordinate(col, row);
+    const bottom = this.map.getBottomXYCoordinate(col, row);
+    const left = this.map.getLeftXYCoordinate(col, row);
+    const right = this.map.getRightXYCoordinate(col, row);
 
-
-    const topLeft = this.map.getTileCoordinateAtXY(left,top);
-    const topRight = this.map.getTileCoordinateAtXY(right,top);
-    const bottomLeft = this.map.getTileCoordinateAtXY(left, bottom);
-    const bottomRight = this.map.getTileCoordinateAtXY(right, bottom);
-
-    const collided = [topLeft,topRight,bottomLeft,bottomRight].map(([x,y]) => {
-      if(this.map.checkWall(x,y)) {
-        const rect = new Rect();
-      rect.pos.x = x * this.w;
-      rect.pos.y = y * this.h;
-      rect.fill = 'red';
+    [top, bottom, left, right].map(([col,row]) => {
+      const rect = new Rect();
+      rect.fill = 'rgba(0,0,100,0.3)'
+      rect.pos.x = col * this.w;
+      rect.pos.y = row * this.h;
       rect.render(ctx);
-      }
-      return this.map.checkWall(x,y);
-    })
-
-    console.log(collided);
-    
-    
-
+    });
 
     console.log(`Player is at (x,y) => (${col},${row})`);
 
@@ -183,7 +190,6 @@ function loop(ellapsedTime: number) {
   dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
   time = ellapsedTime;
 
-  
   player.update(dt);
 
   map.render(ctx);
