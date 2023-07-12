@@ -2,7 +2,7 @@ import { ctx } from ".";
 import Vec2 from "./Vec2";
 import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
 
-class Rect {
+export class Rect {
   pos: Vec2 = { x: 0, y: 0 };
   w: number = CELLSIZE;
   h: number = CELLSIZE;
