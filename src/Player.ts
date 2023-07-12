@@ -41,21 +41,24 @@ export default class Player {
     this.pos.y += this.controls.y * dt * this.speed;
 
     let mx = this.controls.x * dt * this.speed;
+    let my = this.controls.y * dt * this.speed;
 
     /**
      * from pixel position to map position
      * using map position x*y get the tile
      */
 
-    let topLeftXY = this.map.getMapXY(this.pos.x - this.w / 2 + mx, this.pos.y);
-    let topRightXY = this.map.getMapXY(
-      this.pos.x + this.w / 2 + mx,
-      this.pos.y
-    );
+    let topLeftXY = this.map.getMapXY(this.pos.x - this.w / 2  + mx, this.pos.y);
+    let topRightXY = this.map.getMapXY( this.pos.x + this.w / 2 + mx, this.pos.y);
+    let bottomLeftXY = this.map.getMapXY(this.pos.x - this.w / 2  + mx, this.pos.y + this.h - this.h/2  + my);
 
+    
+    
+    
     // console.log('topleft', JSON.stringify(topLeftXY), mx);
-    console.log("topright", JSON.stringify(topRightXY));
-
+    // console.log("topright", JSON.stringify(topRightXY));
+    console.log('bottomLeft', JSON.stringify(bottomLeftXY))
+    
     let topLeftTile = this.map.getTileAtMapXY(topLeftXY.x, topLeftXY.y);
     let topRightTile = this.map.getTileAtMapXY(topRightXY.x, topRightXY.y);
 
