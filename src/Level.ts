@@ -61,7 +61,7 @@ class Level {
    * @param y pixel position
    */
   getMapXY(x: number, y: number) {
-    return new Vec2(Math.round(x / CELLSIZE), Math.round(y / CELLSIZE));
+    return new Vec2(x / CELLSIZE, y / CELLSIZE);
   }
 
   getTileAtMapXY(x: number, y: number) {

@@ -37,7 +37,7 @@ export default class Player {
     this.map = map;
     this.pos.x = CELLSIZE * 2;
     this.pos.y = CELLSIZE * 1;
-    this.rects = [0,0,0].map(r => new Rect());
+    // this.rects = [0,0,0].map(r => new Rect());
   }
 
   update(dt: number) {
@@ -46,61 +46,43 @@ export default class Player {
     let mx = this.controls.x * dt * this.speed;
     let my = this.controls.y * dt * this.speed;
 
+    const newX = this.pos.x + mx;
+    const newY = this.pos.y + my;
+
     /**
-     * from pixel position to map position
-     * using map position x*y get the tile
+     * for horizontal Left and Right, I have to check
+     *
+     * for Left side
+     * topLeft corner
+     * bottomLeft corner
+     *
+     * for Right side
+     * topRight corner
+     * topBottom corner
+     *
      */
 
-    // let topLeftXY = this.map.getMapXY(this.pos.x - this.w / 2  + mx, this.pos.y);
-    // let topRightXY = this.map.getMapXY( this.pos.x + this.w / 2 + mx, this.pos.y);
-    // let bottomLeftXY = this.map.getMapXY(this.pos.x - this.w / 2  + mx, this.pos.y + this.h - this.h/2  + my);
+    const topLeftMapXY = this.map.getMapXY(newX, this.pos.y);
+    topLeftMapXY.x = Math.floor(topLeftMapXY.x);
+    topLeftMapXY.y = Math.floor(topLeftMapXY.y);
+    const topLeftTile = this.map.getTileAtMapXY(topLeftMapXY.x, topLeftMapXY.y);
 
-    let { x, y } = this.map.getMapXY(this.pos.x,this.pos.y);
+    // console.log('topleft ', JSON.stringify(topLeftMapXY));
 
-    this.rects = [];
+    const bottomLeftXY = this.map.getMapXY(this.pos.x, this.pos.y + this.h - 0.9);
+    bottomLeftXY.x = Math.floor(bottomLeftXY.x);
+    bottomLeftXY.y = Math.floor(bottomLeftXY.y);
+    const bottomLeftTile = this.map.getTileAtMapXY(bottomLeftXY.x,bottomLeftXY.y);
 
-    for(let i = x-1; i <= x+1; i++) {
-      for(let j = y-1; j <= y+1; j++) {
-          if(i != x || j != y) { 
-              const rect = new Rect()
-              rect.fill = 'red';
-              rect.pos.x = i * CELLSIZE;
-              rect.pos.y = j * CELLSIZE;
-              this.rects.push(rect);
-          }
+    if(this.controls.x){ 
+      if ((topLeftTile && topLeftTile.solid) || ( bottomLeftTile && bottomLeftTile.solid)) {
+        console.log()
+        mx = 0;
       }
-  }
+    }
 
-  if(x) {
 
-  }
-    
-    
-    // console.log('topleft', JSON.stringify(topLeftXY), mx);
-    // console.log("topright", JSON.stringify(topRightXY));
-    // console.log('bottomLeft', JSON.stringify(bottomLeftXY))
-    
-    // let topLeftTile = this.map.getTileAtMapXY(topLeftXY.x, topLeftXY.y);
-    // let topRightTile = this.map.getTileAtMapXY(topRightXY.x, topRightXY.y);
-    // let bottomLeftTile = this.map.getTileAtMapXY(bottomLeftXY.x,bottomLeftXY.y);
 
-    // [topLeftTile, topRightTile, bottomLeftTile].forEach((r, i) => {
-     
-    //   // this.rects[i].
-    // })
-
-    // if (topLeftTile.solid) {
-    //   console.log("left is solid ", topLeftTile.solid);
-    //   mx = 0;
-    // } else if (topRightTile.solid) {
-    //   mx = 0;
-    // } else if (bottomLeftTile.solid) {
-    //   my = 0;
-    // }
-
-    /**
-     * Move
-     */
     this.pos.x += mx;
     this.pos.y += my;
 
@@ -109,9 +91,7 @@ export default class Player {
   }
 
   render() {
-
-
-    this.rects.forEach(r => r.render())
+    // this.rects.forEach(r => r.render())
 
     ctx.save();
     ctx.strokeStyle = "purple";
