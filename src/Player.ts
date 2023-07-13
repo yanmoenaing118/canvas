@@ -74,11 +74,9 @@ export default class Player {
     bottomLeftXY.y = Math.floor(bottomLeftXY.y);
     const bottomLeftTile = this.map.getTileAtMapXY(bottomLeftXY.x,bottomLeftXY.y);
 
-    if(this.controls.x){ 
-      if ((topLeftTile && topLeftTile.solid) || ( bottomLeftTile && bottomLeftTile.solid)) {
-        console.log()
-        mx = 0;
-      }
+    if ((topLeftTile && topLeftTile.solid) || ( bottomLeftTile && bottomLeftTile.solid)) {
+      console.log()
+      mx = 0;
     }
 
 
