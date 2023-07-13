@@ -62,21 +62,50 @@ export default class Player {
      *
      */
 
-    const topLeftMapXY = this.map.getMapXY(newX, this.pos.y);
+    const topLeftMapXY = this.map.getMapXY(newX, newY);
     topLeftMapXY.x = Math.floor(topLeftMapXY.x);
     topLeftMapXY.y = Math.floor(topLeftMapXY.y);
     const topLeftTile = this.map.getTileAtMapXY(topLeftMapXY.x, topLeftMapXY.y);
 
     // console.log('topleft ', JSON.stringify(topLeftMapXY));
 
-    const bottomLeftXY = this.map.getMapXY(this.pos.x, this.pos.y + this.h - 0.9);
+    const bottomLeftXY = this.map.getMapXY(newX, newY + this.h - 0.99);
     bottomLeftXY.x = Math.floor(bottomLeftXY.x);
     bottomLeftXY.y = Math.floor(bottomLeftXY.y);
-    const bottomLeftTile = this.map.getTileAtMapXY(bottomLeftXY.x,bottomLeftXY.y);
+    const bottomLeftTile = this.map.getTileAtMapXY(
+      bottomLeftXY.x,
+      bottomLeftXY.y
+    );
 
-    if ((topLeftTile && topLeftTile.solid) || ( bottomLeftTile && bottomLeftTile.solid)) {
-      console.log()
-      mx = 0;
+    const topRightXY = this.map.getMapXY(newX + this.w, newY);
+    console.log(JSON.stringify(topRightXY))
+    topRightXY.x = Math.floor(topRightXY.x);
+    topRightXY.y = Math.floor(topRightXY.y);
+    const topRightTile = this.map.getTileAtMapXY(topRightXY.x, topRightXY.y);
+    console.log(JSON.stringify(topRightXY))
+
+    const bottomRightXY = this.map.getMapXY(newX + this.w - 0.99, newY + this.h - 0.99);
+    bottomRightXY.x = Math.floor(bottomRightXY.x);
+    bottomRightXY.y = Math.floor(bottomRightXY.y);
+    const bottomRightTile = this.map.getTileAtMapXY(bottomRightXY.x, bottomRightXY.y);
+    if (this.controls.x) {
+      if (
+        (topLeftTile && topLeftTile.solid) ||
+        (bottomLeftTile && bottomLeftTile.solid) || 
+        (topRightTile && topRightTile.solid) || 
+        (bottomRightTile && bottomRightTile.solid)
+      ) {
+        const collidingTile = [topLeftTile, bottomLeftTile, topRightTile, bottomRightTile].find(t => t.solid);
+        
+        if(this.controls.x == 1 && collidingTile) {
+          mx = collidingTile.pos.x - this.pos.x;
+          console.log('mx',mx)
+          mx = 0;
+        } else {
+          mx = 0;
+        }
+        console.log('solliding tile ', JSON.stringify(collidingTile))
+      }
     }
 
 
