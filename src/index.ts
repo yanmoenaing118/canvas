@@ -1,85 +1,48 @@
-import KeyControls from "./KeyControls";
-import { renderGrid } from "./DebugGrid";
-import { CELLSIZE, HEIGHT, MAX_FRAME, SPEED, WIDTH, WORLD_H, WORLD_W } from "./constants";
-import { clamp, distance } from "./utils";
-import { renderCamera, renderRect, renderTileMap, renderTileSprite } from "./Renderers";
-import Rect from "./Rect";
-import Spider from "./Spider";
-import Dungeon from "./Dungeon";
-import Vec2 from "./Vec2";
-import Camera from "./Camera";
-import Entity from "./Entity";
+function setup() {
+  const canvas = document.createElement("canvas");
+  document.body.appendChild(canvas);
 
-const canvas = document.createElement("canvas") as HTMLCanvasElement;
-document.body.appendChild(canvas);
+  canvas.style.border = "1px solid black";
 
-const w = WIDTH;
-const h = HEIGHT;
-const cellSize = CELLSIZE;
+  canvas.width = 600;
+  canvas.height = 400;
 
-canvas.width = w;
-canvas.height = h;
-const controls = new KeyControls();
-export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-let dt = 1 / 60;
-let time = 0;
+  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
+  canvas.addEventListener("touchstart", touchStart);
+  canvas.addEventListener("touchend", touchEnd);
+  canvas.addEventListener('touchmove', touchMove);
+  canvas.addEventListener('touchcancel', touchCancel);
 
-const spider = new Spider(controls);
-const rect = new Rect();
-rect.w = spider.w;
-rect.h = spider.h;
-rect.style = {
-  fill: 'white',
-  stroke: 'black'
-}
-const dungeon = new Dungeon(WORLD_W, WORLD_H);
+  function touchStart(e: TouchEvent) {
+    e.preventDefault();
+    console.log('start', e.changedTouches);
 
-const camera = new Camera(w,h, WORLD_W, WORLD_H);
+    const touches  = e.changedTouches;
+    for(let i = 0; i < touches.length; i++ ){
+      const touch = touches[i];
+      const x = touch.pageX;
+      const y = touch.pageY;
 
-camera.add(dungeon as Entity);
-// camera.add(rect)
-camera.add(spider as Entity);
+      ctx.fillStyle = 'red';
+      ctx.beginPath();
+      ctx.arc(x,y,4,0, Math.PI * 2, false);
+      ctx.fill();
+    }
+  }
 
-camera.setEntity(spider as Entity);
+  function touchEnd(e: TouchEvent) {
+    console.log('end');
+  }
 
 
-// console.log(camera)
-function loop(ellapsedTime: number) {
-  requestAnimationFrame(loop);
+  function touchMove(e: TouchEvent){
+    console.log('moving')
+  }
 
-  dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
-  time = ellapsedTime;
-
-  ctx.clearRect(0, 0, w, h);
-
-  const spiderMapPos = dungeon.pixelToMapPosition(spider.pos);
-  const spiderPosPixel = dungeon.mapToPixelPosition(spiderMapPos);
-  const tileAtSpiderPositon = dungeon.tileAtPixelPosition(spider.pos);
-
-  // console.log(`map: `, spiderMapPos.x, spiderMapPos.y);
-  // console.log(`pix: `, spiderPosPixel.x, spiderPosPixel.y)
-  
-  // if(tileAtSpiderPositon === dungeon.chldren[12]) {
-  //   console.log('12', tileAtSpiderPositon);
-  // } 
-
-  // if(tileAtSpiderPositon === dungeon.chldren[11]) {
-  //   console.log('11', tileAtSpiderPositon)
-  // }
-
-  rect.pos = {...spider.pos}
-  
-  // console.log(camera.pos)
-  
-  spider.update(dt, time * 0.001);
-  camera.update(dt, time * 0.001);
-  renderCamera(camera, ctx);
-
-  // renderTileMap(dungeon, ctx);
-  // renderTileSprite(spider,ctx);
-
-  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
+  function touchCancel(e: TouchEvent){
+    console.log('cancel');
+  }
 }
 
-requestAnimationFrame(loop);
+document.addEventListener('DOMContentLoaded', setup)
