@@ -77,8 +77,8 @@ export default class Player {
       bottomLeftXY.y
     );
 
-    const topRightXY = this.map.getMapXY(newX + this.w, newY);
-    console.log(JSON.stringify(topRightXY))
+    const topRightXY = this.map.getMapXY(newX + this.w - 0.9, newY);
+    // console.log(JSON.stringify(topRightXY))
     topRightXY.x = Math.floor(topRightXY.x);
     topRightXY.y = Math.floor(topRightXY.y);
     const topRightTile = this.map.getTileAtMapXY(topRightXY.x, topRightXY.y);
@@ -93,32 +93,33 @@ export default class Player {
 
 
     if(this.controls.y) {
-
       
-
-
     }
     
 
 
     if (this.controls.x) {
-      if (
-        (topLeftTile && topLeftTile.solid) ||
-        (bottomLeftTile && bottomLeftTile.solid) || 
-        (topRightTile && topRightTile.solid) || 
-        (bottomRightTile && bottomRightTile.solid)
-      ) {
-        const collidingTile = [topLeftTile, bottomLeftTile, topRightTile, bottomRightTile].find(t => t.solid);
-        
-        if(this.controls.x == 1 && collidingTile) {
-          mx = collidingTile.pos.x - this.pos.x;
-          console.log('mx',mx)
-          mx = 0;
-        } else {
-          mx = 0;
-        }
-        console.log('solliding tile ', JSON.stringify(collidingTile))
+
+    }
+
+    if (
+      (topLeftTile && topLeftTile.solid) ||
+      (bottomLeftTile && bottomLeftTile.solid) || 
+      (topRightTile && topRightTile.solid) || 
+      (bottomRightTile && bottomRightTile.solid)
+    ) {
+      const collidingTile = [topLeftTile, bottomLeftTile, topRightTile, bottomRightTile].find(t => t.solid);
+      
+      if(this.controls.x) {
+        mx = 0;
       }
+
+      if(this.controls.y) {
+        my = 0;
+        console.log(topRightXY)
+      }
+      
+      // console.log('solliding tile ', JSON.stringify(collidingTile))
     }
 
 
