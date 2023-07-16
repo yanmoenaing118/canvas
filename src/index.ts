@@ -1,4 +1,4 @@
-import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
+import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { renderGrid } from "./DebugGrid";
 import KeyControls from "./KeyControls";
 import Level from "./Level";
@@ -20,12 +20,12 @@ const player = new Player(controls, map);
 
 const loop = (ellapsedTime: number) => {
   requestAnimationFrame(loop);
-  dt = (ellapsedTime - t) * 0.001;
+  dt = Math.min((ellapsedTime - t) * 0.001, MAX_DELTA);
   t = ellapsedTime;
 
 
 
-  player.update(dt);
+  player.update(dt, t * 0.001);
 
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
