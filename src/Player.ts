@@ -96,7 +96,7 @@ export default class Player {
       (bottomRightTile && bottomRightTile.solid)
     ) {
       const collidingTile = [topLeftTile, bottomLeftTile, topRightTile, bottomRightTile].find(t => t.solid);
-      
+      console.log(mx,my)
       if(this.controls.x) {
         mx = 0;
       }
