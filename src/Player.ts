@@ -82,12 +82,25 @@ export default class Player {
     topRightXY.x = Math.floor(topRightXY.x);
     topRightXY.y = Math.floor(topRightXY.y);
     const topRightTile = this.map.getTileAtMapXY(topRightXY.x, topRightXY.y);
-    console.log(JSON.stringify(topRightXY))
+    // console.log(JSON.stringify(topRightXY))
 
     const bottomRightXY = this.map.getMapXY(newX + this.w - 0.99, newY + this.h - 0.99);
     bottomRightXY.x = Math.floor(bottomRightXY.x);
     bottomRightXY.y = Math.floor(bottomRightXY.y);
     const bottomRightTile = this.map.getTileAtMapXY(bottomRightXY.x, bottomRightXY.y);
+
+
+
+
+    if(this.controls.y) {
+
+      
+
+
+    }
+    
+
+
     if (this.controls.x) {
       if (
         (topLeftTile && topLeftTile.solid) ||
