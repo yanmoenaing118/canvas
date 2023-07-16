@@ -11,7 +11,7 @@ export default class Player {
   h: number = CELLSIZE;
   controls: KeyControls;
   map: Level;
-  speed: number = 320;
+  speed: number = 100;
 
   topleft_pos: Vec2 = {
     x: this.pos.x,
@@ -89,19 +89,6 @@ export default class Player {
     bottomRightXY.y = Math.floor(bottomRightXY.y);
     const bottomRightTile = this.map.getTileAtMapXY(bottomRightXY.x, bottomRightXY.y);
 
-
-
-
-    if(this.controls.y) {
-      
-    }
-    
-
-
-    if (this.controls.x) {
-
-    }
-
     if (
       (topLeftTile && topLeftTile.solid) ||
       (bottomLeftTile && bottomLeftTile.solid) || 
@@ -116,10 +103,9 @@ export default class Player {
 
       if(this.controls.y) {
         my = 0;
-        console.log(topRightXY)
       }
       
-      // console.log('solliding tile ', JSON.stringify(collidingTile))
+      console.log('solliding tile ', JSON.stringify(collidingTile))
     }
 
 
