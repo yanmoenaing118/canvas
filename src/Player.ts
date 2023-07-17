@@ -6,7 +6,7 @@ export default class Player extends Entity {
   speed: number = 10;
   controls: KeyControls;
   constructor(controls: KeyControls) {
-    super(CELL_WIDTH, CELL_HEIGH, "green");
+    super(CELL_WIDTH, CELL_HEIGH, "rgba(89,90,12,0.3)");
     this.controls = controls;
 
     // offset for hit box
@@ -20,7 +20,7 @@ export default class Player extends Entity {
     }
     this.debugMode = true;
     this.pos.y = HEIGHT - this.w
-    this.pos.x = this.w * 3;
+    this.pos.x = this.w * 3  + this.w /2;
   }
 
   update(dt: number) {
