@@ -25,7 +25,7 @@ class Entity {
 
   debug(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.fillStyle = this.fill;
+    ctx.fillStyle = 'rgba(0,0,0,.4)';
     ctx.translate(this.pos.x + this.hitBox.x, this.pos.y + this.hitBox.y);
     ctx.fillRect(0, 0, this.hitBox.w, this.hitBox.h);
     ctx.restore();

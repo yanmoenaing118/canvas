@@ -8,12 +8,17 @@ export default class Player extends Entity {
   constructor(controls: KeyControls) {
     super(CELL_WIDTH, CELL_HEIGH, "green");
     this.controls = controls;
+
+    // offset for hit box
+    const ox = 12;
+    const oy = 12;
     this.hitBox = {
-        x: 4,
-        y: 4,
-        w: 32 - 8,
-        h: 32 - 8
+        x: ox,
+        y: oy,
+        w: this.w - ox * 2,
+        h: this.h - oy * 2
     }
+    this.debugMode = true;
   }
 
   update(dt: number) {
