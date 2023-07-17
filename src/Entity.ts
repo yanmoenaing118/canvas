@@ -6,6 +6,7 @@ class Entity {
   h: number;
   fill: string;
   debugMode: boolean = false;
+  gone: boolean = false;
 
   // hit box is the actual collision point
   hitBox = {
