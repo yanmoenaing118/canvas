@@ -1,3 +1,4 @@
+import Grid from "./Grid";
 import KeyControls from "./KeyControls";
 import Player from "./Player";
 import Canvas from "./Renderer";
@@ -11,6 +12,7 @@ const controls = new KeyControls();
 let lastTime = 0;
 let dt = MAX_DELTA;
 
+const grid = new Grid(WIDTH, HEIGHT);
 const player = new Player(controls);
 const target = new Target();
 
@@ -50,6 +52,7 @@ function loop(ellapsed: number) {
   player.render(ctx);
 //   target.render(ctx);
   renderTargets();
+  grid.render(ctx);
 
   if (hit(player, target)) {
     target.relocate();

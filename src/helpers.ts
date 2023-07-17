@@ -21,3 +21,7 @@ export function hit(e1: Entity, e2: Entity) {
     b1.y + b1.h >= b2.y
   );
 }
+
+export function clamp(x: number, min: number, max: number) {
+  return Math.max(min, Math.min(x, max));
+}

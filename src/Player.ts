@@ -1,9 +1,10 @@
 import Entity from "./Entity";
 import KeyControls from "./KeyControls";
-import { CELL_HEIGH, CELL_WIDTH, HEIGHT } from "./constants";
+import { CELL_HEIGH, CELL_WIDTH, HEIGHT, WIDTH } from "./constants";
+import { clamp } from "./helpers";
 
 export default class Player extends Entity {
-  speed: number = 640;
+  speed: number = 1200;
   controls: KeyControls;
   constructor(controls: KeyControls) {
     super(CELL_WIDTH, CELL_HEIGH, "rgba(89,90,12,0.3)");
@@ -29,5 +30,8 @@ export default class Player extends Entity {
 
     this.pos.x += mx;
     this.pos.y += my;
+
+    this.pos.x = clamp(this.pos.x, 0, WIDTH - this.w);
+    this.pos.y = clamp(this.pos.y, 0, HEIGHT - this.h);
   }
 }
