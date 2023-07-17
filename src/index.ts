@@ -3,6 +3,7 @@ import Player from "./Player";
 import Canvas from "./Renderer";
 import Target from "./Target";
 import { HEIGHT, MAX_DELTA, WIDTH } from "./constants";
+import { hit } from "./helpers";
 
 const { ctx } = new Canvas();
 const controls = new KeyControls();
@@ -19,10 +20,14 @@ function loop(ellapsed: number) {
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-  target.render(ctx);
   player.render(ctx);
+  target.render(ctx);
 
   player.update(dt);
+
+  if(hit(player,target)) {
+    console.log('hit')
+  }
 
   requestAnimationFrame(loop);
 }

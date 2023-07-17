@@ -3,7 +3,7 @@ import KeyControls from "./KeyControls";
 import { CELL_HEIGH, CELL_WIDTH } from "./constants";
 
 export default class Player extends Entity {
-  speed: number = 320;
+  speed: number = 100;
   controls: KeyControls;
   constructor(controls: KeyControls) {
     super(CELL_WIDTH, CELL_HEIGH, "green");
