@@ -5,6 +5,7 @@ class Entity {
   w: number;
   h: number;
   fill: string;
+  debugMode: boolean = false;
 
   // hit box is the actual collision point
   hitBox = {
@@ -22,12 +23,24 @@ class Entity {
     this.hitBox = { ...this.pos, w, h };
   }
 
+  debug(ctx: CanvasRenderingContext2D) {
+    ctx.save();
+    ctx.fillStyle = this.fill;
+    ctx.translate(this.pos.x + this.hitBox.x, this.pos.y + this.hitBox.y);
+    ctx.fillRect(0, 0, this.hitBox.w, this.hitBox.h);
+    ctx.restore();
+  }
+
   render(ctx: CanvasRenderingContext2D) {
     ctx.save();
     ctx.fillStyle = this.fill;
     ctx.translate(this.pos.x, this.pos.y);
     ctx.fillRect(0, 0, this.w, this.h);
     ctx.restore();
+
+    if (this.debugMode) {
+      this.debug(ctx);
+    }
   }
 }
 

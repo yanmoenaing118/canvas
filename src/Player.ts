@@ -8,6 +8,12 @@ export default class Player extends Entity {
   constructor(controls: KeyControls) {
     super(CELL_WIDTH, CELL_HEIGH, "green");
     this.controls = controls;
+    this.hitBox = {
+        x: 4,
+        y: 4,
+        w: 32 - 8,
+        h: 32 - 8
+    }
   }
 
   update(dt: number) {
