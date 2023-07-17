@@ -15,6 +15,7 @@ class Entity {
 
   render(ctx: CanvasRenderingContext2D) {
     ctx.save();
+    ctx.fillStyle = this.fill;
     ctx.translate(this.pos.x, this.pos.y);
     ctx.fillRect(0, 0, this.w, this.h);
     ctx.restore();
