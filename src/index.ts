@@ -15,15 +15,17 @@ const player = new Player(controls);
 const target = new Target();
 
 let targets: Target[] = [];
-(function initTargets() {
+function initTargets() {
   for (let i = 0; i < 100; i++) {
     targets.push(new Target());
   }
-})();
+}
+initTargets();
 
 function updateTargets(dt: number, t: number) {
   targets = targets.filter((target) => !target.gone);
   targets.forEach((target) => target.update(dt, t));
+  if(targets.length === 0) initTargets()
 }
 
 function renderTargets() {
