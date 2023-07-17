@@ -6,8 +6,8 @@ export function bounds(e: Entity) {
   return {
     x: e.pos.x + hitBox.x,
     y: e.pos.y + hitBox.y,
-    w: hitBox.w - .9,
-    h: hitBox.h - .9,
+    w: hitBox.w,
+    h: hitBox.h,
   };
 }
 

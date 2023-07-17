@@ -1,9 +1,9 @@
 import Entity from "./Entity";
 import KeyControls from "./KeyControls";
-import { CELL_HEIGH, CELL_WIDTH } from "./constants";
+import { CELL_HEIGH, CELL_WIDTH, HEIGHT } from "./constants";
 
 export default class Player extends Entity {
-  speed: number = 100;
+  speed: number = 10;
   controls: KeyControls;
   constructor(controls: KeyControls) {
     super(CELL_WIDTH, CELL_HEIGH, "green");
@@ -19,6 +19,8 @@ export default class Player extends Entity {
         h: this.h - oy * 2
     }
     this.debugMode = true;
+    this.pos.y = HEIGHT - this.w
+    this.pos.x = this.w * 3;
   }
 
   update(dt: number) {
