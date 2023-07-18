@@ -1,5 +1,5 @@
 import TileMap from "./TileMap";
-import { CELL_WIDTH } from "./constants";
+import { CELL_HEIGH, CELL_WIDTH } from "./constants";
 
 export default class Level extends TileMap {
   walls: number[] = [

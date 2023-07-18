@@ -4,8 +4,7 @@ import Level from "./Level";
 import Player from "./Player";
 import Canvas from "./Renderer";
 import Target from "./Target";
-import TileMap from "./TileMap";
-import { CELL_HEIGH, CELL_WIDTH, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
+import {  HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { hit } from "./helpers";
 
 const { ctx } = new Canvas();
@@ -16,7 +15,7 @@ let dt = MAX_DELTA;
 
 const map = new Level(WIDTH, HEIGHT);
 const grid = new Grid(WIDTH, HEIGHT);
-const player = new Player(controls);
+const player = new Player(controls,map);
 const target = new Target();
 
 let targets: Target[] = [];
@@ -56,7 +55,7 @@ function loop(ellapsed: number) {
   map.render(ctx);
   player.render(ctx);
 
-  grid.render(ctx);
+  // grid.render(ctx);
 
 
   if (hit(player, target)) {

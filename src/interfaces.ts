@@ -6,3 +6,10 @@ export class Vec2 {
     this.y = y;
   }
 }
+
+export interface Bounds {
+  x: number;
+  y: number;
+  w: number;
+  h: number
+}
