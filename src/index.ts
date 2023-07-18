@@ -1,9 +1,11 @@
 import Grid from "./Grid";
 import KeyControls from "./KeyControls";
+import Level from "./Level";
 import Player from "./Player";
 import Canvas from "./Renderer";
 import Target from "./Target";
-import { HEIGHT, MAX_DELTA, WIDTH } from "./constants";
+import TileMap from "./TileMap";
+import { CELL_HEIGH, CELL_WIDTH, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { hit } from "./helpers";
 
 const { ctx } = new Canvas();
@@ -12,6 +14,7 @@ const controls = new KeyControls();
 let lastTime = 0;
 let dt = MAX_DELTA;
 
+const map = new Level(WIDTH, HEIGHT);
 const grid = new Grid(WIDTH, HEIGHT);
 const player = new Player(controls);
 const target = new Target();
@@ -49,10 +52,12 @@ function loop(ellapsed: number) {
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
+
+  map.render(ctx);
   player.render(ctx);
-//   target.render(ctx);
-  renderTargets();
+
   grid.render(ctx);
+
 
   if (hit(player, target)) {
     target.relocate();
