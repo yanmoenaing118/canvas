@@ -34,6 +34,7 @@ export default class TileMap {
   }
 
   getTileAtMapPosition(x: number, y: number) {
+    const tile = this.children[y * this.mapW + x];
     return this.children[y * this.mapW + x];
   }
 
