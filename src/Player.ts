@@ -5,7 +5,7 @@ import { CELL_HEIGH, CELL_WIDTH, HEIGHT, WIDTH } from "./constants";
 import { bounds, clamp } from "./helpers";
 
 export default class Player extends Entity {
-  speed: number = 25;
+  speed: number = 320;
   controls: KeyControls;
   map: Level;
   constructor(controls: KeyControls, map: Level) {
@@ -14,8 +14,8 @@ export default class Player extends Entity {
     this.controls = controls;
 
     // offset for hit box
-    const ox = 0;
-    const oy = 0;
+    const ox = 12;
+    const oy = 12;
     this.hitBox = {
       x: ox,
       y: oy,
@@ -28,16 +28,21 @@ export default class Player extends Entity {
   }
 
   update(dt: number, t: number) {
-    const mx = this.controls.x * dt * this.speed;
-    const my = this.controls.y * dt * this.speed;
+    let mx = this.controls.x * dt * this.speed;
+    let my = this.controls.y * dt * this.speed;
 
     const newX = this.pos.x + mx;
     const newY = this.pos.y + my;
 
-    const b = bounds(this);
+    const b = bounds({ ...this, pos: { ...this.pos, x: newX, y: newY } });
     const tilesAtCorners = this.map.getTileAtCorners(b);
 
-    console.log(JSON.stringify(tilesAtCorners));
+    if (tilesAtCorners.some((t) => t.fill === "pink")) {
+      mx = 0;
+      my = 0;
+    }
+
+    // console.log(JSON.stringify(tilesAtCorners));
 
     this.pos.x += mx;
     this.pos.y += my;
