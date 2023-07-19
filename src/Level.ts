@@ -29,7 +29,7 @@ class Level {
   tiles: Rect[] = [];
   cols: number = WIDTH / CELLSIZE;
   rows: number = HEIGHT / CELLSIZE;
-  solid_tiles_index = [6, 3, 9, 10, 20, 21];
+  solid_tiles_index: number[] = [];
   w: number = this.cols * CELLSIZE;
   h: number = this.rows * CELLSIZE;
 
