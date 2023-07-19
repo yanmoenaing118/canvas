@@ -28,6 +28,7 @@ const loop = (ellapsedTime: number) => {
 
 
   player.update(dt, t * 0.001);
+  bat.update(dt, t * 0.001);
 
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
