@@ -13,9 +13,9 @@ function getById(id: string | number): any {
 }
 
 const tileIndexes = [
-  { id: "empty", x: 0, y: 2, walkabel: true },
-  { id: "wall", x: 2, y: 2 },
-  { id: "wall_end", x: 3, y: 2 },
+  { id: "empty", x: 0, y: 2, walkable: true },
+  { id: "wall", x: 2, y: 2, walkable: false },
+  { id: "wall_end", x: 3, y: 2, walkable: false },
 ];
 class Dungeon extends TileMap {
   constructor() {

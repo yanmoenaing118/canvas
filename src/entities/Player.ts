@@ -1,13 +1,14 @@
-import { TILE_SIZE } from "../constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, TILE_SIZE } from "../constants";
 import AnimationManager from "../pop/AnimationManager";
 import Texture from "../pop/Texture";
 import TileSprite from "../pop/TileSprite";
 import KeyControls from "../pop/controls/KeyControls";
 import entities from "../pop/utils/entities";
+import math from "../pop/utils/math";
 import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
-  speed = 0.1525;
+  speed = 320;
   controls: KeyControls;
   map: Dungeon;
   constructor(controls: KeyControls, map: Dungeon) {
@@ -44,14 +45,26 @@ class Player extends TileSprite {
 
     const { x, y } = this.controls;
 
-    const mx = x * this.speed * dt;
-    const my = y * this.speed * dt;
+    let mx = x * this.speed * dt;
+    let my = y * this.speed * dt;
+
 
     const b = entities.bounds(this);
     const tilesAtCorners = this.map.tilesAtCorners(b,mx, my);
+    const framesInfo = tilesAtCorners.map(t => t && t.frame);
+    const blocked = tilesAtCorners.some(t => t && !t.frame.walkable )
+
+    if(blocked) {
+      mx = 0;
+      my = 0;
+      console.log(blocked)
+    }
 
 
-    console.log(JSON.stringify(tilesAtCorners));
+
+    console.log(JSON.stringify(framesInfo));
+
+
 
 
     if (x) {
@@ -59,14 +72,17 @@ class Player extends TileSprite {
       this.anchor.x = x > 0 ? 0 : 48;
     } 
 
-    if(x || y) {
-        this.anims.play('walk');
-    } else {
-        this.anims.play('hangout')
-    }
+    // if(x || y) {
+    //     this.anims.play('walk');
+    // } else {
+    //     this.anims.play('hangout')
+    // }
 
-    this.pos.x += x * (1 / this.speed);
-    this.pos.y += y * (1 / this.speed);
+    this.pos.x += mx;
+    this.pos.y += my;
+
+    this.pos.x = math.clamp(this.pos.x, 0, CANVAS_WIDTH - this.w);
+    this.pos.y = math.clamp(this.pos.y, 0, CANVAS_HEIGHT - this.h);
   }
 }
 

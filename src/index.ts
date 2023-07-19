@@ -5,7 +5,6 @@ import Game from "./pop/Game";
 import Rect from "./pop/Rect";
 import Text from "./pop/Text";
 import pop from "./pop/index";
-import entities from "./pop/utils/entities";
 const { KeyControls } = pop;
 
 const controls = new KeyControls();
@@ -45,7 +44,5 @@ game.run(() => {
   
     playerRect.pos = player.pos;
 
-  const bounds = entities.bounds(player);
-  const collidingTiles = dungeon.tilesAtCorners(bounds, -48/2, -48/2);
   
 });

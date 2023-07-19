@@ -71,8 +71,8 @@ export default class TileMap extends Container {
     return [
       [bounds.x, bounds.y],
       [bounds.x + bounds.w, bounds.y],
-      [bounds.x + bounds.w, bounds.y + bounds.h],
       [bounds.x, bounds.y + bounds.h],
+      [bounds.x + bounds.w, bounds.y + bounds.h],
     ].map(([x, y]) =>
       this.tileAtPixelPosition({
         x: x + xo,

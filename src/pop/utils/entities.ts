@@ -45,8 +45,8 @@ function bounds(entity: any) {
   return {
     x: hit.x + pos.x,
     y: hit.y + pos.y,
-    w: hit.w - 0.9,
-    h: hit.h - 0.9,
+    w: hit.w - 1.9,
+    h: hit.h - 1.9,
   };
 }
 

@@ -5,7 +5,7 @@ import Texture from "./Texture";
 export default class TileSprite extends Sprite {
   tileW: number;
   tileH: number;
-  frame: { x: number; y: number };
+  frame: { x: number; y: number , [key:string]: any};
   anims: AnimationManager;
   constructor(texture: Texture, w: number, h: number) {
     super(texture);
