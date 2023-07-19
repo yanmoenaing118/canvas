@@ -3,15 +3,18 @@ import AnimationManager from "../pop/AnimationManager";
 import Texture from "../pop/Texture";
 import TileSprite from "../pop/TileSprite";
 import KeyControls from "../pop/controls/KeyControls";
+import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
   speed = 0.1525;
   controls: KeyControls;
-  constructor(controls: KeyControls) {
+  map: Dungeon;
+  constructor(controls: KeyControls, map: Dungeon) {
     const texture = new Texture("./images/bravedigger-tiles.png");
     super(texture, TILE_SIZE, TILE_SIZE);
     this.controls = controls;
     this.anims = new AnimationManager(this);
+    this.map = map;
 
     this.anims.add(
       "walk",
@@ -39,6 +42,9 @@ class Player extends TileSprite {
     this.anims.update(dt);    
 
     const { x, y } = this.controls;
+
+
+    
 
     if (x) {
       this.scale.x = x;

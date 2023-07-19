@@ -1,7 +1,6 @@
 import { TILE_SIZE } from "../constants";
 import Texture from "../pop/Texture";
 import TileMap from "../pop/TileMap";
-import { Frame } from "../pop/models";
 import math from "../pop/utils/math";
 
 const mapW = 19;
@@ -25,19 +24,11 @@ class Dungeon extends TileMap {
     console.log("x,y,index");
     for (let y = 0; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
-        const index = y * mapW + x;
-        // console.log(x, y, index);
-
         if (y == 0 || x == 0 || y == mapH - 1 || x == mapW - 1) {
           level[y * mapW + x] = "wall";
           continue;
         }
 
-        /**
-         * index % 2 will result in 0 or 1
-         * if 1 skip the rest and continue the next loop
-         * if 0 continue the rest
-         */
         if (y % 2 || x % 2 || math.randOneIn(4)) {
           continue;
         }
@@ -54,10 +45,6 @@ class Dungeon extends TileMap {
       }
     }
 
-
-
-
-    // "3d-ify" if no wall below a tile
     for (let y = 0; y < mapH - 1; y++) {
       for (let x = 0; x < mapW; x++) {
         const below = level[(y + 1) * mapW + x];

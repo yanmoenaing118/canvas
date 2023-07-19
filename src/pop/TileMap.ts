@@ -37,8 +37,8 @@ export default class TileMap extends Container {
 
   pixelToMapPosition(pos: Position) {
     return {
-      x: Math.round(pos.x / this.tileW),
-      y: Math.round(pos.y / this.tileH),
+      x: Math.floor(pos.x / this.tileW),
+      y: Math.floor(pos.y / this.tileH),
     };
   }
 
