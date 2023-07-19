@@ -3,6 +3,7 @@ import AnimationManager from "../pop/AnimationManager";
 import Texture from "../pop/Texture";
 import TileSprite from "../pop/TileSprite";
 import KeyControls from "../pop/controls/KeyControls";
+import entities from "../pop/utils/entities";
 import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
@@ -43,8 +44,14 @@ class Player extends TileSprite {
 
     const { x, y } = this.controls;
 
+    const mx = x * this.speed * dt;
+    const my = y * this.speed * dt;
 
-    
+    const b = entities.bounds(this);
+    const tilesAtCorners = this.map.tilesAtCorners(b,mx, my);
+
+
+
 
     if (x) {
       this.scale.x = x;
