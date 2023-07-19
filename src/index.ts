@@ -1,6 +1,7 @@
 import Bat from "./Bat";
 import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { renderGrid } from "./DebugGrid";
+import Heart from "./Heart";
 import KeyControls from "./KeyControls";
 import Level from "./Level";
 import Player from "./Player";
@@ -21,8 +22,8 @@ const player = new Player(controls, map);
 
 const bats: Bat[] = [];
 
-for (let i = 0; i < 20; i++) {
-  const bat = new Bat();
+for (let i = 0; i < 100; i++) {
+  const bat = new Heart();
   bats.push(bat);
 }
 
@@ -43,14 +44,14 @@ const loop = (ellapsedTime: number) => {
     bat.render();
   });
 
-  renderGrid(
-    ctx,
-    HEIGHT / CELLSIZE,
-    WIDTH / CELLSIZE,
-    CELLSIZE,
-    CELLSIZE,
-    "white"
-  );
+  // renderGrid(
+  //   ctx,
+  //   HEIGHT / CELLSIZE,
+  //   WIDTH / CELLSIZE,
+  //   CELLSIZE,
+  //   CELLSIZE,
+  //   "white"
+  // );
 };
 
 requestAnimationFrame(loop);

@@ -16,6 +16,7 @@ export class Rect {
 
   render() {
     ctx.save();
+    ctx.globalAlpha = 1;
     if (this.fill) {
       ctx.fillStyle = this.fill;
     }
@@ -37,7 +38,7 @@ class Level {
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
         const index = row * this.cols + col;
-        let fill = "lightgreen";
+        let fill = "black";
 
         const x = col * CELLSIZE;
         const y = row * CELLSIZE;

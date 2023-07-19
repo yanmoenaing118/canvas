@@ -5,15 +5,12 @@ import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
 
 export default class Bat extends Entity {
   point: Vec2 = { x: 0, y: 0 };
-  speed = 220;
+  speed = 100;
   constructor() {
     super();
     this.pos.x = CELLSIZE * 2;
     this.pos.y = CELLSIZE * 3;
-    this.point = {
-      x: WIDTH * 0.9 + (Math.random() * WIDTH - this.w - WIDTH * 0.9),
-      y: WIDTH * 0.9 + (Math.random() * WIDTH - this.w - WIDTH * 0.9),
-    }
+    this.point = this.makeWaypoint();
   }
 
   makeWaypoint() {
@@ -36,9 +33,6 @@ export default class Bat extends Entity {
 
     this.pos.x += mx;
     this.pos.y += my;
-
-    console.log(JSON.stringify(this))
-
     if (Math.abs(this.point.x - this.pos.x) < this.w * 0.5 && Math.abs(this.pos.y - this.point.y) < this.h * 0.5) {
       this.point = this.makeWaypoint();
     }
@@ -46,7 +40,7 @@ export default class Bat extends Entity {
 
   render() {
     ctx.save();
-    ctx.fillStyle = "pink";
+    ctx.fillStyle = "rgba(222,120,20,0.2)";
     ctx.translate(this.pos.x, this.pos.y);
     ctx.fillRect(0, 0, this.w, this.h);
     ctx.restore();

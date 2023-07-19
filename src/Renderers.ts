@@ -10,7 +10,7 @@ import Text from "./Text";
  * @param sprite Sprite instance
  * @param ctx Canvas Context getContext('2d')
  */
-export const renderImg = (sprite: Sprite, ctx: CanvasRenderingContext2D) => {
+export const renderImg = (sprite: any, ctx: CanvasRenderingContext2D) => {
   const { scale, anchor, pos, w, h } = sprite;
   ctx.save();
   ctx.translate(pos.x, pos.y);
