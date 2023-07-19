@@ -53,7 +53,7 @@ export default class Player extends Entity {
         } else {
           mx = -(this.pos.x - (TL.pos.x + this.w));
         }
-      }
+      } 
     }
 
     console.log(
@@ -72,7 +72,8 @@ export default class Player extends Entity {
     this.pos.y = clamp(this.pos.y, 0, HEIGHT - this.h);
 
     if(this.pos.x === 0) {
-      debugger
+      TR.fill = 'red';
+      // debugger
     }
   }
 }
