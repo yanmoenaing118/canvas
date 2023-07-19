@@ -39,7 +39,7 @@ const loop = (ellapsedTime: number) => {
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   map.render();
-  player.render();
+  // player.render();
   bats.forEach((bat) => {
     bat.render();
   });
