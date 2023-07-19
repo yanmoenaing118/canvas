@@ -7,8 +7,8 @@ import { clamp } from "./utils";
 
 export default class Player {
   pos: Vec2 = { x: 0, y: 0 };
-  w: number = CELLSIZE * 0.5;
-  h: number = CELLSIZE * 0.5;
+  w: number = CELLSIZE;
+  h: number = CELLSIZE;
   controls: KeyControls;
   map: Level;
   speed: number = 640;
@@ -33,9 +33,11 @@ export default class Player {
 
   render() {
     ctx.save();
+    ctx.fillStyle = 'white';
     ctx.strokeStyle = "purple";
     ctx.translate(this.pos.x, this.pos.y);
     ctx.strokeRect(0, 0, this.w, this.h);
+    ctx.fillRect(0, 0, this.w, this.h);
     ctx.restore();
   }
 }

@@ -22,7 +22,7 @@ const player = new Player(controls, map);
 
 const bats: Bat[] = [];
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 150; i++) {
   const bat = new Heart();
   bats.push(bat);
 }

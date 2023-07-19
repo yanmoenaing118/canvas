@@ -8,8 +8,7 @@ export default class Bat extends Entity {
   speed = 100;
   constructor() {
     super();
-    this.pos.x = CELLSIZE * 2;
-    this.pos.y = CELLSIZE * 3;
+    this.pos = this.makeWaypoint();
     this.point = this.makeWaypoint();
   }
 
