@@ -51,6 +51,7 @@ class Player extends TileSprite {
     const tilesAtCorners = this.map.tilesAtCorners(b,mx, my);
 
 
+    console.log(JSON.stringify(tilesAtCorners));
 
 
     if (x) {

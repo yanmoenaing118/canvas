@@ -22,18 +22,30 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
 });
 scene.add(playerStatus);
 
+
+
+
+
 player.pos.x = player.w;
 player.pos.y = player.h;
 
-const playerRect = scene.add(
-  new Rect(player.w, player.h, {
-    fill: "white",
-  })
-);
+const playerRect = scene.add(new Rect(player.w,player.h, {
+  fill: 'white'
+}))
 playerRect.pos.x = player.pos.x;
-playerRect.pos.y = player.pos.y;
+playerRect.pos.y = player.pos.y; 
 
 scene.add(player);
 game.run(() => {
-  playerRect.pos = player.pos;
+  const playerMapPos = dungeon.pixelToMapPosition(player.pos);
+  playerStatus.text = `
+    pixel: (${player.pos.x.toFixed(2)} ${player.pos.y.toFixed(2)})
+    map: (${playerMapPos.x}, ${playerMapPos.y})
+    `;
+  
+    playerRect.pos = player.pos;
+
+  const bounds = entities.bounds(player);
+  const collidingTiles = dungeon.tilesAtCorners(bounds, -48/2, -48/2);
+  
 });
