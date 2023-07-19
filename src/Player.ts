@@ -9,7 +9,7 @@ export default class Player extends Entity {
   controls: KeyControls;
   map: Level;
   constructor(controls: KeyControls, map: Level) {
-    super(CELL_WIDTH, CELL_HEIGH, "rgba(89,90,12,0.3)");
+    super(CELL_WIDTH, CELL_HEIGH, "rgba(10,200,12,0.3)");
     this.map = map;
     this.controls = controls;
 
@@ -23,8 +23,8 @@ export default class Player extends Entity {
       h: this.h - oy * 2,
     };
     this.debugMode = true;
-    this.pos.y = this.h * 4;
-    this.pos.x = this.w * 2;
+    this.pos.x = 1;
+    this.pos.y = this.h * this.map.mapH;
   }
 
   update(dt: number, t: number) {
@@ -35,42 +35,44 @@ export default class Player extends Entity {
     const newY = this.pos.y + my;
     const b = bounds({ ...this, pos: { ...this.pos, x: newX, y: newY } });
     const tilesAtCorners = this.map.getTileAtCorners(b);
+    const [TL, TR, BL, BR] = tilesAtCorners;
+    const blocked = tilesAtCorners.some((tile) => tile && tile.fill === "pink");
 
-    try {
-      if (tilesAtCorners.some((t) => t && t.fill === "pink")) {
-        if (this.controls.x) {
-          if (tilesAtCorners[1] && tilesAtCorners[0]) {
-            if (this.controls.x > 0) {
-              mx = tilesAtCorners[1].pos.x - (this.pos.x + this.w);
-            } else {
-              mx = -(this.pos.x - (tilesAtCorners[0].pos.x + this.w));
-            }
-          }
+    /**
+     * for horizontal we only worry about controls.x
+     * for vertical we only worry about controls.y
+     */
+
+    if (blocked) {
+      mx = 0;
+      my = 0;
+
+      if (this.controls.x && TL && TR) {
+        if (this.controls.x > 0) {
+          mx = TR.pos.x - (this.pos.x + this.w);
+        } else {
+          mx = -(this.pos.x - (TL.pos.x + this.w));
         }
-
-        if (this.controls.y) {
-          if (tilesAtCorners[2] && tilesAtCorners[0]) {
-            if (this.controls.y > 0) {
-              my = tilesAtCorners[2].pos.y - (this.pos.y + this.h);
-            } else {
-              my = -(this.pos.y - (tilesAtCorners[0].pos.y + this.h));
-            }
-          }
-        }
-
-        // my = 0;
       }
-    } catch (error) {
-      console.log(tilesAtCorners);
-      console.log(error);
     }
 
-    // console.log(JSON.stringify(tilesAtCorners));
+    console.log(
+      JSON.stringify({
+        TL,
+        TR,
+        BL,
+        BR,
+      })
+    );
 
     this.pos.x += mx;
     this.pos.y += my;
 
     this.pos.x = clamp(this.pos.x, 0, WIDTH - this.w);
     this.pos.y = clamp(this.pos.y, 0, HEIGHT - this.h);
+
+    if(this.pos.x === 0) {
+      debugger
+    }
   }
 }
