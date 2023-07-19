@@ -18,23 +18,31 @@ const controls = new KeyControls();
 
 const map = new Level();
 const player = new Player(controls, map);
-const bat = new Bat();
+
+const bats: Bat[] = [];
+
+for (let i = 0; i < 20; i++) {
+  const bat = new Bat();
+  bats.push(bat);
+}
 
 const loop = (ellapsedTime: number) => {
   requestAnimationFrame(loop);
   dt = Math.min((ellapsedTime - t) * 0.001, MAX_DELTA);
   t = ellapsedTime;
 
-
-
   player.update(dt, t * 0.001);
-  bat.update(dt, t * 0.001);
-
+  bats.forEach((bat) => {
+    bat.update(dt, t * 0.001);
+  });
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   map.render();
   player.render();
-  bat.render();
+  bats.forEach((bat) => {
+    bat.render();
+  });
+
   renderGrid(
     ctx,
     HEIGHT / CELLSIZE,

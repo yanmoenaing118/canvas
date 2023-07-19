@@ -10,7 +10,10 @@ export default class Bat extends Entity {
     super();
     this.pos.x = CELLSIZE * 2;
     this.pos.y = CELLSIZE * 3;
-    this.point = this.makeWaypoint();
+    this.point = {
+      x: WIDTH * 0.9 + (Math.random() * WIDTH - this.w - WIDTH * 0.9),
+      y: WIDTH * 0.9 + (Math.random() * WIDTH - this.w - WIDTH * 0.9),
+    }
   }
 
   makeWaypoint() {

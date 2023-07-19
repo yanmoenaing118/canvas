@@ -7,8 +7,8 @@ import { clamp } from "./utils";
 
 export default class Player {
   pos: Vec2 = { x: 0, y: 0 };
-  w: number = CELLSIZE;
-  h: number = CELLSIZE;
+  w: number = CELLSIZE * 0.5;
+  h: number = CELLSIZE * 0.5;
   controls: KeyControls;
   map: Level;
   speed: number = 640;
