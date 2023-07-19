@@ -5,7 +5,7 @@ import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
 
 export default class Bat extends Entity {
   point: Vec2 = { x: 0, y: 0 };
-  speed = 320;
+  speed = 220;
   constructor() {
     super();
     this.pos.x = CELLSIZE * 2;
