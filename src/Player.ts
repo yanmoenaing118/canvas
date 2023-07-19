@@ -38,7 +38,7 @@ export default class Player extends Entity {
     const [TL, TR, BL, BR] = tilesAtCorners;
     const blocked = tilesAtCorners.some((tile) => tile && tile.fill === "pink");
 
-    console.log(JSON.stringify(tilesAtCorners));
+    // console.log(JSON.stringify(tilesAtCorners));
 
     /**
      * for horizontal we only worry about controls.x
@@ -50,13 +50,16 @@ export default class Player extends Entity {
       // my = 0;
 
       if (this.controls.x) {
-        if (this.controls.x > 0 && TR && BR ) {
+        if (this.controls.x > 0 && TR && BR) {
           mx = TR.pos.x - (this.pos.x + this.w);
+          // console.log(JSON.stringify(tilesAtCorners));
+
+          // debugger;
         } else if (TL && BL) {
           mx = -(this.pos.x - (TL.pos.x + this.w));
         } else {
           mx = 0;
-          debugger
+          return;
         }
       }
     }
