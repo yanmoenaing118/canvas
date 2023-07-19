@@ -1,3 +1,4 @@
+import Bat from "./Bat";
 import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { renderGrid } from "./DebugGrid";
 import KeyControls from "./KeyControls";
@@ -17,6 +18,7 @@ const controls = new KeyControls();
 
 const map = new Level();
 const player = new Player(controls, map);
+const bat = new Bat();
 
 const loop = (ellapsedTime: number) => {
   requestAnimationFrame(loop);
@@ -31,6 +33,7 @@ const loop = (ellapsedTime: number) => {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   map.render();
   player.render();
+  bat.render();
   renderGrid(
     ctx,
     HEIGHT / CELLSIZE,
