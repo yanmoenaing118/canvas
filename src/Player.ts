@@ -5,7 +5,7 @@ import { CELL_HEIGH, CELL_WIDTH, HEIGHT, WIDTH } from "./constants";
 import { bounds, clamp } from "./helpers";
 
 export default class Player extends Entity {
-  speed: number = 640;
+  speed: number = 320;
   controls: KeyControls;
   map: Level;
   constructor(controls: KeyControls, map: Level) {
@@ -31,8 +31,8 @@ export default class Player extends Entity {
     let mx = this.controls.x * dt * this.speed;
     let my = this.controls.y * dt * this.speed;
 
-    const newX = this.pos.x + mx;
-    const newY = this.pos.y + my;
+    const newX = clamp(this.pos.x + mx, 0, WIDTH - this.w);
+    const newY = clamp(this.pos.y + my, 0, HEIGHT - this.h);
     const b = bounds({ ...this, pos: { ...this.pos, x: newX, y: newY } });
     const tilesAtCorners = this.map.getTileAtCorners(b);
     const [TL, TR, BL, BR] = tilesAtCorners;
@@ -46,15 +46,12 @@ export default class Player extends Entity {
      */
 
     if (blocked) {
-      // mx = 0;
-      // my = 0;
+      mx = 0;
+      my = 0;
 
       if (this.controls.x) {
         if (this.controls.x > 0 && TR && BR) {
           mx = TR.pos.x - (this.pos.x + this.w);
-          // console.log(JSON.stringify(tilesAtCorners));
-
-          // debugger;
         } else if (TL && BL) {
           mx = -(this.pos.x - (TL.pos.x + this.w));
         } else {
@@ -62,16 +59,15 @@ export default class Player extends Entity {
           return;
         }
       }
-    }
 
-    // console.log(
-    //   JSON.stringify({
-    //     TL,
-    //     TR,
-    //     BL,
-    //     BR,
-    //   })
-    // );
+      if (this.controls.y) {
+        if (this.controls.y > 0 && BL && BR) {
+          my = BL.pos.y - (this.pos.y + this.h);
+        } else if (TL && TR) {
+          my = -(this.pos.y - (TL.pos.y + this.h));
+        }
+      }
+    }
 
     this.pos.x += mx;
     this.pos.y += my;

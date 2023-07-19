@@ -55,7 +55,7 @@ function loop(ellapsed: number) {
   map.render(ctx);
   player.render(ctx);
 
-  // grid.render(ctx);
+  grid.render(ctx);
 
 
   if (hit(player, target)) {
