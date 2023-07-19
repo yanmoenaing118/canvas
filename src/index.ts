@@ -85,7 +85,7 @@ function renderSprite() {
 }
 
 function loop(ellapsedTime: number) {
-  dt = (ellapsedTime - time) * 0.001;
+  dt = Math.min((ellapsedTime - time) * 0.001, 1 / 60);
   time = ellapsedTime;
   ctx.clearRect(0, 0, w, h);
   ctx.fillRect(0, 0, w, h);
