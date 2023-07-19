@@ -1,9 +1,7 @@
 import { Position } from "../models";
 import math from "./math";
 import { Entity } from "../models";
-import Sprite from "../Sprite";
 import Rect from "../Rect";
-import Cheese from "../../entities/Cheese";
 function center<T extends Entity>(entity: T): Position {
   return {
     x: entity.pos.x + entity.w / 2,
