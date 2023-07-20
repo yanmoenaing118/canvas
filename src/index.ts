@@ -92,7 +92,7 @@ function loop(ellapsedTime: number) {
   dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
   t = ellapsedTime;
 
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  ctx.clearRect(0, 0, WIDTH + CELLSIZE, HEIGHT + CELLSIZE);
 
   target.update(dt, t * 0.001);
   shooter.update(dt, t * 0.001);
@@ -103,13 +103,13 @@ function loop(ellapsedTime: number) {
     }
   })
 
-  renderGrid(
-    ctx,
-    Math.floor(WIDTH / CELLSIZE),
-    Math.floor(WIDTH / CELLSIZE),
-    CELLSIZE,
-    CELLSIZE
-  );
+  // renderGrid(
+  //   ctx,
+  //   Math.floor(WIDTH / CELLSIZE),
+  //   Math.floor(WIDTH / CELLSIZE),
+  //   CELLSIZE,
+  //   CELLSIZE
+  // );
   target.render(ctx);
   shooter.render(ctx);
   renderBullets(ctx);
