@@ -4,7 +4,7 @@ import KeyControls from "./KeyControls";
 import Shooter from "./Shooter";
 import Target from "./Target";
 import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
-import { angle, center } from "./utils";
+import { angle, center, hit } from "./utils";
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 document.body.appendChild(canvas);
@@ -72,6 +72,11 @@ function loop(ellapsedTime: number) {
   target.update(dt, t * 0.001);
   shooter.update(dt, t * 0.001);
   updateBullets(dt, t * 0.001);
+  bullets.forEach( b => {
+    if(hit(b, target)) {
+      target.relocate();
+    }
+  })
 
   renderGrid(
     ctx,
@@ -83,6 +88,7 @@ function loop(ellapsedTime: number) {
   target.render(ctx);
   shooter.render(ctx);
   renderBullets(ctx);
+  
 
   console.log(bullets.length);
   requestAnimationFrame(loop);
