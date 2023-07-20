@@ -3,7 +3,7 @@ import { HEIGHT, WIDTH } from "./constants";
 
 export default class Shooter extends Rect {
 
-  fireRate = .1;
+  fireRate = .03;
   currentFireRate = 0;
   onFire: (...arg: any) => void;
 

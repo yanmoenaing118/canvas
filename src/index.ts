@@ -5,6 +5,10 @@ import Shooter from "./Shooter";
 import Target from "./Target";
 import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { angle, center, hit } from "./utils";
+
+
+
+
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 document.body.appendChild(canvas);
@@ -14,8 +18,29 @@ canvas.style.border = "1px solid black";
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 
+// Get the DPR and size of the canvas
+const dpr = window.devicePixelRatio;
+const rect = canvas.getBoundingClientRect();
+
+// Set the "actual" size of the canvas
+canvas.width = rect.width * dpr;
+canvas.height = rect.height * dpr;
+
+// Scale the context to ensure correct drawing operations
+ctx.scale(dpr, dpr);
+
+// Set the "drawn" size of the canvas
+canvas.style.width = `${rect.width}px`;
+canvas.style.height = `${rect.height}px`;
+
+
+
+
 let dt = 0;
 let t = 0;
+
+
+
 
 /**
  * Shooter is at the center of th canvas
@@ -67,7 +92,7 @@ function loop(ellapsedTime: number) {
   dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
   t = ellapsedTime;
 
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  ctx.clearRect(0, 0, WIDTH + CELLSIZE, HEIGHT + CELLSIZE);
 
   target.update(dt, t * 0.001);
   shooter.update(dt, t * 0.001);
@@ -78,19 +103,18 @@ function loop(ellapsedTime: number) {
     }
   })
 
-  renderGrid(
-    ctx,
-    Math.floor(WIDTH / CELLSIZE),
-    Math.floor(WIDTH / CELLSIZE),
-    CELLSIZE,
-    CELLSIZE
-  );
+  // renderGrid(
+  //   ctx,
+  //   Math.floor(WIDTH / CELLSIZE),
+  //   Math.floor(WIDTH / CELLSIZE),
+  //   CELLSIZE,
+  //   CELLSIZE
+  // );
   target.render(ctx);
   shooter.render(ctx);
   renderBullets(ctx);
   
 
-  console.log(bullets.length);
   requestAnimationFrame(loop);
 }
 

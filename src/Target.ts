@@ -13,4 +13,9 @@ export default class Target extends Rect {
     this.pos.x = Math.floor(Math.random() * WIDTH - this.w);
     this.pos.y = Math.floor(Math.random() * HEIGHT - this.h);
   }
+
+  update(dt: number, t: number): void {
+    this.pos.x += Math.sin(t * 10) * dt * 320;
+    this.pos.y += Math.sin(t * 12) * dt * 230;
+  }
 }
