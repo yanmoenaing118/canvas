@@ -1,6 +1,7 @@
 import Entity from "./Entity";
 import TileMap from "./TileMap";
 import TileSprite from "./TileSprite";
+import Vec2 from "./Vec2";
 
 /**
  *
@@ -56,4 +57,12 @@ export function tilesAtCorners(
     [b.x, b.y + b.h], // BL - bottom left
     [b.x + b.w, b.y + b.h], // BR - bottom righ
   ].map(([x, y]) => map.tileAtPixelPosition({ x: x + xo, y: y + yo }));
+}
+
+
+
+export function angle(p1: Vec2, p2: Vec2){ 
+  const dx = p1.x - p2.x;
+  const dy = p2.y - p2.y;
+  return Math.atan2(dy, dx);
 }

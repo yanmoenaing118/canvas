@@ -19,27 +19,29 @@ export default class Bat extends Entity {
     };
   }
 
+  relocate() {
+    this.pos = this.makeWaypoint();
+  }
+
   update(dt: number, t: number): void {
-    const dx = this.point.x - this.pos.x;
-    const dy = this.point.y - this.pos.y;
-    const step = dt * this.speed;
+    // const dx = this.point.x - this.pos.x;
+    // const dy = this.point.y - this.pos.y;
+    // const step = dt * this.speed;
 
-    let mx = 0;
-    let my = 0;
+    // let mx = 0;
+    // let my = 0;
 
-    mx = dx < 0 ? -step : step;
-    my = dy < 0 ? -step : step;
+    // mx = dx < 0 ? -step : step;
+    // my = dy < 0 ? -step : step;
 
-    this.pos.x += mx;
-    this.pos.y += my;
-    if (Math.abs(this.point.x - this.pos.x) < this.w * 0.5 && Math.abs(this.pos.y - this.point.y) < this.h * 0.5) {
-      this.point = this.makeWaypoint();
-    }
+    // this.pos.x += mx;
+    // this.pos.y += my;
+    
   }
 
   render() {
     ctx.save();
-    ctx.fillStyle = "rgba(222,120,20,0.2)";
+    ctx.fillStyle = "rgba(222,120,20,1)";
     ctx.translate(this.pos.x, this.pos.y);
     ctx.fillRect(0, 0, this.w, this.h);
     ctx.restore();

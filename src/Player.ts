@@ -12,12 +12,20 @@ export default class Player {
   controls: KeyControls;
   map: Level;
   speed: number = 640;
+  fireRate = 0.5;
+  currFireRate = 0;
+  onFire: (...arg: any) => void;
 
-  constructor(controls: KeyControls, map: Level) {
+  constructor(controls: KeyControls, map: Level, onFire: (...arg: any) => void) {
     this.controls = controls;
     this.map = map;
     this.pos.x = CELLSIZE * 4;
     this.pos.y = CELLSIZE * 4;
+    this.onFire = onFire;
+  }
+
+  fireBullet() {
+    this.onFire();
   }
 
   update(dt: number, t: number) {
@@ -29,6 +37,11 @@ export default class Player {
 
     this.pos.x = clamp(this.pos.x, 0, WIDTH - this.w);
     this.pos.y = clamp(this.pos.y, 0, HEIGHT - this.h);
+
+    if((this.currFireRate += dt) > this.fireRate) {
+      this.fireBullet();
+      this.currFireRate = 0;
+    }
   }
 
   render() {
