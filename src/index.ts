@@ -90,7 +90,6 @@ function loop(ellapsedTime: number) {
   renderBullets(ctx);
   
 
-  console.log(bullets.length);
   requestAnimationFrame(loop);
 }
 
