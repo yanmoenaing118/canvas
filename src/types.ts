@@ -5,6 +5,10 @@ export type Styles = {
 }
 
 export type Frame = {
+    id: string | number,
     x: number,
-    y: number
+    y: number,
+    meta?: {
+        [key: string]: string | number | boolean
+    }
 }

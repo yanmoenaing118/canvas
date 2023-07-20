@@ -10,14 +10,13 @@ export default class TileSprite extends Sprite {
 
   frameTime: number = 0.1;
   currentFrameTime: number = 0;
-
   anim: AnimationManager;
 
   constructor(img: HTMLImageElement, w: number, h: number, frame?: Frame) {
     super(img, w, h);
     this.tileW = w;
     this.tileH = h;
-    this.frame = frame || { x: 0, y: 0 };
+    this.frame = frame || { x: 0, y: 0 , id: 0};
     this.anim = new AnimationManager(this);
   }
 

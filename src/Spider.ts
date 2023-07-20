@@ -10,18 +10,22 @@ spiderImg.src = "spider10.png";
 const walkLeft = new Array(1).fill(0).map((_, i) => ({
   x: i,
   y: 3,
+  id: i
 }));
 const wallkRight = new Array(1).fill(0).map((_, i) => ({
   x: i,
   y: 1,
+  id: i
 }));
 const walkDown = new Array(1).fill(0).map((_, i) => ({
   x: i,
   y: 2,
+  id: i
 }));
 const walkUp = new Array(1).fill(0).map((_, i) => ({
   x: i,
   y: 0,
+  id: i
 }));
 
 export default class Spider extends TileSprite {

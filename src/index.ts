@@ -1,85 +1,97 @@
-import KeyControls from "./KeyControls";
+import Bullet from "./Bullet";
 import { renderGrid } from "./DebugGrid";
-import { CELLSIZE, HEIGHT, MAX_FRAME, SPEED, WIDTH, WORLD_H, WORLD_W } from "./constants";
-import { clamp, distance } from "./utils";
-import { renderCamera, renderRect, renderTileMap, renderTileSprite } from "./Renderers";
-import Rect from "./Rect";
-import Spider from "./Spider";
-import Dungeon from "./Dungeon";
-import Vec2 from "./Vec2";
-import Camera from "./Camera";
-import Entity from "./Entity";
-
+import KeyControls from "./KeyControls";
+import Shooter from "./Shooter";
+import Target from "./Target";
+import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
+import { angle, center, hit } from "./utils";
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
+export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 document.body.appendChild(canvas);
 
-const w = WIDTH;
-const h = HEIGHT;
-const cellSize = CELLSIZE;
+canvas.style.border = "1px solid black";
 
-canvas.width = w;
-canvas.height = h;
+canvas.width = WIDTH;
+canvas.height = HEIGHT;
+
+let dt = 0;
+let t = 0;
+
+/**
+ * Shooter is at the center of th canvas
+ * A random target will appear on the screen
+ * Shooter will fire bullet towards the target
+ * If the target is hit, the target will be relocated
+ * Shooter will again fire bullets toward the target
+ * Shooter will fire bullet at a rate of .3s interval
+ * Dead bullets will be removed from bullets array
+ *
+ * To fire a bullet,
+ * we need to know the angle between two points (p1, p2)
+ * p1 = targetPosition (x1, y1)
+ * p2 = shooterPosition (x2, y2)
+ */
+
 const controls = new KeyControls();
-export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-let dt = 1 / 60;
-let time = 0;
+const shooter = new Shooter(onFire);
+const target = new Target();
+let bullets: Bullet[] = [];
+const angleToPlayer = angle(target, shooter);
 
+console.log(`
+  target: (${target.pos.x}, ${target.pos.y}),
+  shooter: (${shooter.pos.x}, ${shooter.pos.y}),
+  angle: ${angleToPlayer}
 
-const spider = new Spider(controls);
-const rect = new Rect();
-rect.w = spider.w;
-rect.h = spider.h;
-rect.style = {
-  fill: 'white',
-  stroke: 'black'
+`);
+
+function onFire(this: Shooter) {
+  const bullet = new Bullet();
+  const angleToPlayer = angle(target, this);
+  const shooterCenter = center(shooter);
+  bullet.pos = { ...shooterCenter };
+  bullet.angle = angleToPlayer;
+  bullets.push(bullet);
 }
-const dungeon = new Dungeon(WORLD_W, WORLD_H);
 
-const camera = new Camera(w,h, WORLD_W, WORLD_H);
+function updateBullets(dt: number, t: number) {
+  bullets = bullets.filter((b) => !b.dead);
+  bullets.forEach((b) => b.update(dt, t));
+}
 
-camera.add(dungeon as Entity);
-// camera.add(rect)
-camera.add(spider as Entity);
+function renderBullets(ctx: CanvasRenderingContext2D) {
+  bullets.forEach((b) => b.render(ctx));
+}
 
-camera.setEntity(spider as Entity);
-
-
-// console.log(camera)
 function loop(ellapsedTime: number) {
+  dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
+  t = ellapsedTime;
+
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+  target.update(dt, t * 0.001);
+  shooter.update(dt, t * 0.001);
+  updateBullets(dt, t * 0.001);
+  bullets.forEach( b => {
+    if(hit(b, target)) {
+      target.relocate();
+    }
+  })
+
+  renderGrid(
+    ctx,
+    Math.floor(WIDTH / CELLSIZE),
+    Math.floor(WIDTH / CELLSIZE),
+    CELLSIZE,
+    CELLSIZE
+  );
+  target.render(ctx);
+  shooter.render(ctx);
+  renderBullets(ctx);
+  
+
+  console.log(bullets.length);
   requestAnimationFrame(loop);
-
-  dt = Math.min((ellapsedTime - time) * 0.001, MAX_FRAME);
-  time = ellapsedTime;
-
-  ctx.clearRect(0, 0, w, h);
-
-  const spiderMapPos = dungeon.pixelToMapPosition(spider.pos);
-  const spiderPosPixel = dungeon.mapToPixelPosition(spiderMapPos);
-  const tileAtSpiderPositon = dungeon.tileAtPixelPosition(spider.pos);
-
-  // console.log(`map: `, spiderMapPos.x, spiderMapPos.y);
-  // console.log(`pix: `, spiderPosPixel.x, spiderPosPixel.y)
-  
-  // if(tileAtSpiderPositon === dungeon.chldren[12]) {
-  //   console.log('12', tileAtSpiderPositon);
-  // } 
-
-  // if(tileAtSpiderPositon === dungeon.chldren[11]) {
-  //   console.log('11', tileAtSpiderPositon)
-  // }
-
-  rect.pos = {...spider.pos}
-  
-  // console.log(camera.pos)
-  
-  spider.update(dt, time * 0.001);
-  camera.update(dt, time * 0.001);
-  renderCamera(camera, ctx);
-
-  // renderTileMap(dungeon, ctx);
-  // renderTileSprite(spider,ctx);
-
-  renderGrid(h / cellSize, w / cellSize, cellSize, cellSize);
 }
 
 requestAnimationFrame(loop);
