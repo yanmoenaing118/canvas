@@ -7,15 +7,15 @@ export default class Bullet extends Rect {
 
     dead = false;
     angle: number = 0;
-    speed = 320;
+    speed = 120;
     style: Styles = {
         fill: 'brown'
     }
 
     constructor() {
         super();
-        this.w = 32;
-        this.h = 32;
+        this.w = 16;
+        this.h = 16;
     }
 
     update(dt: number, t: number): void {

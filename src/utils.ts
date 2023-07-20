@@ -59,10 +59,18 @@ export function tilesAtCorners(
   ].map(([x, y]) => map.tileAtPixelPosition({ x: x + xo, y: y + yo }));
 }
 
+export function center(e: Entity) {
+  return {
+    x: e.pos.x + e.w / 2,
+    y: e.pos.y + e.h / 2,
+  };
+}
 
-
-export function angle(p1: Vec2, p2: Vec2){ 
+export function angle(e1: Entity, e2: Entity) {
+  const p1 = center(e1);
+  const p2 = center(e2);
   const dx = p1.x - p2.x;
-  const dy = p2.y - p2.y;
+  const dy = p1.y - p2.y;
+  console.log(dx, dy);
   return Math.atan2(dy, dx);
 }
