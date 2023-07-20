@@ -1,5 +1,6 @@
 import Rect from "./Rect";
 import { renderRect } from "./Renderers";
+import { HEIGHT, WIDTH } from "./constants";
 import { Styles } from "./types";
 
 export default class Bullet extends Rect {
@@ -8,21 +9,22 @@ export default class Bullet extends Rect {
     angle: number = 0;
     speed = 320;
     style: Styles = {
-        fill: 'red'
+        fill: 'brown'
     }
 
-    constructor(angleToPlayer: number = 0) {
+    constructor() {
         super();
         this.w = 32;
         this.h = 32;
-        this.angle = angleToPlayer;
     }
 
     update(dt: number, t: number): void {
         this.pos.x += Math.cos(this.angle) * this.speed * dt;
         this.pos.y += Math.sin(this.angle) * this.speed * dt;
 
-        console.log(JSON.stringify(this.pos))
+        if(this.pos.x > WIDTH || this.pos.y > HEIGHT || this.pos.x < 0 || this.pos.y < 0) {
+            this.dead = true;
+        }
     }
 
     render(ctx: CanvasRenderingContext2D){
