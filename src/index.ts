@@ -17,6 +17,22 @@ context.imageSmoothingEnabled = true;
 canvas.width = w;
 canvas.height = h;
 
+// Get the DPR and size of the canvas
+const dpr = window.devicePixelRatio;
+const rect = canvas.getBoundingClientRect();
+
+// Set the "actual" size of the canvas
+canvas.width = rect.width * dpr;
+canvas.height = rect.height * dpr;
+
+// Scale the context to ensure correct drawing operations
+context.scale(dpr, dpr);
+
+// Set the "drawn" size of the canvas
+canvas.style.width = `${rect.width}px`;
+canvas.style.height = `${rect.height}px`;
+
+
 let dt = 1 / 60;
 let time = 0; // in millis
 let second = 0;
