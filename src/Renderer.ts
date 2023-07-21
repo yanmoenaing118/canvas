@@ -19,23 +19,37 @@ export default class Renderer {
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     this.canvas.width = w;
     this.canvas.height = h;
+
+
+
     document.body.appendChild(this.canvas);
 
-    // document.addEventListener('DOMContentLoaded', () => {
-    //   this.canvas.width = window.innerWidth;
-    //   this.canvas.height = window.innerHeight;
-    // })
+    document.addEventListener('DOMContentLoaded', () => {
+          // Get the DPR and size of the canvas
+    const dpr = window.devicePixelRatio;
+    const rect = this.canvas.getBoundingClientRect();
+
+    // Set the "actual" size of the canvas
+    this.canvas.width = rect.width * dpr;
+    this.canvas.height = rect.height * dpr;
+
+    // Scale the context to ensure correct drawing operations
+    this.ctx.scale(dpr, dpr);
+
+    // Set the "drawn" size of the canvas
+    this.canvas.style.width = `${rect.width}px`;
+    this.canvas.style.height = `${rect.height}px`;
+    })
   }
 
   /**
    * renders a collection of entities 'The Container Class'
    */
-  render(this: Renderer,container: Container) {
+  render(this: Renderer, container: Container) {
     const { ctx } = this;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     const renderChildren = (container: Container) => {
-
       container.children.forEach((child: Entity | Container) => {
         ctx.save();
 
@@ -49,12 +63,12 @@ export default class Renderer {
           }
         }
 
-        if(child instanceof Text) {
+        if (child instanceof Text) {
           ctx.font = child.font;
           ctx.shadowOffsetY = 1;
           ctx.shadowOffsetY = 1;
           ctx.shadowBlur = 4;
-          ctx.shadowColor = 'black';
+          ctx.shadowColor = "black";
         }
 
         if (child.pos) {
@@ -62,10 +76,10 @@ export default class Renderer {
         }
 
         if (child instanceof Texture) {
-          ctx.drawImage(child.img, 0, 0, child.w,child.h);
+          ctx.drawImage(child.img, 0, 0, child.w, child.h);
         }
         if (child instanceof Text) {
-          ctx.fillText(child.text, 0,0);
+          ctx.fillText(child.text, 0, 0);
         }
         // actually draw the shapes
         switch (child.shape) {
@@ -88,8 +102,6 @@ export default class Renderer {
     };
 
     renderChildren(container);
-
-
   }
 
   private drawRect(this: Renderer, w: number, h: number) {
