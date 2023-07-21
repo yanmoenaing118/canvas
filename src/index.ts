@@ -6,9 +6,6 @@ import Target from "./Target";
 import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { angle, center, hit } from "./utils";
 
-
-
-
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 document.body.appendChild(canvas);
