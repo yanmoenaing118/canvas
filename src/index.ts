@@ -13,7 +13,7 @@ const canvas = document.createElement("canvas") as HTMLCanvasElement;
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 document.body.appendChild(canvas);
 
-canvas.style.border = "1px solid black";
+// canvas.style.border = "1px solid black";
 
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
@@ -103,13 +103,13 @@ function loop(ellapsedTime: number) {
     }
   })
 
-  // renderGrid(
-  //   ctx,
-  //   Math.floor(WIDTH / CELLSIZE),
-  //   Math.floor(WIDTH / CELLSIZE),
-  //   CELLSIZE,
-  //   CELLSIZE
-  // );
+  renderGrid(
+    ctx,
+    Math.floor(WIDTH / CELLSIZE) + 1,
+    Math.floor(WIDTH / CELLSIZE) + 1,
+    CELLSIZE,
+    CELLSIZE
+  );
   target.render(ctx);
   shooter.render(ctx);
   renderBullets(ctx);
