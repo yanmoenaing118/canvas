@@ -19,6 +19,7 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
   font: "24px Arial",
   fill: "white",
 });
+playerStatus.pos.y = 25;
 scene.add(playerStatus);
 
 

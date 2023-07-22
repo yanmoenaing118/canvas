@@ -10,10 +10,25 @@ class CanvasRenderer {
     const canvas = document.createElement("canvas");
     this.w = canvas.width = w;
     this.h = canvas.height = h;
+
     this.view = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     this.ctx.imageSmoothingEnabled = true;
-    this.ctx.textBaseline = "top";
+
+    window.addEventListener("DOMContentLoaded", () => {
+      // Get the DPR and size of the canvas
+      const dpr = window.devicePixelRatio;
+      const rect = this.view.getBoundingClientRect();
+
+      // Set the "actual" size of the this.view
+      this.view.width = rect.width * dpr;
+      this.view.height = rect.height * dpr;
+      this.ctx.scale(dpr, dpr);
+
+      // Set the "drawn" size of the this.view
+      this.view.style.width = `${rect.width}px`;
+      this.view.style.height = `${rect.height}px`;
+    });
   }
 
   render(container: Container, clear = true) {
@@ -79,10 +94,10 @@ class CanvasRenderer {
             ctx.drawImage(child.texture.img, 0, 0);
           }
         }
-        
-        if(child instanceof Rect) {
+
+        if (child instanceof Rect) {
           ctx.fillStyle = child.style.fill;
-          ctx.fillRect(0,0,child.w,child.h);
+          ctx.fillRect(0, 0, child.w, child.h);
         }
         // Render any child sub-nodes
         if (child.children) {

@@ -8,7 +8,7 @@ import math from "../pop/utils/math";
 import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
-  speed = 320;
+  speed = 1000;
   controls: KeyControls;
   map: Dungeon;
   constructor(controls: KeyControls, map: Dungeon) {
@@ -41,36 +41,37 @@ class Player extends TileSprite {
   }
 
   update(dt: number): void {
-    this.anims.update(dt);    
+    this.anims.update(dt);
 
     const { x, y } = this.controls;
 
     let mx = x * this.speed * dt;
     let my = y * this.speed * dt;
 
-
     const b = entities.bounds(this);
-    const tilesAtCorners = this.map.tilesAtCorners(b,mx, my);
-    const framesInfo = tilesAtCorners.map(t => t && t.frame);
-    const blocked = tilesAtCorners.some(t => t && !t.frame.walkable )
+    const tilesAtCorners = this.map.tilesAtCorners(b, mx, my);
+    const [TL, TR, BL, BR] = tilesAtCorners;
+    const framesInfo = tilesAtCorners.map((t) => t && t.frame);
+    const blocked = tilesAtCorners.some((t) => t && !t.frame.walkable);
 
-    if(blocked) {
+    if (blocked) {
       mx = 0;
       my = 0;
-      console.log(blocked)
+
+      if (this.controls.x) {
+        
+      }
+
+      if (this.controls.y) {
+      }
     }
 
-
-
     console.log(JSON.stringify(framesInfo));
-
-
-
 
     if (x) {
       this.scale.x = x;
       this.anchor.x = x > 0 ? 0 : 48;
-    } 
+    }
 
     // if(x || y) {
     //     this.anims.play('walk');
