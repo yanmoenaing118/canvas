@@ -1,7 +1,7 @@
 import { ctx } from ".";
 import Entity from "./Entity";
 import Vec2 from "./Vec2";
-import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
+import { HEIGHT, WIDTH } from "./constants";
 
 export default class Bat extends Entity {
   point: Vec2 = { x: 0, y: 0 };

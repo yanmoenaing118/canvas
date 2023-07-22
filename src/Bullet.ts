@@ -7,7 +7,7 @@ export default class Bullet extends Rect {
 
     dead = false;
     angle: number = 0;
-    speed = 1200;
+    speed = 2000;
     style: Styles = {
         fill: 'brown'
     }

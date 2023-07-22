@@ -43,25 +43,25 @@ const controls = new KeyControls();
 let targets: Target[] = [];
 let has = false;
 
-
 let target: Target = targets[0];
 const shooter = new Shooter(onFire, target);
-
-
-for (let i = 0; i < 100; i++) {
-  const t = new Target(shooter);
-  targets.push(t);
-}
-
-// find nearset
-targets.forEach((t) => {
-  const betweenCurrent = distance(target, shooter);
-  const betweenNext = distance(t, shooter);
-
-  if (betweenNext < betweenCurrent) {
-    target = t;
+createTargets();
+function createTargets() {
+  for (let i = 0; i < 50; i++) {
+    const t = new Target(shooter);
+    targets.push(t);
   }
-});
+
+  // find nearset
+  targets.forEach((t) => {
+    const betweenCurrent = distance(target, shooter);
+    const betweenNext = distance(t, shooter);
+
+    if (betweenNext < betweenCurrent) {
+      target = t;
+    }
+  });
+}
 
 function renderTargets(ctx: CanvasRenderingContext2D) {
   targets.forEach((t) => t.render(ctx));
@@ -83,7 +83,7 @@ console.log(`
 `);
 
 function onFire(this: Shooter) {
-  if(targets.length == 0) return;
+  if (targets.length == 0) return;
   const bullet = new Bullet();
   const angleToPlayer = angle(target, this);
   const shooterCenter = center(shooter);
@@ -132,6 +132,8 @@ function loop(ellapsedTime: number) {
       }
     });
     target = currTarget;
+  } else {
+    createTargets();
   }
 
   bullets.forEach((b) => {

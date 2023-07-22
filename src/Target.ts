@@ -8,8 +8,8 @@ export default class Target extends Rect {
   speed = 10;
   constructor(shooter: Shooter) {
     super();
-    this.w = 22;
-    this.h = 22;
+    this.w = 30;
+    this.h = 30;
     this.pos.x = Math.floor(Math.random() * (WIDTH - this.w));
     this.pos.y = Math.floor(Math.random() * (HEIGHT - this.h));
     this.style.fill = "red";
@@ -40,5 +40,7 @@ export default class Target extends Rect {
 
     this.pos.x += Math.sin(t * 10) * dt * 320;
     this.pos.y += Math.sin(t * 12) * dt * 230;
+
+    this.speed += dt * 100;
   }
 }
