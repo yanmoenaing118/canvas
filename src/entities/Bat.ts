@@ -13,6 +13,7 @@ export default class Bat extends TileSprite {
 
   constructor() {
     super(texture, TILE_SIZE, TILE_SIZE);
+    // this.frame = {x: 3, y: 1};
     this.anims.add(
       "fly",
       [

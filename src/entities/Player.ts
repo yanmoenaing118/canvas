@@ -11,9 +11,21 @@ class Player extends TileSprite {
   speed = 460;
   controls: KeyControls;
   map: Dungeon;
+  hitBox = {
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0,
+  };
   constructor(controls: KeyControls, map: Dungeon) {
     const texture = new Texture("./images/bravedigger-tiles.png");
     super(texture, TILE_SIZE, TILE_SIZE);
+    this.hitBox = {
+      x: 2,
+      y: 2,
+      w: this.w - 2 * 2,
+      h: this.h - 2 * 2,
+    };
     this.controls = controls;
     this.anims = new AnimationManager(this);
     this.map = map;
@@ -57,15 +69,15 @@ class Player extends TileSprite {
     if (blocked) {
       const [TL, TR, BL, BR] = tilesAtCorners.map((t) => t && t.frame.walkable);
       if (x > 0 && !(TR && BR)) {
-        mx = (tilesAtCorners[1].pos.x - 1) - (bounds.x + bounds.w);
+        mx = tilesAtCorners[1].pos.x - 1 - (bounds.x + bounds.w);
       } else if (x < 0 && !(TL && BL)) {
-        mx = (tilesAtCorners[0].pos.x + tilesAtCorners[0].w) - bounds.x;
-      } 
+        mx = tilesAtCorners[0].pos.x + tilesAtCorners[0].w - bounds.x;
+      }
       if (y) {
         if (y > 0 && !(BL && BR)) {
-          my = (tilesAtCorners[2].pos.y - 1) - (bounds.y + bounds.h);
+          my = tilesAtCorners[2].pos.y - 1 - (bounds.y + bounds.h);
         } else if (y < 0 && !(TL && TR)) {
-          my = (tilesAtCorners[0].pos.y + tilesAtCorners[0].h ) - bounds.y;
+          my = tilesAtCorners[0].pos.y + tilesAtCorners[0].h - bounds.y;
         }
       }
     }
@@ -74,10 +86,10 @@ class Player extends TileSprite {
       this.anchor.x = x > 0 ? 0 : 48;
     }
 
-    if(x || y) {
-        this.anims.play('walk');
+    if (x || y) {
+      this.anims.play("walk");
     } else {
-        this.anims.play('hangout')
+      this.anims.play("hangout");
     }
 
     this.pos.x += mx;
