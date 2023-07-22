@@ -17,7 +17,6 @@ class Player extends TileSprite {
     this.controls = controls;
     this.anims = new AnimationManager(this);
     this.map = map;
-
     this.anims.add(
       "walk",
       [
@@ -59,23 +58,11 @@ class Player extends TileSprite {
       my = 0;
 
       if (this.controls.x) {
-        if (this.controls.x < 0 && TL && BL) {
-          mx = -(this.pos.x - (TL.pos.x + TL.w));
-        } else if (this.controls.x > 0 && TR && BR) {
-          mx = TR.pos.x - (this.pos.x + this.w);
-        } else {
-          mx = 0;
-        }
+
       }
 
       if (this.controls.y) {
-        if (this.controls.y < 0 && TL && TR) {
-          my = -(this.pos.y - (TL.pos.y + TL.h));
-        } else if (this.controls.y > 0 && BL && BR) {
-          my = BL.pos.y - (this.pos.y + this.h);
-        } else {
-          my = 0;
-        }
+       
       }
     }
 
