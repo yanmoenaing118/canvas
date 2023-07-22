@@ -1,4 +1,5 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
+import Bat from "./entities/Ghost";
 import Dungeon from "./entities/Dungeon";
 import Player from "./entities/Player";
 import Game from "./pop/Game";
@@ -15,22 +16,23 @@ const { scene } = game;
 
 const dungeon = scene.add(new Dungeon());
 const player = new Player(controls, dungeon);
+
 const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
   font: "24px Arial",
   fill: "white",
 });
-playerStatus.pos.y = 25;
-scene.add(playerStatus);
 
+const bat = scene.add(new Bat());
+
+
+
+playerStatus.pos.y = 25;
 player.pos.x = player.w;
 player.pos.y = player.h;
 
-const playerRect = scene.add(new Rect(player.w,player.h, {
-  fill: 'transparent'
-}))
-playerRect.pos.x = player.pos.x;
-playerRect.pos.y = player.pos.y; 
 
+
+scene.add(playerStatus);
 scene.add(player);
 game.run(() => {
   const playerMapPos = dungeon.pixelToMapPosition(player.pos);
@@ -39,6 +41,5 @@ game.run(() => {
     map: (${playerMapPos.x}, ${playerMapPos.y})
     `;
   
-    // playerRect.pos = player.pos;
 
 });
