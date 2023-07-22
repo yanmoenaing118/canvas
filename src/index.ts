@@ -3,7 +3,6 @@ import Bat from "./entities/Bat";
 import Dungeon from "./entities/Dungeon";
 import Player from "./entities/Player";
 import Game from "./pop/Game";
-import Rect from "./pop/Rect";
 import Text from "./pop/Text";
 import pop from "./pop/index";
 const { KeyControls } = pop;

@@ -2,8 +2,6 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH, TILE_SIZE } from "../constants";
 import Texture from "../pop/Texture";
 import TileSprite from "../pop/TileSprite";
 import { Position } from "../pop/models";
-import math from "../pop/utils/math";
-import Player from "./Player";
 
 const texture = new Texture("./images/bravedigger-tiles.png");
 

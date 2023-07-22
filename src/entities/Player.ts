@@ -8,7 +8,7 @@ import math from "../pop/utils/math";
 import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
-  speed = 460;
+  speed = 640;
   controls: KeyControls;
   map: Dungeon;
   hitBox = {
@@ -68,11 +68,7 @@ class Player extends TileSprite {
 
     if (blocked) {
       const [TL, TR, BL, BR] = tilesAtCorners.map((t) => t && t.frame.walkable);
-      if (x > 0 && !(TR && BR)) {
-        mx = tilesAtCorners[1].pos.x - 1 - (bounds.x + bounds.w);
-      } else if (x < 0 && !(TL && BL)) {
-        mx = tilesAtCorners[0].pos.x + tilesAtCorners[0].w - bounds.x;
-      }
+
       if (y) {
         if (y > 0 && !(BL && BR)) {
           my = tilesAtCorners[2].pos.y - 1 - (bounds.y + bounds.h);
@@ -80,6 +76,13 @@ class Player extends TileSprite {
           my = tilesAtCorners[0].pos.y + tilesAtCorners[0].h - bounds.y;
         }
       }
+
+      if (x > 0 && !(TR && BR)) {
+        mx = tilesAtCorners[1].pos.x - 1 - (bounds.x + bounds.w);
+      } else if (x < 0 && !(TL && BL)) {
+        mx = tilesAtCorners[0].pos.x + tilesAtCorners[0].w - bounds.x;
+      }
+      
     }
     if (x) {
       this.scale.x = x;
