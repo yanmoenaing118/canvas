@@ -1,7 +1,8 @@
 export type Styles = {
     fill?: string,
     stroke?: string,
-    font?: string
+    font?: string,
+    strokeWidth?: number
 }
 
 export type Frame = {

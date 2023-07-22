@@ -51,6 +51,9 @@ export const renderTileSprite = (
 export const renderRect = (rect: Rect, ctx: CanvasRenderingContext2D) => {
   const { pos, w, h, style } = rect;
   ctx.save();
+  if(style.strokeWidth) {
+    ctx.lineWidth = style.strokeWidth;
+  }
   if (style.fill) {
     ctx.fillStyle = style.fill;
   }

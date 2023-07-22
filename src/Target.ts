@@ -9,11 +9,13 @@ export default class Target extends Rect {
   speed = 0.5;
   constructor(shooter: Shooter) {
     super();
-    this.w = 50;
-    this.h = 50;
+    this.w = 35;
+    this.h = 35;
     this.pos.x = Math.floor(Math.random() * (WIDTH - this.w));
     this.pos.y = Math.floor(Math.random() * (HEIGHT - this.h));
-    this.style.fill = "rgb(222,100,100,0.9)";
+    // this.style.fill = "rgb(222,100,100,0.9)";
+    this.style.stroke = 'purple';
+    this.style.strokeWidth = 3;
     this.shooter = shooter;
     this.speed = Math.random() * 100;
   }
@@ -42,6 +44,6 @@ export default class Target extends Rect {
     this.pos.x += Math.sin(t * 10) * dt * 320;
     this.pos.y += Math.sin(t * 12) * dt * 230;
 
-    this.speed += dt * 10;
+    this.speed += dt * 55;
   }
 }

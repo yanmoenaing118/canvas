@@ -47,7 +47,7 @@ let target: Target = targets[0];
 const shooter = new Shooter(onFire, target);
 createTargets();
 function createTargets() {
-  for (let i = 0; i < 500; i++) {
+  for (let i = 0; i < 50; i++) {
     const t = new Target(shooter);
     targets.push(t);
   }
@@ -154,9 +154,11 @@ function loop(ellapsedTime: number) {
     CELLSIZE
   );
   // target.render(ctx);
-  shooter.render(ctx);
-  renderBullets(ctx);
+
+  
   renderTargets(ctx);
+  renderBullets(ctx);
+  shooter.render(ctx);
 
   requestAnimationFrame(loop);
 }
