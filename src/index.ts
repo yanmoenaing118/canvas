@@ -1,5 +1,5 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
-import Bat from "./entities/Ghost";
+import Bat from "./entities/Bat";
 import Dungeon from "./entities/Dungeon";
 import Player from "./entities/Player";
 import Game from "./pop/Game";
@@ -22,7 +22,9 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
   fill: "white",
 });
 
-const bat = scene.add(new Bat(player));
+for(let i = 0 ; i < 5; i++ ) {
+  scene.add(new Bat());
+}
 
 playerStatus.pos.y = 25;
 player.pos.x = player.w;
