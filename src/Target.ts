@@ -8,6 +8,8 @@ export default class Target extends Rect {
   speed = 10;
   constructor(shooter: Shooter) {
     super();
+    this.w = 22;
+    this.h = 22;
     this.pos.x = Math.floor(Math.random() * (WIDTH - this.w));
     this.pos.y = Math.floor(Math.random() * (HEIGHT - this.h));
     this.style.fill = "red";
