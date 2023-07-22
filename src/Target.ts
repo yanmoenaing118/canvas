@@ -6,14 +6,14 @@ import { center } from "./utils";
 export default class Target extends Rect {
   shooter: Shooter;
   dead = false;
-  speed = 10;
+  speed = 0.5;
   constructor(shooter: Shooter) {
     super();
     this.w = 40;
     this.h = 40;
     this.pos.x = Math.floor(Math.random() * (WIDTH - this.w));
     this.pos.y = Math.floor(Math.random() * (HEIGHT - this.h));
-    this.style.fill = "rgb(222,100,100)";
+    this.style.fill = "rgb(222,100,100,0.9)";
     this.shooter = shooter;
     this.speed = Math.random() * 100;
   }
@@ -42,6 +42,6 @@ export default class Target extends Rect {
     this.pos.x += Math.sin(t * 10) * dt * 320;
     this.pos.y += Math.sin(t * 12) * dt * 230;
 
-    this.speed += dt * 100;
+    this.speed += dt * 10;
   }
 }

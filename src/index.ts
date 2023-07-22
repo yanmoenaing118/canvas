@@ -83,7 +83,7 @@ console.log(`
 `);
 
 function onFire(this: Shooter) {
-  return;
+  // return;
   if (targets.length == 0) return;
   const bullet = new Bullet();
   const angleToPlayer = angle(target, this);
