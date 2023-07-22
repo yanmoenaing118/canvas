@@ -52,18 +52,21 @@ class Player extends TileSprite {
 
     const framesInfo = tilesAtCorners.map((t) => t && t.frame);
     const blocked = tilesAtCorners.some((t) => t && !t.frame.walkable);
-    let tileEdge = 0;
 
     if (blocked) {
       const [TL, TR, BL, BR] = tilesAtCorners.map((t) => t && t.frame.walkable);
-      if ( x > 0 && !(TR && BR)) {
-        tileEdge = tilesAtCorners[1].pos.x - (bounds.x + bounds.w - 1);
-        mx = tileEdge;
-      } else if ( x < 0 && !(TL && BL)) {
-        tileEdge = (tilesAtCorners[0].pos.x + tilesAtCorners[0].w) - bounds.x;
-        mx = tileEdge;
+      if (x > 0 && !(TR && BR)) {
+        mx = (tilesAtCorners[1].pos.x - 1) - (bounds.x + bounds.w);
+      } else if (x < 0 && !(TL && BL)) {
+        mx = (tilesAtCorners[0].pos.x + tilesAtCorners[0].w) - bounds.x;
       } 
       if (y) {
+        if (y > 0 && !(BL && BR)) {
+          my = (tilesAtCorners[2].pos.y - 1) - (bounds.y + bounds.h);
+        } else if (y < 0 && !(TL && TR)) {
+          my = (tilesAtCorners[0].pos.y + tilesAtCorners[0].h ) - bounds.y;
+          // debugger
+        }
       }
     }
 
