@@ -48,7 +48,7 @@ let target: Target = targets[0];
 const shooter = new Shooter(onFire, target);
 
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 100; i++) {
   const t = new Target(shooter);
   targets.push(t);
 }
