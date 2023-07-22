@@ -1,6 +1,7 @@
 import Rect from "./Rect";
 import Shooter from "./Shooter";
 import { HEIGHT, WIDTH } from "./constants";
+import { center } from "./utils";
 
 export default class Target extends Rect {
   shooter: Shooter;
@@ -24,8 +25,8 @@ export default class Target extends Rect {
 
   update(dt: number, t: number): void {
 
-    const dx = this.shooter.pos.x - this.pos.x;
-    const dy = this.shooter.pos.y - this.pos.y;
+    const dx = center(this.shooter).x - center(this).x;
+    const dy = center(this.shooter).y - center(this).y;
     const step = this.speed * dt;
     let isXClose = Math.abs(dx) <= step;
     let isYClose = Math.abs(dy) <= step;
