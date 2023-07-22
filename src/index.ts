@@ -20,14 +20,8 @@ ctx.scale(dpr, dpr);
 canvas.style.width = `${rect.width}px`;
 canvas.style.height = `${rect.height}px`;
 
-
-
-
 let dt = 0;
 let t = 0;
-
-
-
 
 /**
  * Shooter is at the center of th canvas
@@ -45,8 +39,39 @@ let t = 0;
  */
 
 const controls = new KeyControls();
-const shooter = new Shooter(onFire);
-const target = new Target();
+
+let targets: Target[] = [];
+let has = false;
+
+
+let target: Target = targets[0];
+const shooter = new Shooter(onFire, target);
+
+
+for (let i = 0; i < 10; i++) {
+  const t = new Target(shooter);
+  targets.push(t);
+}
+
+// find nearset
+targets.forEach((t) => {
+  const betweenCurrent = distance(target, shooter);
+  const betweenNext = distance(t, shooter);
+
+  if (betweenNext < betweenCurrent) {
+    target = t;
+  }
+});
+
+function renderTargets(ctx: CanvasRenderingContext2D) {
+  targets.forEach((t) => t.render(ctx));
+}
+
+function updateTargets(dt: number, t: number) {
+  targets = targets.filter((t) => !t.dead);
+  targets.forEach((t) => t.update(dt, 0));
+}
+
 let bullets: Bullet[] = [];
 const angleToPlayer = angle(target, shooter);
 
@@ -64,6 +89,7 @@ function onFire(this: Shooter) {
   bullet.pos = { ...shooterCenter };
   bullet.angle = angleToPlayer;
   bullets.push(bullet);
+  console.log(JSON.stringify(target));
 }
 
 function updateBullets(dt: number, t: number) {
@@ -75,20 +101,45 @@ function renderBullets(ctx: CanvasRenderingContext2D) {
   bullets.forEach((b) => b.render(ctx));
 }
 
+function distance(t: Target, shooter: Shooter): number {
+  const p1 = center(t);
+  const p2 = center(shooter);
+  const dx = p1.x - p2.x;
+  const dy = p1.y - p2.y;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  return distance;
+}
+
 function loop(ellapsedTime: number) {
+  let currTarget = targets[0];
   dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
   t = ellapsedTime;
 
   ctx.clearRect(0, 0, WIDTH + CELLSIZE, HEIGHT + CELLSIZE);
 
-  target.update(dt, t * 0.001);
+  updateTargets(dt, t * 0.001);
   shooter.update(dt, t * 0.001);
   updateBullets(dt, t * 0.001);
-  bullets.forEach( b => {
-    if(hit(b, target)) {
-      target.relocate();
-    }
-  })
+
+  // find nearset
+  if (targets.length) {
+    targets.forEach((t) => {
+      const betweenCurrent = distance(currTarget, shooter);
+      const betweenNext = distance(t, shooter);
+      if (betweenNext < betweenCurrent) {
+        currTarget = t;
+      }
+    });
+    target = currTarget;
+  }
+
+  bullets.forEach((b) => {
+    targets.forEach((t) => {
+      if (hit(b, t)) {
+        t.dead = true;
+      }
+    });
+  });
 
   renderGrid(
     ctx,
@@ -97,10 +148,10 @@ function loop(ellapsedTime: number) {
     CELLSIZE,
     CELLSIZE
   );
-  target.render(ctx);
+  // target.render(ctx);
   shooter.render(ctx);
   renderBullets(ctx);
-  
+  renderTargets(ctx);
 
   requestAnimationFrame(loop);
 }

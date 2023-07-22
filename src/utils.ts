@@ -60,6 +60,7 @@ export function tilesAtCorners(
 }
 
 export function center(e: Entity) {
+  if(!e) return { x: 0, y: 0}
   return {
     x: e.pos.x + e.w / 2,
     y: e.pos.y + e.h / 2,
