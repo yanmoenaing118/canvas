@@ -9,13 +9,13 @@ export default class Bullet extends Rect {
     angle: number = 0;
     speed = 2000;
     style: Styles = {
-        fill: 'brown'
+        fill: 'green'
     }
 
     constructor() {
         super();
-        this.w = 16;
-        this.h = 16;
+        this.w = 12;
+        this.h = 12;
     }
 
     update(dt: number, t: number): void {

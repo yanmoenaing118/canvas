@@ -140,6 +140,7 @@ function loop(ellapsedTime: number) {
     targets.forEach((t) => {
       if (hit(b, t)) {
         t.dead = true;
+        b.dead = true;
       }
     });
   });
