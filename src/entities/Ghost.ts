@@ -1,7 +1,8 @@
-import { TILE_SIZE } from "../constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, TILE_SIZE } from "../constants";
 import Texture from "../pop/Texture";
 import TileSprite from "../pop/TileSprite";
 import { Position } from "../pop/models";
+import math from "../pop/utils/math";
 import Player from "./Player";
 
 const texture = new Texture("./images/bravedigger-tiles.png");
@@ -9,14 +10,23 @@ const texture = new Texture("./images/bravedigger-tiles.png");
 export default class Ghost extends TileSprite {
   waypoint: Position = { x: 0, y: 0 };
   player: Player;
-  speed = 220;
+  speed = 50;
 
   constructor(player: Player) {
     super(texture, TILE_SIZE, TILE_SIZE);
     this.player = player;
+    this.speed = player.speed * 0.1;
     this.frame = {
       x: 5,
       y: 1,
+    };
+    this.waypoint = this.makeWaypoint();
+  }
+
+  makeWaypoint() {
+    return {
+      x: Math.random() * CANVAS_WIDTH - this.w * 2,
+      y: Math.random() * CANVAS_HEIGHT - this.h * 2,
     };
   }
 
@@ -25,10 +35,13 @@ export default class Ghost extends TileSprite {
     const dy = this.player.pos.y - this.pos.y;
     const step = this.speed * dt;
 
-    if (dx === 0 || dy === 0) {
-    }
+    let mx = 0;
+    let my = 0;
 
-    this.pos.x += step;
-    this.pos.y += step;
+    mx = dx < 0 ? -step : step;
+    my = dy < 0 ? -step : step;
+
+    this.pos.x += mx;
+    this.pos.y += my;
   }
 }

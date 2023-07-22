@@ -22,9 +22,7 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
   fill: "white",
 });
 
-// const bat = scene.add(new Bat());
-
-
+const bat = scene.add(new Bat(player));
 
 playerStatus.pos.y = 25;
 player.pos.x = player.w;
