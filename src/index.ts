@@ -26,7 +26,7 @@ player.pos.x = player.w;
 player.pos.y = player.h;
 
 const playerRect = scene.add(new Rect(player.w,player.h, {
-  fill: 'white'
+  fill: 'transparent'
 }))
 playerRect.pos.x = player.pos.x;
 playerRect.pos.y = player.pos.y; 
@@ -39,6 +39,6 @@ game.run(() => {
     map: (${playerMapPos.x}, ${playerMapPos.y})
     `;
   
-    playerRect.pos = player.pos;
+    // playerRect.pos = player.pos;
 
 });
