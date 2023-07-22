@@ -25,11 +25,11 @@ scene.add(playerStatus);
 player.pos.x = player.w;
 player.pos.y = player.h;
 
-const playerRect = scene.add(new Rect(player.w,player.h, {
-  fill: 'white'
-}))
-playerRect.pos.x = player.pos.x;
-playerRect.pos.y = player.pos.y; 
+// const playerRect = scene.add(new Rect(player.w,player.h, {
+//   fill: 'white'
+// }))
+// playerRect.pos.x = player.pos.x;
+// playerRect.pos.y = player.pos.y; 
 
 scene.add(player);
 game.run(() => {
@@ -39,6 +39,6 @@ game.run(() => {
     map: (${playerMapPos.x}, ${playerMapPos.y})
     `;
   
-    playerRect.pos = player.pos;
+    // playerRect.pos = player.pos;
 
 });

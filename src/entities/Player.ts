@@ -8,7 +8,7 @@ import math from "../pop/utils/math";
 import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
-  speed = 640;
+  speed = 2500;
   controls: KeyControls;
   map: Dungeon;
   constructor(controls: KeyControls, map: Dungeon) {
@@ -47,26 +47,27 @@ class Player extends TileSprite {
     let mx = x * this.speed * dt;
     let my = y * this.speed * dt;
 
-    const b = entities.bounds(this);
-    const tilesAtCorners = this.map.tilesAtCorners(b, mx, my);
-    const [TL, TR, BL, BR] = tilesAtCorners;
+    const bounds = entities.bounds(this);
+    const tilesAtCorners = this.map.tilesAtCorners(bounds, mx, my);
+
     const framesInfo = tilesAtCorners.map((t) => t && t.frame);
     const blocked = tilesAtCorners.some((t) => t && !t.frame.walkable);
+    let tileEdge = 0;
 
     if (blocked) {
-      mx = 0;
-      my = 0;
-
-      if (this.controls.x) {
-
-      }
-
-      if (this.controls.y) {
-       
+      const [TL, TR, BL, BR] = tilesAtCorners.map((t) => t && t.frame.walkable);
+      if ( x > 0 && !(TR && BR)) {
+        tileEdge = tilesAtCorners[1].pos.x - (bounds.x + bounds.w - 1);
+        mx = tileEdge;
+      } else if ( x < 0 && !(TL && BL)) {
+        tileEdge = (tilesAtCorners[0].pos.x + tilesAtCorners[0].w) - bounds.x;
+        mx = tileEdge;
+      } 
+      if (y) {
       }
     }
 
-    console.log(JSON.stringify(framesInfo));
+    // console.log(JSON.stringify(framesInfo));
 
     if (x) {
       this.scale.x = x;
