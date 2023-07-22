@@ -8,7 +8,7 @@ import math from "../pop/utils/math";
 import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
-  speed = 2500;
+  speed = 320;
   controls: KeyControls;
   map: Dungeon;
   constructor(controls: KeyControls, map: Dungeon) {
@@ -24,8 +24,10 @@ class Player extends TileSprite {
         { x: 1, y: 0 },
         { x: 2, y: 0 },
         { x: 3, y: 0 },
+        { x: 4, y: 0 },
+        { x: 5, y: 0 },
       ],
-      this.speed
+      0.1
     );
 
     this.anims.add(
@@ -36,7 +38,7 @@ class Player extends TileSprite {
       ],
       0.3
     );
-    this.anims.play("hangout");
+    this.anims.play("walk");
   }
 
   update(dt: number): void {
@@ -50,7 +52,6 @@ class Player extends TileSprite {
     const bounds = entities.bounds(this);
     const tilesAtCorners = this.map.tilesAtCorners(bounds, mx, my);
 
-    const framesInfo = tilesAtCorners.map((t) => t && t.frame);
     const blocked = tilesAtCorners.some((t) => t && !t.frame.walkable);
 
     if (blocked) {
@@ -77,11 +78,11 @@ class Player extends TileSprite {
       this.anchor.x = x > 0 ? 0 : 48;
     }
 
-    // if(x || y) {
-    //     this.anims.play('walk');
-    // } else {
-    //     this.anims.play('hangout')
-    // }
+    if(x || y) {
+        this.anims.play('walk');
+    } else {
+        this.anims.play('hangout')
+    }
 
     this.pos.x += mx;
     this.pos.y += my;
