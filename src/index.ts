@@ -22,10 +22,6 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
 playerStatus.pos.y = 25;
 scene.add(playerStatus);
 
-
-
-
-
 player.pos.x = player.w;
 player.pos.y = player.h;
 
@@ -45,5 +41,4 @@ game.run(() => {
   
     playerRect.pos = player.pos;
 
-  
 });

@@ -8,7 +8,7 @@ import math from "../pop/utils/math";
 import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
-  speed = 1000;
+  speed = 2500;
   controls: KeyControls;
   map: Dungeon;
   constructor(controls: KeyControls, map: Dungeon) {
@@ -59,7 +59,13 @@ class Player extends TileSprite {
       my = 0;
 
       if (this.controls.x) {
-        
+        if (this.controls.x < 0 && TL && BL) {
+          mx = -(this.pos.x - (TL.pos.x + TL.w));
+        } else if (this.controls.x > 0 && TR && BR) {
+          mx = TR.pos.x - (this.pos.x + this.w);
+        } else {
+          mx = 0;
+        }
       }
 
       if (this.controls.y) {
