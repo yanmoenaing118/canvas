@@ -32,9 +32,6 @@ camera.update = (dt: number, t: number) => {
   camera.pos.x = cameraOffsetX;
   camera.pos.y = cameraOffsetY;
 
-  camera.pos.x = clamp(camera.pos.x, 0, worldSize.w - camera.w);
-  camera.pos.y = clamp(camera.pos.y, 0, worldSize.h - camera.h);
-
   map.pos.x = -cameraOffsetX;
   map.pos.y = -cameraOffsetY;
 
