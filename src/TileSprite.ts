@@ -1,4 +1,5 @@
 import Entity from "./Entity";
+import { renderTileSprite } from "./renderers";
 
 export default class TileSprite extends Entity {
   texture: HTMLImageElement;
@@ -7,5 +8,9 @@ export default class TileSprite extends Entity {
     super();
     this.texture = texture;
     this.frame = frame;
+  }
+
+  render(ctx: CanvasRenderingContext2D) {
+    renderTileSprite(this, ctx);
   }
 }

@@ -2,8 +2,9 @@ import Camera from "./Camera";
 import { renderGrid } from "./DebugGrid";
 import KeyControls from "./KeyControls";
 import Level from "./Level";
+import Player from "./Player";
 import Renderer from "./Renderer";
-import {HEIGHT, WIDTH } from "./constants";
+import { CELLSIZE, HEIGHT, WIDTH, WORLD_H, WORLD_W } from "./constants";
 import { clamp } from "./utils";
 
 const controls = new KeyControls();
@@ -12,22 +13,17 @@ let dt = 0;
 let time = 0;
 
 const worldSize = {
-  w: WIDTH * 2,
-  h: HEIGHT 
+  w: WORLD_W,
+  h: WORLD_H,
 };
 const map = new Level(worldSize.w, worldSize.h);
-const camera = new Camera(WIDTH, HEIGHT, worldSize);
-const maxX = camera.worldSize.w - camera.w;
-const maxY = camera.worldSize.h - camera.h;
-console.log(camera);
-console.log(maxY);
-console.log(maxX);
-camera.update = (dt: number, t: number) => {
-  camera.pos.x += camera.speed * dt * controls.x;
-  camera.pos.y += camera.speed * dt * controls.y;
+const camera = new Camera(WIDTH * 0.5, HEIGHT * 0.5, worldSize);
+const player = new Player(controls);
 
-  const cameraOffsetX = clamp(camera.pos.x, 0, maxX);
-  const cameraOffsetY = clamp(camera.pos.y, 0, maxY);
+
+camera.update = (dt: number, t: number) => {
+  const cameraOffsetX = clamp(player.pos.x - camera.w / 2 , 0, camera.maxX);
+  const cameraOffsetY = clamp(player.pos.y - camera.h / 2, 0, camera.maxY);
 
   camera.pos.x = cameraOffsetX;
   camera.pos.y = cameraOffsetY;
@@ -35,7 +31,7 @@ camera.update = (dt: number, t: number) => {
   map.pos.x = -cameraOffsetX;
   map.pos.y = -cameraOffsetY;
 
-  console.log(JSON.stringify(map.pos));
+  // console.log(JSON.stringify(map.pos));
 };
 
 function loop(ellapsedTime: number) {
@@ -46,8 +42,11 @@ function loop(ellapsedTime: number) {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
   camera.update(dt, time * 0.001);
+  player.update(dt, time * 0.001);
+
   map.render(ctx);
   camera.render(ctx);
+  player.render(ctx);
 
   // renderGrid(
   //   ctx,

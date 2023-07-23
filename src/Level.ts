@@ -4,8 +4,8 @@ import { CELLSIZE } from "./constants";
 
 export default class Level extends TileMap {
   constructor(w: number, h: number) {
-    const mapW = Math.floor(w / CELLSIZE);
-    const mapH = Math.floor(h / CELLSIZE);
+    const mapW = Math.ceil(w / CELLSIZE);
+    const mapH = Math.ceil(h / CELLSIZE);
     super(mapW, mapH, CELLSIZE);
 
     for (let y = 0; y < mapH; y++) {
@@ -34,7 +34,9 @@ export default class Level extends TileMap {
         this.children[y * mapW + x] = rect;
       }
     }
-  }
+    console.log('Level ', this.w,this.h)
+}
+
 
   
 
