@@ -1,8 +1,10 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH, TILE_SIZE } from "./constants";
 import Bat from "./entities/Bat";
+import Bullet from "./entities/Bullet";
 import Dungeon from "./entities/Dungeon";
 import Player from "./entities/Player";
 import Totem from "./entities/Totem";
+import Container from "./pop/Container";
 import Game from "./pop/Game";
 import Text from "./pop/Text";
 import pop from "./pop/index";
@@ -33,21 +35,42 @@ player.pos.y = player.h;
 scene.add(playerStatus);
 scene.add(player);
 
+const bullets = new Container();
+
 const totem1 = scene.add(
-  new Totem(dungeon.mapPositionToPixel({ x: dungeon.mapW / 2, y: 0 }))
+  new Totem(
+    player,
+    dungeon.mapPositionToPixel({ x: dungeon.mapW / 2, y: 0 }),
+    fireBullets
+  )
 );
 const totem2 = scene.add(
-  new Totem(dungeon.mapPositionToPixel({ x: 12, y: dungeon.mapH - 1 }))
+  new Totem(
+    player,
+    dungeon.mapPositionToPixel({ x: 12, y: dungeon.mapH - 1 }),
+    fireBullets
+  )
 );
 const totem3 = scene.add(
-  new Totem(dungeon.mapPositionToPixel({ x: 0, y: dungeon.mapH / 2 }))
+  new Totem(
+    player,
+    dungeon.mapPositionToPixel({ x: 0, y: dungeon.mapH / 2 }),
+    fireBullets
+  )
 );
 const totem4 = scene.add(
   new Totem(
-    dungeon.mapPositionToPixel({ x: dungeon.mapW - 1, y: dungeon.mapH / 2 })
+    player,
+    dungeon.mapPositionToPixel({ x: dungeon.mapW - 1, y: dungeon.mapH / 2 }),
+    fireBullets
   )
 );
 
+function fireBullets(bullet: Bullet) {
+  console.log('bullet fireing');
+  bullets.add(bullet)
+}
+scene.add(bullets)
 game.run(() => {
   const playerMapPos = dungeon.pixelToMapPosition(player.pos);
   playerStatus.text = `

@@ -2,6 +2,7 @@ import { Position } from "../models";
 import math from "./math";
 import { Entity } from "../models";
 import Rect from "../Rect";
+import TileSprite from "../TileSprite";
 function center<T extends Entity>(entity: T): Position {
   return {
     x: entity.pos.x + entity.w / 2,
@@ -28,7 +29,6 @@ function debug(e: any) {
       x: hitBox.x,
       y: hitBox.y,
     };
-
 
     e.children.push(boundingRect);
     e.children.push(hitRect);
@@ -60,22 +60,28 @@ function hits(e: any, container: any, hitCallback: Function) {
   const a = bounds(e);
   container.map((e2: any) => {
     const b = bounds(e2);
-    if(
+    if (
       a.x <= b.x + b.w &&
       a.x + a.w >= b.x &&
       a.y <= b.y + b.h &&
-      a.y + a.h >= b.y 
-     ){
+      a.y + a.h >= b.y
+    ) {
       hitCallback(e2);
     }
-  })
+  });
 }
 
 function relocate(w: number, h: number) {
   return {
     x: math.rand(w),
-    y: math.rand(h)
-  }
+    y: math.rand(h),
+  };
+}
+
+function angle(a: Position, b: Position) {
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  return Math.atan2(dy, dx);
 }
 
 export default {
@@ -85,5 +91,6 @@ export default {
   bounds,
   hit,
   hits,
-  relocate
+  relocate,
+  angle
 };
