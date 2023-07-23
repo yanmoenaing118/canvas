@@ -3,9 +3,7 @@ import Texture from "../pop/Texture";
 import TileSprite from "../pop/TileSprite";
 import { Position } from "../pop/models";
 import entities from "../pop/utils/entities";
-import math from "../pop/utils/math";
 import Bullet from "./Bullet";
-import Player from "./Player";
 const texture = new Texture("images/bravedigger-tiles.png");
 
 export default class Totem extends TileSprite {
