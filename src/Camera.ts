@@ -15,14 +15,4 @@ export default class Camera extends Rect {
     this.maxX = worlSize.w - this.w;
     this.maxY = worlSize.h - this.h;
   }
-
-
-  render(ctx: CanvasRenderingContext2D) {
-    // ctx.save(); 
-    // ctx.fillStyle = this.style.fill || 'red';
-    // ctx.translate(this.pos.x, this.pos.y);
-    // ctx.fillRect(0,0,32,32);
-    // ctx.restore();
-    // renderRect(this, ctx);
-  }
 }

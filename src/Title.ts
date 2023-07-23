@@ -1,5 +1,4 @@
 import Entity from "./Entity";
-import Rect from "./Rect";
 import { Styles } from "./interfaces";
 
 export default class Title extends Entity {
@@ -28,6 +27,7 @@ export default class Title extends Entity {
     }
 
     ctx.fillText(this.title, this.pos.x, this.pos.y);
+    ctx.strokeText(this.title, this.pos.x, this.pos.y);
 
     ctx.restore();
   }

@@ -19,10 +19,11 @@ export const renderTileSprite = (
   tileSprite: TileSprite,
   ctx: CanvasRenderingContext2D
 ) => {
-  const { w, h, frame, pos, texture } = tileSprite;
+  const { w, h, frame, pos, texture, scale } = tileSprite;
 
   ctx.save();
   ctx.translate(pos.x, pos.y);
+  ctx.scale(scale.x, scale.y)
   ctx.drawImage(texture, frame.x * w, frame.y * h, w, h, 0, 0, w, h);
   ctx.restore();
 };

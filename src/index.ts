@@ -25,8 +25,18 @@ const title = new Title("Camera movement".toUpperCase(), {
   fill: "black",
   stroke: "black",
 });
-title.pos.x = 50;
+
+title.pos.x = WIDTH - 300;
 title.pos.y = 40;
+
+const instruction = new Title("Use Arrows Key or (AWSD) to move around".toUpperCase(), {
+  font: "20px Monospace",
+  fill: "white",
+  stroke: "black",
+});
+
+instruction.pos.x = 50;
+instruction.pos.y = 32;
 
 camera.update = (dt: number, t: number) => {
   const cameraOffsetX = clamp(player.pos.x - camera.w / 2, 0, camera.maxX);
@@ -62,14 +72,15 @@ function loop(ellapsedTime: number) {
   ctx.restore();
 
   title.render(ctx);
-  renderGrid(
-    ctx,
-    HEIGHT / CELLSIZE + 1,
-    WIDTH / CELLSIZE + 1,
-    CELLSIZE,
-    CELLSIZE,
-    "black"
-  );
+  instruction.render(ctx);
+  // renderGrid(
+  //   ctx,
+  //   HEIGHT / CELLSIZE + 1,
+  //   WIDTH / CELLSIZE + 1,
+  //   CELLSIZE,
+  //   CELLSIZE,
+  //   "black"
+  // );
 }
 
 requestAnimationFrame(loop);
