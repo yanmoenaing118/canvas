@@ -1,13 +1,13 @@
 import Vec2 from "./Vec2";
 import { CELLSIZE } from "./constants";
-import { Styles } from "./types";
+
 
 export default class Entity {
   pos: Vec2;
   anchor: Vec2;
   scale: Vec2;
   rotation: number;
-  style: Styles;
+  style: any;
   w: number;
   h: number;
   constructor() {
@@ -22,13 +22,5 @@ export default class Entity {
 
   update(dt: number, t: number): void {}
 
-  /**
-   * 
-   * @param w container width
-   * @param h container heigh
-   */
-  center(w: number, h: number) {
-    this.pos.x = w / 2 - this.w * 0.5;
-    this.pos.y = h / 2 - this.h * 0.5;
-  }
+
 }
