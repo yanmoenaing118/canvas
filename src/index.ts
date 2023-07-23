@@ -3,7 +3,7 @@ import { renderGrid } from "./DebugGrid";
 import KeyControls from "./KeyControls";
 import Level from "./Level";
 import Renderer from "./Renderer";
-import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
+import {HEIGHT, WIDTH } from "./constants";
 import { clamp } from "./utils";
 
 const controls = new KeyControls();
@@ -13,7 +13,7 @@ let time = 0;
 
 const worldSize = {
   w: WIDTH * 2,
-  h: HEIGHT * 2
+  h: HEIGHT 
 };
 const map = new Level(worldSize.w, worldSize.h);
 const camera = new Camera(WIDTH, HEIGHT, worldSize);
@@ -44,20 +44,19 @@ function loop(ellapsedTime: number) {
   time = ellapsedTime;
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  ctx.fillRect(0, 0, worldSize.w, worldSize.h);
 
   camera.update(dt, time * 0.001);
   map.render(ctx);
   camera.render(ctx);
 
-  renderGrid(
-    ctx,
-    HEIGHT / CELLSIZE + 1,
-    WIDTH / CELLSIZE + 1,
-    CELLSIZE,
-    CELLSIZE,
-    "black"
-  );
+  // renderGrid(
+  //   ctx,
+  //   HEIGHT / CELLSIZE + 1,
+  //   WIDTH / CELLSIZE + 1,
+  //   CELLSIZE,
+  //   CELLSIZE,
+  //   "white"
+  // );
 }
 
 requestAnimationFrame(loop);

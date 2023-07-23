@@ -10,7 +10,11 @@ export default class Level extends TileMap {
 
     for (let y = 0; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
-        let fill = 'black';
+        let fill = 'transparent';
+
+        if (x % 2 == 0 && Math.random() > 0.5) {
+            fill = "orange";
+          }
     
         if (x % 2 && y % 2 && x == y) {
           fill = "orange";
