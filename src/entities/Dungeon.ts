@@ -1,10 +1,10 @@
-import { TILE_SIZE } from "../constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, TILE_SIZE } from "../constants";
 import Texture from "../pop/Texture";
 import TileMap from "../pop/TileMap";
 import math from "../pop/utils/math";
 
-const mapW = 19;
-const mapH = 11;
+const mapW = CANVAS_WIDTH / TILE_SIZE;
+const mapH = CANVAS_HEIGHT / TILE_SIZE;
 const tileSize = TILE_SIZE;
 const texture = new Texture("images/bravedigger-tiles.png");
 

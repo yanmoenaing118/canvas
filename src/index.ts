@@ -21,7 +21,7 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
   fill: "white",
 });
 
-for(let i = 0 ; i < 5; i++ ) {
+for(let i = 0 ; i < 10; i++ ) {
   scene.add(new Bat());
 }
 
