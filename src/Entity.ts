@@ -1,3 +1,4 @@
+import Camera from "./Camera";
 import Rect from "./Rect";
 import Vec2 from "./Vec2";
 import { CELLSIZE } from "./constants";
@@ -23,19 +24,4 @@ export default class Entity {
 
   update(dt: number, t: number): void {}
 
-  render(ctx: CanvasRenderingContext2D) {
-    const { pos, style, w, h } = this;
-    if (this instanceof Rect) {
-      ctx.save();
-      if (style.fill) {
-        ctx.fillStyle = style.fill;
-      }
-      if (style.stroke) {
-        ctx.strokeStyle = style.stroke;
-      }
-      ctx.translate(pos.x, pos.y);
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-    }
-  }
 }

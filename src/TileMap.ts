@@ -1,4 +1,5 @@
 import Entity from "./Entity";
+import { renderRect } from "./renderers";
 
 export default class TileMap extends Entity {
   mapW: number;
@@ -15,6 +16,9 @@ export default class TileMap extends Entity {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-      this.children.forEach(t => t.render(ctx))
+    ctx.save();
+    ctx.translate(this.pos.x, this.pos.y);
+    this.children.forEach((t) => renderRect(t, ctx));
+    ctx.restore();
   }
 }
