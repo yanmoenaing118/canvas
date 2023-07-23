@@ -33,6 +33,7 @@ player.pos.y = player.h;
 
 scene.add(playerStatus);
 scene.add(player);
+
 game.run(() => {
   const playerMapPos = dungeon.pixelToMapPosition(player.pos);
   playerStatus.text = `

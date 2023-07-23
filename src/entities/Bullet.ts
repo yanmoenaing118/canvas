@@ -8,6 +8,7 @@ export default class Bullet extends TileSprite {
   dir: Position;
   constructor(dir: Position, speed = 100) {
     super(texture, TILE_SIZE, TILE_SIZE);
+    this.frame = { x: 4, y: 2 };
     this.speed = speed;
     this.dir = dir;
   }
