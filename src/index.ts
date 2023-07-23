@@ -2,7 +2,7 @@ import { renderGrid } from "./DebugGrid";
 import Renderer from "./Renderer";
 import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
 
-const { ctx, canvas } = new Renderer(WIDTH, HEIGHT);
+const { ctx } = new Renderer(WIDTH, HEIGHT);
 let dt = 0;
 let time = 0;
 
@@ -15,8 +15,8 @@ function loop(ellapsedTime: number) {
 
   renderGrid(
     ctx,
-    HEIGHT / CELLSIZE,
-    WIDTH / CELLSIZE,
+    (HEIGHT / CELLSIZE) + 1,
+    (WIDTH / CELLSIZE) + 1,
     CELLSIZE,
     CELLSIZE,
     "black"

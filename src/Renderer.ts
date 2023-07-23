@@ -8,7 +8,7 @@ export default class Renderer {
 
     canvas.width = width;
     canvas.height = height;
-    canvas.style.border = '1px solid gray';
+    // canvas.style.border = '1px solid gray';
 
     this.canvas = canvas;
     this.ctx = ctx;
