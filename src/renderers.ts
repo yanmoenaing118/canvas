@@ -1,4 +1,5 @@
 import Rect from "./Rect";
+import TileSprite from "./TileSprite";
 
 export const renderRect = (rect: Rect, ctx: CanvasRenderingContext2D) => {
   const { pos, style, w, h } = rect;
@@ -11,5 +12,16 @@ export const renderRect = (rect: Rect, ctx: CanvasRenderingContext2D) => {
   }
   ctx.translate(pos.x, pos.y);
   ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+};
+
+export const renderTileSprite = (
+  tileSprite: TileSprite,
+  ctx: CanvasRenderingContext2D
+) => {
+  const { w, h, frame } = tileSprite;
+
+  ctx.save();
+
   ctx.restore();
 };
