@@ -17,13 +17,13 @@ const worldSize = {
   h: WORLD_H,
 };
 const map = new Level(worldSize.w, worldSize.h);
-const camera = new Camera(WIDTH * 0.5, HEIGHT * 0.5, worldSize);
+const camera = new Camera(WIDTH *1, HEIGHT *1, worldSize);
 const player = new Player(controls);
 
 
 camera.update = (dt: number, t: number) => {
-  const cameraOffsetX = clamp(player.pos.x - camera.w / 2 , 0, camera.maxX);
-  const cameraOffsetY = clamp(player.pos.y - camera.h / 2, 0, camera.maxY);
+  const cameraOffsetX = clamp(player.pos.x - worldSize.w / 2 , 0, camera.maxX);
+  const cameraOffsetY = clamp(player.pos.y - worldSize.h / 2, 0, camera.maxY);
 
   camera.pos.x = cameraOffsetX;
   camera.pos.y = cameraOffsetY;
