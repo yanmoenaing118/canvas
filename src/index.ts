@@ -13,7 +13,9 @@ const canvas = document.createElement("canvas") as HTMLCanvasElement;
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 document.body.appendChild(canvas);
 
-canvas.style.border = "1px solid black";
+canvas.style.margin = "30px"
+
+canvas.style.boxShadow = "0 0 3px rgba(0,0,0,0.3)";
 
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
@@ -94,6 +96,8 @@ function loop(ellapsedTime: number) {
 
   ctx.clearRect(0, 0, WIDTH + CELLSIZE, HEIGHT + CELLSIZE);
 
+  
+
   target.update(dt, t * 0.001);
   shooter.update(dt, t * 0.001);
   updateBullets(dt, t * 0.001);
@@ -103,16 +107,16 @@ function loop(ellapsedTime: number) {
     }
   })
 
-  // renderGrid(
-  //   ctx,
-  //   Math.floor(WIDTH / CELLSIZE),
-  //   Math.floor(WIDTH / CELLSIZE),
-  //   CELLSIZE,
-  //   CELLSIZE
-  // );
-  target.render(ctx);
-  shooter.render(ctx);
-  renderBullets(ctx);
+  renderGrid(
+    ctx,
+    Math.floor(WIDTH / CELLSIZE) + 1,
+    Math.floor(WIDTH / CELLSIZE) + 1,
+    CELLSIZE,
+    CELLSIZE
+  );
+  // target.render(ctx);
+  // shooter.render(ctx);
+  // renderBullets(ctx);
   
 
   requestAnimationFrame(loop);
