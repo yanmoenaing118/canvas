@@ -15,10 +15,12 @@ export default class Player extends TileSprite {
   }
 
   update(dt: number, t: number): void {
-    this.pos.x += this.constrols.x * dt * this.speed;
+    // this.pos.x += this.constrols.x * dt * this.speed;
     this.pos.y += this.constrols.y * dt * this.speed;
+    this.pos.x += dt * this.speed;
+    // this.pos.y +=  dt * this.speed;
 
-    this.pos.x = clamp(this.pos.x, CELLSIZE, WORLD_W - this.w);
-    this.pos.y = clamp(this.pos.y, CELLSIZE, WORLD_H - this.h);
+    this.pos.x = clamp(this.pos.x, CELLSIZE, WORLD_W - this.w * 2);
+    this.pos.y = clamp(this.pos.y, CELLSIZE, WORLD_H - this.h * 2);
   }
 }
