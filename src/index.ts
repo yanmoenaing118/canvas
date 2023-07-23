@@ -17,19 +17,19 @@ const worldSize = {
   h: WORLD_H,
 };
 const map = new Level(worldSize.w, worldSize.h);
-const camera = new Camera(WIDTH *1, HEIGHT *1, worldSize);
+const camera = new Camera(WIDTH * 1, HEIGHT * 1, worldSize);
 const player = new Player(controls);
-
+const tile = 'Camera Movement'.toUpperCase();
 
 camera.update = (dt: number, t: number) => {
-  const cameraOffsetX = clamp(player.pos.x - worldSize.w / 2 , 0, camera.maxX);
-  const cameraOffsetY = clamp(player.pos.y - worldSize.h / 2, 0, camera.maxY);
+  const cameraOffsetX = clamp(player.pos.x - camera.w / 2, 0, camera.maxX);
+  const cameraOffsetY = clamp(player.pos.y - camera.h / 2, 0, camera.maxY);
 
-  camera.pos.x = cameraOffsetX;
-  camera.pos.y = cameraOffsetY;
+  camera.pos.x = -cameraOffsetX;
+  camera.pos.y = -cameraOffsetY;
 
-  map.pos.x = -cameraOffsetX;
-  map.pos.y = -cameraOffsetY;
+  // map.pos.x = -cameraOffsetX;
+  // map.pos.y = -cameraOffsetY;
 
   // console.log(JSON.stringify(map.pos));
 };
@@ -44,10 +44,23 @@ function loop(ellapsedTime: number) {
   camera.update(dt, time * 0.001);
   player.update(dt, time * 0.001);
 
-  map.render(ctx);
-  camera.render(ctx);
-  player.render(ctx);
+  /**
+   * Every entity need to be inside the Camera render cycle
+   */
 
+
+
+  ctx.save();
+  ctx.translate(camera.pos.x, camera.pos.y);
+  map.render(ctx);
+  player.render(ctx);
+  ctx.restore();
+
+  ctx.save();
+  ctx.font = '30px Monospace';
+  ctx.fillStyle = 'white';
+  ctx.fillText(tile, CELLSIZE * 0.5, CELLSIZE  * 0.65);
+  ctx.restore();
   // renderGrid(
   //   ctx,
   //   HEIGHT / CELLSIZE + 1,

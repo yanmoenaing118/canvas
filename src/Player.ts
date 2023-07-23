@@ -1,6 +1,6 @@
 import KeyControls from "./KeyControls";
 import TileSprite from "./TileSprite";
-import { WORLD_H, WORLD_W } from "./constants";
+import { CELLSIZE, WORLD_H, WORLD_W } from "./constants";
 import { clamp } from "./utils";
 
 const texture = new Image();
@@ -18,7 +18,7 @@ export default class Player extends TileSprite {
     this.pos.x += this.constrols.x * dt * this.speed;
     this.pos.y += this.constrols.y * dt * this.speed;
 
-    this.pos.x = clamp(this.pos.x, 0, WORLD_W - this.w);
-    this.pos.y = clamp(this.pos.y, 0, WORLD_H - this.h);
+    this.pos.x = clamp(this.pos.x, CELLSIZE, WORLD_W - this.w);
+    this.pos.y = clamp(this.pos.y, CELLSIZE, WORLD_H - this.h);
   }
 }

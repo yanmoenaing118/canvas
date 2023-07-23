@@ -34,7 +34,7 @@ export default class Level extends TileMap {
         this.children[y * mapW + x] = rect;
       }
     }
-    console.log('Level ', this.w,this.h)
+    console.log('Level ', this.w)
 }
 
 

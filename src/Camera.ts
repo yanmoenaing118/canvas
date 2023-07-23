@@ -23,6 +23,6 @@ export default class Camera extends Rect {
     // ctx.translate(this.pos.x, this.pos.y);
     // ctx.fillRect(0,0,32,32);
     // ctx.restore();
-    renderRect(this, ctx);
+    // renderRect(this, ctx);
   }
 }
