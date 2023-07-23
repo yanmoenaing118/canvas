@@ -11,11 +11,14 @@ const { ctx } = new Renderer(WIDTH, HEIGHT);
 let dt = 0;
 let time = 0;
 
-const worldSize = WIDTH + WIDTH;
-const map = new Level(worldSize, worldSize);
-const camera = new Camera(WIDTH, WIDTH, worldSize);
-const maxX = camera.worldSize - camera.w;
-const maxY = camera.worldSize - camera.h;
+const worldSize = {
+  w: WIDTH * 2,
+  h: HEIGHT * 2
+};
+const map = new Level(worldSize.w, worldSize.h);
+const camera = new Camera(WIDTH, HEIGHT, worldSize);
+const maxX = camera.worldSize.w - camera.w;
+const maxY = camera.worldSize.h - camera.h;
 console.log(camera);
 console.log(maxY);
 console.log(maxX);
@@ -29,10 +32,13 @@ camera.update = (dt: number, t: number) => {
   camera.pos.x = cameraOffsetX;
   camera.pos.y = cameraOffsetY;
 
+  camera.pos.x = clamp(camera.pos.x, 0, worldSize.w - camera.w);
+  camera.pos.y = clamp(camera.pos.y, 0, worldSize.h - camera.h);
+
   map.pos.x = -cameraOffsetX;
   map.pos.y = -cameraOffsetY;
 
-  console.log(JSON.stringify(camera.pos));
+  console.log(JSON.stringify(map.pos));
 };
 
 function loop(ellapsedTime: number) {
@@ -41,7 +47,7 @@ function loop(ellapsedTime: number) {
   time = ellapsedTime;
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  ctx.fillRect(0, 0, worldSize, worldSize);
+  ctx.fillRect(0, 0, worldSize.w, worldSize.h);
 
   camera.update(dt, time * 0.001);
   map.render(ctx);

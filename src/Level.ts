@@ -10,14 +10,20 @@ export default class Level extends TileMap {
 
     for (let y = 0; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
-        let fill = "black";
-        if (x % 2 || y % 2) {
-          fill = "pink";
-        }
-
+        let fill = 'black';
+    
         if (x % 2 && y % 2 && x == y) {
           fill = "orange";
         }
+
+        if(y == 0 || x == 0 || y == mapH - 1  || x == mapW - 1) {
+            fill = 'brown';
+        }
+
+        if( y == mapH - 1) {
+            // debugger
+        }
+
         const rect = new Rect(fill);
         rect.pos.x = x * this.tileSize;
         rect.pos.y = y * this.tileSize
