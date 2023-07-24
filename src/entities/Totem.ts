@@ -10,6 +10,8 @@ export default class Totem extends TileSprite {
   onFire: (...arg: any) => void;
   target: TileSprite;
   fireIn = 5;
+  frameX = 0;
+  willFireHintRate = 0.2;
   constructor(
     target: TileSprite,
     pos: Position,
@@ -18,7 +20,7 @@ export default class Totem extends TileSprite {
     super(texture, TILE_SIZE, TILE_SIZE);
     this.pos = pos;
     this.frame = {
-      x: 0,
+      x: this.frameX,
       y: 1,
     };
     this.target = target;
@@ -43,6 +45,14 @@ export default class Totem extends TileSprite {
     if ((this.fireIn -= dt) < 0) {
       this.fireIn = 3;
       this.fireTarget();
+    }
+
+    if(this.fireIn <= 1) {
+      
+      if((this.willFireHintRate -= dt ) < 0) {
+        this.willFireHintRate = 0.2;
+        this.frame.x = this.frameX++ % 2;
+      }
     }
   }
 }
