@@ -9,7 +9,7 @@ const texture = new Texture("images/bravedigger-tiles.png");
 export default class Totem extends TileSprite {
   onFire: (...arg: any) => void;
   target: TileSprite;
-  fireIn = 3;
+  fireIn = 5;
   constructor(
     target: TileSprite,
     pos: Position,
@@ -32,11 +32,12 @@ export default class Totem extends TileSprite {
     console.log(angleToPlayer)
     const dir = {
       x: Math.cos(angleToPlayer),
-      y: Math.sign(angleToPlayer),
+      y: Math.sin(angleToPlayer),
     };
     const bullet = new Bullet(dir);
-    bullet.pos.x = this.pos.x;
-    bullet.pos.y = this.pos.y;
+    bullet.pos.x = totemPos.x - bullet.w/2;
+    bullet.pos.y = totemPos.y - bullet.h/2;
+
     this.onFire(bullet);
   }
 
