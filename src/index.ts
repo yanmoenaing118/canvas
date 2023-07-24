@@ -17,12 +17,16 @@ function setup() {
   function loop() {
     requestAnimationFrame(loop);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     player.render(ctx);
   }
 
   requestAnimationFrame(loop);
+
+  window.addEventListener("dblclick", () => {
+    toggleFullScreen();
+  });
 
   canvas.addEventListener("touchstart", touchStart);
   canvas.addEventListener("touchend", touchEnd);
@@ -30,7 +34,7 @@ function setup() {
   canvas.addEventListener("touchcancel", touchCancel);
 
   function touchStart(e: TouchEvent) {
-    e.preventDefault();
+    // e.preventDefault();
     console.log("start", e.changedTouches);
 
     const touches = e.changedTouches;
@@ -42,8 +46,17 @@ function setup() {
       // drawPath(x, y);
       player.pos.x = x - 32;
       player.pos.y = y - 32;
-
     }
+  }
+
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+    canvas.width = document.fullscreenElement?.clientWidth as number;
+    canvas.height = document.fullscreenElement?.clientHeight as number;
   }
 
   function drawPath(x: number, y: number) {
@@ -77,7 +90,6 @@ function setup() {
   function touchCancel(e: TouchEvent) {
     console.log("cancel");
   }
-  
 }
 
 document.addEventListener("DOMContentLoaded", setup);
