@@ -8,6 +8,7 @@ import Container from "./pop/Container";
 import Game from "./pop/Game";
 import Text from "./pop/Text";
 import pop from "./pop/index";
+import math from "./pop/utils/math";
 const { KeyControls } = pop;
 
 const controls = new KeyControls();
@@ -24,7 +25,7 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
   fill: "white",
 });
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 4; i++) {
   scene.add(new Bat());
 }
 
@@ -32,42 +33,22 @@ playerStatus.pos.y = 25;
 player.pos.x = player.w;
 player.pos.y = player.h;
 
-scene.add(playerStatus);
+// scene.add(playerStatus);
 scene.add(player);
 
 const bullets = new Container();
 
-const totem1 = scene.add(
-  new Totem(
-    player,
-    dungeon.mapPositionToPixel({ x: dungeon.mapW / 2, y: 0 }),
-    fireBullets
-  )
-);
-const totem2 = scene.add(
-  new Totem(
-    player,
-    dungeon.mapPositionToPixel({ x: 12, y: dungeon.mapH - 1 }),
-    fireBullets
-  )
-);
-const totem3 = scene.add(
-  new Totem(
-    player,
-    dungeon.mapPositionToPixel({ x: 0, y: dungeon.mapH / 2 }),
-    fireBullets
-  )
-);
-const totem4 = scene.add(
-  new Totem(
-    player,
-    dungeon.mapPositionToPixel({ x: dungeon.mapW - 1, y: dungeon.mapH / 2 }),
-    fireBullets
-  )
-);
+for (let i = 0; i < 2; i++) {
+  scene.add(
+    new Totem(
+      player,
+      dungeon.mapPositionToPixel({ x: math.rand(dungeon.mapW), y: math.rand(dungeon.mapH) }),
+      fireBullets
+    )
+  );
+}
 
 function fireBullets(bullet: Bullet) {
-  console.log('bullet fireing');
   bullets.add(bullet)
 }
 scene.add(bullets)

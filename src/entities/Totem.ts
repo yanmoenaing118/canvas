@@ -29,12 +29,10 @@ export default class Totem extends TileSprite {
     const totemPos = entities.center(this);
     const targetPos = entities.center(this.target);
     const angleToPlayer = entities.angle(targetPos, totemPos);
-    console.log(angleToPlayer)
-    const dir = {
-      x: Math.cos(angleToPlayer),
-      y: Math.sin(angleToPlayer),
-    };
-    const bullet = new Bullet(dir);
+
+    const x = Math.cos(angleToPlayer);
+    const y = Math.sin(angleToPlayer);
+    const bullet = new Bullet({ x, y }, 250);
     bullet.pos.x = totemPos.x - bullet.w/2;
     bullet.pos.y = totemPos.y - bullet.h/2;
 
