@@ -8,7 +8,7 @@ import math from "../pop/utils/math";
 import Dungeon from "./Dungeon";
 
 class Player extends TileSprite {
-  speed = 480;
+  speed = 320;
   controls: KeyControls;
   map: Dungeon;
   hitBox = {
