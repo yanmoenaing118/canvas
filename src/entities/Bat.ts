@@ -66,6 +66,7 @@ export default class Bat extends TileSprite {
     let ox = 0;
     let oy = 0;
 
+
     if (state === states.ATTACK) {
       ox = Math.cos(angle) * dt * this.speed;
       oy = Math.sin(angle) * dt * this.speed;
@@ -88,9 +89,6 @@ export default class Bat extends TileSprite {
     } else if (state === states.WANDER) {
       ox = step * (dx > 0 ? 1 : -1);
       oy = step * (dy > 0 ? 1 : -1);
-      if(distance > 220) {
-        this.state = states.ATTACK;
-      }
     }
 
     console.log(angle);
