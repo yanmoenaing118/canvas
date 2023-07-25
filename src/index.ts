@@ -25,13 +25,15 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
   fill: "white",
 });
 
-for (let i = 0; i < 4; i++) {
-  scene.add(new Bat());
-}
+
 
 playerStatus.pos.y = 25;
 player.pos.x = player.w;
 player.pos.y = player.h;
+
+for (let i = 0; i < 4; i++) {
+  scene.add(new Bat(player));
+}
 
 // scene.add(playerStatus);
 scene.add(player);

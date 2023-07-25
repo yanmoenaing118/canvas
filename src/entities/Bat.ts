@@ -1,17 +1,28 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH, TILE_SIZE } from "../constants";
 import Texture from "../pop/Texture";
 import TileSprite from "../pop/TileSprite";
-import { Position } from "../pop/models";
+import { Entity, Position } from "../pop/models";
+import entities from "../pop/utils/entities";
+import math from "../pop/utils/math";
+import Player from "./Player";
 
 const texture = new Texture("./images/bravedigger-tiles.png");
+const states = {
+  ATTACK: 0,
+  AVADE: 1,
+  WANDER: 2,
+};
 
 export default class Bat extends TileSprite {
   waypoint: Position;
   speed = 75;
+  state = states.ATTACK;
+  target: Player;
 
-  constructor() {
+  constructor(target: Player) {
     super(texture, TILE_SIZE, TILE_SIZE);
     // this.frame = {x: 3, y: 1};
+    this.target = target;
     this.anims.add(
       "fly",
       [
@@ -26,15 +37,15 @@ export default class Bat extends TileSprite {
       ],
       0.15
     );
-    this.anims.play('fly');
+    this.anims.play("fly");
     this.pos = this.makeWaypoint();
     this.waypoint = this.makeWaypoint();
   }
 
   makeWaypoint() {
     return {
-      x: Math.random() * (CANVAS_WIDTH - this.w ),
-      y: Math.random() * (CANVAS_HEIGHT - this.h ),
+      x: Math.random() * (CANVAS_WIDTH - this.w),
+      y: Math.random() * (CANVAS_HEIGHT - this.h),
     };
   }
 
@@ -43,19 +54,48 @@ export default class Bat extends TileSprite {
     const dx = this.waypoint.x - this.pos.x;
     const dy = this.waypoint.y - this.pos.y;
     const step = this.speed * dt;
-    let isXClose = Math.abs(dx) <= step;
-    let isYClose = Math.abs(dy) <= step;
 
-    if (!isXClose) {
-      this.pos.x += this.speed * (dx > 0 ? 1 : -1) * dt;
+    const { state } = this;
+
+    const angle = entities.angle(
+      entities.center(this.target),
+      entities.center(this)
+    );
+    const distance = entities.distance(this, this.target as Entity);
+
+    let ox = 0;
+    let oy = 0;
+
+    if (state === states.ATTACK) {
+      ox = Math.cos(angle) * dt * this.speed;
+      oy = Math.sin(angle) * dt * this.speed;
+
+      if (distance < 60) {
+        this.state = states.AVADE;
+      }
+    } else if (state === states.AVADE) {
+      ox = -(Math.cos(angle) * dt * this.speed);
+      oy = -(Math.cos(angle) * dt * this.speed);
+
+      if (distance > 120) {
+        if (math.randOneIn(2)) {
+          this.state = states.WANDER;
+          this.waypoint = this.makeWaypoint();
+        } else {
+          this.state = states.ATTACK;
+        }
+      }
+    } else if (state === states.WANDER) {
+      ox = step * (dx > 0 ? 1 : -1);
+      oy = step * (dy > 0 ? 1 : -1);
+      if(distance > 220) {
+        this.state = states.ATTACK;
+      }
     }
 
-    if (!isYClose) {
-      this.pos.y += this.speed * (dy > 0 ? 1 : -1) * dt;
-    }
-
-    if(isXClose && isYClose) {
-      this.waypoint = this.makeWaypoint();
-    }
+    console.log(angle);
+    // console.log(ox, oy)
+    this.pos.x += ox;
+    this.pos.y += oy;
   }
 }
