@@ -1,14 +1,19 @@
 import Player from "./Player";
 
 function setup() {
+
+  screen.orientation.lock('portrait')
+
+ 
   const canvas = document.createElement("canvas");
   document.body.appendChild(canvas);
+  
 
   canvas.style.border = "1px solid black";
   canvas.style.boxSizing = "border-box";
 
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.height = window.innerHeight / 2;
 
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
