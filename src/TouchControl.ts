@@ -74,10 +74,10 @@ export class TouchControl {
 
   render(ctx: CanvasRenderingContext2D) {
     if (!this.touchPoint) return;
-    drawPath(ctx, this.touchPoint.x, this.touchPoint.y);
+    drawPath(ctx, this.touchPoint.x, this.touchPoint.y, 'red');
 
     if(this.finalPoint) {
-        drawPath(ctx, this.finalPoint.x, this.finalPoint.y);
+        drawPath(ctx, this.finalPoint.x, this.finalPoint.y, 'green');
     }
   }
 }
