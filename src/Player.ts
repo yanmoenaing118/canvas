@@ -28,6 +28,7 @@ export default class Player extends Entity {
   }
 
   update(dt: number, t: number) {
+    
     let mx = this.controls.x * dt * this.speed;
     let my = this.controls.y * dt * this.speed;
 
@@ -44,6 +45,7 @@ export default class Player extends Entity {
      * for horizontal we only worry about controls.x
      * for vertical we only worry about controls.y
      */
+
 
     if (blocked) {
       mx = 0;
@@ -74,5 +76,6 @@ export default class Player extends Entity {
 
     this.pos.x = clamp(this.pos.x, 0, WIDTH - this.w);
     this.pos.y = clamp(this.pos.y, 0, HEIGHT - this.h);
+
   }
 }

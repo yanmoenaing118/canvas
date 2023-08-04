@@ -51,11 +51,13 @@ function loop(ellapsed: number) {
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
+  map.update(dt);
+
 
   map.render(ctx);
   player.render(ctx);
 
-  grid.render(ctx);
+  // grid.render(ctx);
 
 
   if (hit(player, target)) {
