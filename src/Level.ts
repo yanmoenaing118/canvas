@@ -3,6 +3,11 @@ import TileMap from "./pop/TileMap";
 import TileSprite from "./pop/TileSprite";
 import { Frame, Position } from "./pop/models";
 import math from "./pop/utils/math";
+import { js as EasyStarPath } from "easystarjs";
+
+
+const path = new EasyStarPath();
+
 
 export default class Level extends TileMap {
   bounds = {
@@ -53,6 +58,13 @@ export default class Level extends TileMap {
       }
     }
     super(level, mapW, mapH, tileSize, tileSize, tile);
+
+    const grid = [];
+
+    for(let i = 0; i < mapW * mapH; i+= mapW) {
+      grid.push(level.slice(i, i + mapW))
+    }
+
 
     this.bounds = {
       left: tileSize,

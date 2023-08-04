@@ -1,3 +1,4 @@
+import { js as EasyStar } from "easystarjs";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, TILE_SIZE } from "../constants";
 import Texture from "../pop/Texture";
 import TileMap from "../pop/TileMap";
@@ -17,11 +18,13 @@ const tileIndexes = [
   { id: "wall", x: 2, y: 2, walkable: false },
   { id: "wall_end", x: 3, y: 2, walkable: false },
 ];
+
+const path = new EasyStar();
 class Dungeon extends TileMap {
   constructor() {
     const level = new Array(mapW * mapH).fill("empty");
 
-    console.log("x,y,index");
+  
     for (let y = 0; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
         if (y == 0 || x == 0 || y == mapH - 1 || x == mapW - 1) {
@@ -54,6 +57,19 @@ class Dungeon extends TileMap {
         }
       }
     }
+  
+    let grid = [];
+
+    for(let i = 0; i < mapW * mapH; i+= mapW) {
+      grid.push(level.slice(i, i + mapW))
+    }
+
+    path.setGrid(grid);
+
+    const walkables = tileIndexes.map(({ walkable }, i) => walkable ? i : -1).filter(i => i != -1);
+
+    path.setAcceptableTiles(walkables);
+    
 
     super(
       level.map((i) => getById(i)),
