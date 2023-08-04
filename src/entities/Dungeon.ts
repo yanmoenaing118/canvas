@@ -21,6 +21,7 @@ const tileIndexes = [
 
 const path = new EasyStar();
 class Dungeon extends TileMap {
+  path: EasyStar;
   constructor() {
     const level = new Array(mapW * mapH).fill("empty");
 
@@ -64,6 +65,8 @@ class Dungeon extends TileMap {
       grid.push(level.slice(i, i + mapW))
     }
 
+    grid = grid.map( arr => arr.map(i => i))
+ 
     path.setGrid(grid);
 
     const walkables = tileIndexes.map(({ walkable }, i) => walkable ? i : -1).filter(i => i != -1);
@@ -79,6 +82,8 @@ class Dungeon extends TileMap {
       tileSize,
       texture
     );
+
+    this.path = path;
   }
 }
 
