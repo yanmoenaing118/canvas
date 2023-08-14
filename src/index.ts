@@ -25,8 +25,6 @@ const playerStatus = new Text(player.pos.x + " " + player.pos.y, {
   fill: "white",
 });
 
-
-
 playerStatus.pos.y = 25;
 player.pos.x = player.w;
 player.pos.y = player.h;
@@ -44,16 +42,19 @@ for (let i = 0; i < 2; i++) {
   scene.add(
     new Totem(
       player,
-      dungeon.mapPositionToPixel({ x: math.rand(dungeon.mapW), y: math.rand(dungeon.mapH) }),
+      dungeon.mapPositionToPixel({
+        x: math.rand(dungeon.mapW),
+        y: math.rand(dungeon.mapH),
+      }),
       fireBullets
     )
   );
 }
 
 function fireBullets(bullet: Bullet) {
-  bullets.add(bullet)
+  bullets.add(bullet);
 }
-scene.add(bullets)
+scene.add(bullets);
 game.run(() => {
   const playerMapPos = dungeon.pixelToMapPosition(player.pos);
   playerStatus.text = `

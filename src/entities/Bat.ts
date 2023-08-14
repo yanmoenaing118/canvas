@@ -66,7 +66,6 @@ export default class Bat extends TileSprite {
     let ox = 0;
     let oy = 0;
 
-
     if (state === states.ATTACK) {
       ox = Math.cos(angle) * dt * this.speed;
       oy = Math.sin(angle) * dt * this.speed;
@@ -81,14 +80,23 @@ export default class Bat extends TileSprite {
       if (distance > 120) {
         if (math.randOneIn(2)) {
           this.state = states.WANDER;
-          this.waypoint = this.makeWaypoint();
+          this.waypoint = {
+            x: this.pos.x + math.rand(-200, 200),
+            y: this.pos.y + math.rand(-200, 200),
+          };
         } else {
           this.state = states.ATTACK;
         }
       }
     } else if (state === states.WANDER) {
-      ox = step * (dx > 0 ? 1 : -1);
-      oy = step * (dy > 0 ? 1 : -1);
+      const waypointAngle = entities.angle(this.waypoint, this.pos);
+      const waypointDistance = math.distance(this.pos, this.waypoint);
+
+      ox = Math.cos(waypointAngle) * this.speed * dt;
+      oy = Math.sin(waypointAngle) * this.speed * dt;
+      if (waypointDistance < 60) {
+        this.state = states.AVADE;
+      }
     }
 
     console.log(angle);
