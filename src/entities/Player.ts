@@ -62,28 +62,33 @@ class Player extends TileSprite {
     let my = y * this.speed * dt;
 
     const bounds = entities.bounds(this);
-    const tilesAtCorners = this.map.tilesAtCorners(bounds, mx, my);
 
-    const blocked = tilesAtCorners.some((t) => t && !t.frame.walkable);
+    if (y) {
+      const tilesAtCorners = this.map.tilesAtCorners(bounds, 0, my);
 
-    if (blocked) {
       const [TL, TR, BL, BR] = tilesAtCorners.map((t) => t && t.frame.walkable);
 
-      if (y) {
-        if (y > 0 && !(BL && BR)) {
-          my = tilesAtCorners[2].pos.y - 1 - (bounds.y + bounds.h);
-        } else if (y < 0 && !(TL && TR)) {
-          my = tilesAtCorners[0].pos.y + tilesAtCorners[0].h - bounds.y;
-        }
+      if (y > 0 && !(BL && BR)) {
+        my = tilesAtCorners[2].pos.y - 1 - (bounds.y + bounds.h);
       }
+      if (y < 0 && !(TL && TR)) {
+        my = tilesAtCorners[0].pos.y + tilesAtCorners[0].h - bounds.y;
+      }
+    }
+
+    if (x) {
+      const tilesAtCorners = this.map.tilesAtCorners(bounds, mx, my);
+
+      const [TL, TR, BL, BR] = tilesAtCorners.map((t) => t && t.frame.walkable);
 
       if (x > 0 && !(TR && BR)) {
         mx = tilesAtCorners[1].pos.x - 1 - (bounds.x + bounds.w);
-      } else if (x < 0 && !(TL && BL)) {
+      }
+      if (x < 0 && !(TL && BL)) {
         mx = tilesAtCorners[0].pos.x + tilesAtCorners[0].w - bounds.x;
       }
-      
     }
+
     if (x) {
       this.scale.x = x;
       this.anchor.x = x > 0 ? 0 : 48;
@@ -93,6 +98,11 @@ class Player extends TileSprite {
       this.anims.play("walk");
     } else {
       this.anims.play("hangout");
+    }
+
+    if (mx != 0 && my != 0) {
+      mx /= Math.sqrt(2);
+      my /= Math.sqrt(2);
     }
 
     this.pos.x += mx;
