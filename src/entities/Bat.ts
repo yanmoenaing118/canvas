@@ -51,10 +51,6 @@ export default class Bat extends TileSprite {
 
   update(dt: number): void {
     this.anims.update(dt);
-    const dx = this.waypoint.x - this.pos.x;
-    const dy = this.waypoint.y - this.pos.y;
-    const step = this.speed * dt;
-
     const { state } = this;
 
     const angle = entities.angle(
