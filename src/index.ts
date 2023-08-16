@@ -27,7 +27,24 @@ const rotated = new RotatedObject();
 const r = new RotatedObject();
 let scale = 1;
 
-r.pos.x = CELLSIZE * 2;
+r.pos.x = CELLSIZE * 4;
+r.pos.y = CELLSIZE * 3;
+let x = 0;
+let y = 0;
+
+canvas.addEventListener("mousemove", (e) => {
+  x = e.pageX;
+  y = e.pageY;
+  console.log(x, y);
+});
+
+canvas.addEventListener("wheel", (e) => {
+  // if (e.deltaX > 0) return;
+  scale += e.deltaY * -0.005;
+  scale = clamp(scale, 1, 3);
+});
+
+requestAnimationFrame(loop);
 
 function loop(ellapsedTime: number) {
   dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
@@ -39,21 +56,23 @@ function loop(ellapsedTime: number) {
   r.update(dt, t);
 
   ctx.save();
-
+  ctx.translate(x, y);
   ctx.scale(scale, scale);
 
+  ctx.save();
+  ctx.translate(-x, -y);
+  
+  
   rotated.render(ctx);
   r.render(ctx);
   renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
 
   ctx.restore();
+  ctx.restore();
+
+
+
+
+
   requestAnimationFrame(loop);
 }
-
-canvas.addEventListener("wheel", (e) => {
-  if (e.deltaX > 0) return;
-  scale += e.deltaY * -0.01;
-  scale = clamp(scale, 1, 3);
-});
-
-requestAnimationFrame(loop);
