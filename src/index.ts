@@ -51,6 +51,7 @@ function loop(ellapsedTime: number) {
 }
 
 canvas.addEventListener('wheel', e => {
+  if(e.deltaX > 0) return;
   scale += e.deltaY * -0.01;
   scale = clamp(scale, 1, 3);
 })
