@@ -36,7 +36,7 @@ function loop(ellapsedTime: number) {
   ctx.clearRect(0, 0, WIDTH + CELLSIZE, HEIGHT + CELLSIZE);
 
   rotated.update(dt, t);
-  r.update(dt,t);
+  r.update(dt, t);
 
   ctx.save();
 
@@ -45,15 +45,15 @@ function loop(ellapsedTime: number) {
   rotated.render(ctx);
   r.render(ctx);
   renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
-  
+
   ctx.restore();
   requestAnimationFrame(loop);
 }
 
-canvas.addEventListener('wheel', e => {
-  if(e.deltaX > 0) return;
+canvas.addEventListener("wheel", (e) => {
+  if (e.deltaX > 0) return;
   scale += e.deltaY * -0.01;
   scale = clamp(scale, 1, 3);
-})
+});
 
 requestAnimationFrame(loop);
