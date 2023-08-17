@@ -6,6 +6,7 @@ export default class RotatedObject {
   scale = { x: 1, y: 1 };
   w = CELLSIZE * 0.5;
   h = CELLSIZE * 0.5;
+  fill = 'pinkk';
 
   anchor = { x: 0, y: 0 };
   pivot = { x: 0, y: 0 };
@@ -24,7 +25,7 @@ export default class RotatedObject {
 
   render(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.fillStyle = "pink";
+    ctx.fillStyle = this.fill || 'pink';
     ctx.translate(this.pos.x, this.pos.y);
     if (this.rotation) {
       ctx.translate(this.pivot.x, this.pivot.y);

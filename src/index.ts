@@ -23,7 +23,6 @@ canvas.style.height = `${rect.height}px`;
 let dt = 0;
 let t = 0;
 
-const rotated = new RotatedObject();
 const r = new RotatedObject();
 let scale = 1;
 
@@ -52,7 +51,6 @@ function loop(ellapsedTime: number) {
 
   ctx.clearRect(0, 0, WIDTH + CELLSIZE, HEIGHT + CELLSIZE);
 
-  rotated.update(dt, t);
   r.update(dt, t);
 
   ctx.save();
@@ -61,18 +59,12 @@ function loop(ellapsedTime: number) {
 
   ctx.save();
   ctx.translate(-x, -y);
-  
-  
-  rotated.render(ctx);
+
   r.render(ctx);
   renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
 
   ctx.restore();
   ctx.restore();
-
-
-
-
 
   requestAnimationFrame(loop);
 }
