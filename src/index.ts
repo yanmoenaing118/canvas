@@ -1,6 +1,7 @@
 import { renderGrid } from "./DebugGrid";
 import KeyControls from "./KeyControls";
 import RotatedObject from "./RotatedObject";
+import State from "./State";
 
 import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { clamp } from "./utils";
@@ -24,47 +25,50 @@ let dt = 0;
 let t = 0;
 
 const r = new RotatedObject();
-let scale = 1;
 
 r.pos.x = CELLSIZE * 4;
 r.pos.y = CELLSIZE * 3;
-let x = 0;
-let y = 0;
 
-canvas.addEventListener("mousemove", (e) => {
-  x = e.pageX;
-  y = e.pageY;
-  console.log(x, y);
-});
-
-canvas.addEventListener("wheel", (e) => {
-  // if (e.deltaX > 0) return;
-  scale += e.deltaY * -0.005;
-  scale = clamp(scale, 1, 3);
-});
-
-requestAnimationFrame(loop);
+const RED = "red";
+const BLUE = "blue";
+const GREEN = "green";
+const colors = [RED, BLUE, GREEN];
+const state = new State(RED);
 
 function loop(ellapsedTime: number) {
   dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
   t = ellapsedTime;
 
   ctx.clearRect(0, 0, WIDTH + CELLSIZE, HEIGHT + CELLSIZE);
+  ctx.save();
 
   r.update(dt, t);
+  state.update(dt);
 
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(scale, scale);
+  if (state.time > 1) {
+    switch (state.get()) {
+      case RED:
+        state.set(GREEN);
+        break;
+      case GREEN:
+        state.set(BLUE);
+        break;
+      case BLUE:
+        state.set(RED);
+        break;
+      default:
+        state.set("pink");
+    }
+  }
 
-  ctx.save();
-  ctx.translate(-x, -y);
+  r.fill = state.get();
 
   r.render(ctx);
   renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
 
   ctx.restore();
-  ctx.restore();
 
   requestAnimationFrame(loop);
 }
+
+requestAnimationFrame(loop);
