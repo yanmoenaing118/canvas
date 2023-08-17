@@ -24,4 +24,8 @@ export default class State {
     }
     this.justSetState = false;
   }
+
+  is(state: string) {
+    return state === this.state;
+  }
 }

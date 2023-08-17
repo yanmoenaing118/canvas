@@ -48,7 +48,7 @@ function loop(ellapsedTime: number) {
   r.update(dt, t);
   state.update(dt);
 
-  if (state.ellapsedTime >= 1) {
+  if (state.ellapsedTime > 1) {
     switch (state.get()) {
       case RED:
         state.set(GREEN);
@@ -69,7 +69,11 @@ function loop(ellapsedTime: number) {
   }
 
   r.fill = state.get();
-
+  if(state.is(RED)) {
+    r.scale.x += state.ellapsedTime * 0.025;
+  } else {
+    r.scale.x = 1;
+  }
   r.render(ctx);
   renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
 
