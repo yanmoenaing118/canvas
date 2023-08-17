@@ -25,6 +25,8 @@ let dt = 0;
 let t = 0;
 
 const r = new RotatedObject();
+r.w = CELLSIZE * 2;
+r.h = CELLSIZE * 2;
 
 r.pos.x = CELLSIZE * 4;
 r.pos.y = CELLSIZE * 3;
@@ -32,7 +34,8 @@ r.pos.y = CELLSIZE * 3;
 const RED = "red";
 const BLUE = "blue";
 const GREEN = "green";
-const colors = [RED, BLUE, GREEN];
+const PINK = "pink";
+const colors = [RED, BLUE, GREEN, PINK];
 const state = new State(RED);
 
 let twoSec = 2;
@@ -48,7 +51,7 @@ function loop(ellapsedTime: number) {
   r.update(dt, t);
   state.update(dt);
 
-  if (state.ellapsedTime > 1) {
+  if (state.ellapsedTime > 2) {
     switch (state.get()) {
       case RED:
         state.set(GREEN);
@@ -57,6 +60,9 @@ function loop(ellapsedTime: number) {
         state.set(BLUE);
         break;
       case BLUE:
+        state.set(PINK);
+        break;
+      case PINK:
         state.set(RED);
         break;
       default:
@@ -69,10 +75,12 @@ function loop(ellapsedTime: number) {
   }
 
   r.fill = state.get();
-  if(state.is(RED)) {
-    r.scale.x += state.ellapsedTime * 0.025;
+  if (state.is(RED) || state.is(PINK)) {
+    r.pos.x += Math.sin(state.ellapsedTime * 25);
+    r.pos.y += Math.cos(state.ellapsedTime * 25);
   } else {
-    r.scale.x = 1;
+    r.pos.x -= Math.sin(state.ellapsedTime * 25);
+    r.pos.y -= Math.cos(state.ellapsedTime * 25);
   }
   r.render(ctx);
   renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
