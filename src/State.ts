@@ -1,6 +1,6 @@
 export default class State {
   lastState: string = "";
-  time: number = 0;
+  ellapsedTime: number = 0;
   justSetState = false;
 
   constructor(private state: string) {
@@ -18,9 +18,9 @@ export default class State {
 
   update(dt: number) {
     if (this.justSetState) {
-      this.time = 0;
+      this.ellapsedTime = 0;
     } else {
-      this.time += dt;
+      this.ellapsedTime += dt;
     }
     this.justSetState = false;
   }

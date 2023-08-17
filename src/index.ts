@@ -35,6 +35,9 @@ const GREEN = "green";
 const colors = [RED, BLUE, GREEN];
 const state = new State(RED);
 
+let twoSec = 2;
+let totalSec = 0;
+
 function loop(ellapsedTime: number) {
   dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
   t = ellapsedTime;
@@ -45,7 +48,7 @@ function loop(ellapsedTime: number) {
   r.update(dt, t);
   state.update(dt);
 
-  if (state.time > 1) {
+  if (state.ellapsedTime >= 1) {
     switch (state.get()) {
       case RED:
         state.set(GREEN);
@@ -59,6 +62,10 @@ function loop(ellapsedTime: number) {
       default:
         state.set("pink");
     }
+    console.log(
+      "Ellapsed Second",
+      (totalSec += parseInt(state.ellapsedTime + ""))
+    );
   }
 
   r.fill = state.get();
