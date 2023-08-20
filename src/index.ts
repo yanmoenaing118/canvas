@@ -9,7 +9,7 @@ const w = CANVAS_WIDTH;
 const h = CANVAS_HEIGHT;
 const game = new Game(w, h);
 
-// game.scene = new GameScreen(game, controls);
+game.scene = new GameScreen(game, controls);
 
 
 

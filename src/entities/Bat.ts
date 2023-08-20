@@ -95,7 +95,7 @@ export default class Bat extends TileSprite {
       }
     }
 
-    console.log(angle);
+    // console.log(angle);
     // console.log(ox, oy)
     this.pos.x += ox;
     this.pos.y += oy;
