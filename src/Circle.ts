@@ -1,11 +1,19 @@
 import Entity from "./Entity";
+import State from "./State";
 import Vec2 from "./Vec2";
 import { Styles } from "./types";
 
 export default class Circle extends Entity {
-    speed = 200;
+    speed = 400;
+    vel: Vec2;
+    state: State;
     constructor(public pos: Vec2, public r: number, public styles: Partial<Styles> ) {
         super();
+        this.vel = {
+            x: 0,
+            y: 0
+        }
+        this.state = new State('idle');
     }
 
     render(ctx: CanvasRenderingContext2D) {
