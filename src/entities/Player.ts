@@ -22,9 +22,9 @@ class Player extends TileSprite {
     super(texture, TILE_SIZE, TILE_SIZE);
     this.hitBox = {
       x: 2,
-      y: 2,
+      y: 6,
       w: this.w - 2 * 2,
-      h: this.h - 2 * 2,
+      h: this.h - 3 * 2,
     };
     this.controls = controls;
     this.anims = new AnimationManager(this);
