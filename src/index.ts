@@ -1,3 +1,5 @@
+import { clamp } from "./utils";
+
 const canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -14,9 +16,9 @@ let unit = "s";
 let min = 2;
 let seconds = min * 60; // 1 min
 let secondGap = 10; // 10s
-let tenSecondGap = 100; // 100px
-let timeLineLength = (seconds / secondGap) * tenSecondGap;
-let totalBlock = Math.floor(timeLineLength / tenSecondGap);
+let tenSecondGapLength = 100; // 100px
+let timeLineLength = (seconds / secondGap) * tenSecondGapLength;
+let totalBlock = Math.floor(timeLineLength / tenSecondGapLength);
 
 let unitLgLineLength = 15;
 let unitLgLineWidth = 1;
@@ -47,11 +49,13 @@ let i = 0;
 function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  timeLineLength = (seconds / secondGap) * tenSecondGap;
-  totalBlock = Math.floor(timeLineLength / tenSecondGap);
+  timeLineLength = (seconds / secondGap) * tenSecondGapLength;
+  totalBlock = Math.floor(timeLineLength / tenSecondGapLength);
+
+  console.log(`length: ${timeLineLength}, blocks: ${totalBlock}`)
 
   for (i = 0; i < totalBlock + 1; i++) {
-    const x = i * tenSecondGap;
+    const x = i * tenSecondGapLength;
     const y = 0;
     const time = getTimeFormat(secondGap, i, unit);
     ctx.save();
@@ -61,6 +65,8 @@ function loop() {
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(0, unitLgLineLength);
+    ctx.moveTo(tenSecondGapLength / 2,0);
+    ctx.lineTo(tenSecondGapLength / 2, unitLgLineLength);
     ctx.stroke();
     ctx.closePath();
     ctx.restore();
@@ -73,7 +79,10 @@ requestAnimationFrame(loop);
 
 canvas.addEventListener("click", e => {
   e.preventDefault();
-  secondGap -= 2;
+  // secondGap += 2;
+  tenSecondGapLength += 2;
+  tenSecondGapLength = clamp(tenSecondGapLength, 100, 160);
+  console.log(`click: secondGap ${tenSecondGapLength}`)
 })
 
 function setResolution(
