@@ -25,7 +25,7 @@ setStyles(scrollEl, {
 document.body.appendChild(scrollContainer);
 
 let unit = "s";
-let min = 3;
+let min = 2;
 let seconds = min * 60; // 1 min
 let secondGap = 10; // 10s
 let tenSecondGapLength = 100; // 100px
