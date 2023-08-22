@@ -21,10 +21,6 @@ let totalBlock = Math.floor(timeLineLength / tenSecondGap);
 let unitLgLineLength = 15;
 let unitLgLineWidth = 1;
 
-let timeFormat = "00:00"; // mm:ss
-
-console.log(totalBlock);
-
 function getTimeFormat(timeGap: number, index: number, unit: string) {
   let divider = 1;
   let min = 0;
@@ -77,11 +73,7 @@ requestAnimationFrame(loop);
 
 canvas.addEventListener("click", e => {
   e.preventDefault();
-
-
-
   secondGap -= 2;
-
 })
 
 function setResolution(
