@@ -13,7 +13,8 @@ canvas.height = h;
 setResolution(canvas, ctx);
 
 let unit = "s";
-let seconds = 60;
+let min = 2;
+let seconds = min * 60; // 1 min
 let secondGap = 10; // 10s
 let tenSecondGap = 100; // 100px
 let timeLineLength = (seconds / secondGap) * tenSecondGap;
@@ -31,14 +32,23 @@ function getTimeFormat(timeGap: number, index: number, unit: string) {
   let divider = 1;
   let min = 0;
   let sec = 0;
+  let minStr = "";
+  let secStr = "";
+
   if(unit == "s") {
     divider = 60;
     min = Math.floor((index * timeGap) / divider);
     sec = Math.floor((index * timeGap) % divider);
   }
-  
 
-  return `${min}:${sec}`;
+  minStr = `${min}`;
+  secStr = `${sec}`;
+
+  if(min <= 9) minStr = `0${min}`;
+  if((index * timeGap) % divider == 0) secStr = `0${sec}`;
+   
+
+  return `${minStr}:${secStr}`;
 }
 
 let i = 0;
@@ -49,11 +59,11 @@ function loop(){
   for(i = 0; i < totalBlock + 1; i++){ 
     const x = i * tenSecondGap;
     const y = 0;
-    const time = getTimeFormat(secondGap, i, "s");
+    const time = getTimeFormat(secondGap, i, unit);
     ctx.save();
     ctx.lineWidth = unitLgLineWidth;
     ctx.translate(x, y);
-    ctx.fillText(time, 4, 12);
+    ctx.fillText(time, 0, unitLgLineLength * 2);
     ctx.beginPath();
     ctx.moveTo(0,0);
     ctx.lineTo(0, unitLgLineLength);
