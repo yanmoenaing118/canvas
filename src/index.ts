@@ -4,10 +4,16 @@ import RotatedObject from "./RotatedObject";
 
 import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
 import { clamp } from "./utils";
+const container = document.createElement("div");
+const canvasWrapper = document.createElement("div");
+
+container.classList.add("container");
+document.body.appendChild(container);
+container.appendChild(canvasWrapper);
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-document.body.appendChild(canvas);
+canvasWrapper.appendChild(canvas);
 // canvas.style.margin = "30px";
 canvas.style.boxShadow = "0 0 3px rgba(0,0,0,0.3)";
 canvas.width = WIDTH;
@@ -38,10 +44,21 @@ canvas.addEventListener("mousemove", (e) => {
   console.log(x, y);
 });
 
+
+let wrapperWidth = WIDTH;
 canvas.addEventListener("wheel", (e) => {
+  e.preventDefault();
   // if (e.deltaX > 0) return;
   scale += e.deltaY * -0.005;
   scale = clamp(scale, 1, 3);
+
+
+  wrapperWidth += scale;
+
+  canvas.style.width = `${wrapperWidth}px`;
+
+
+  // canvasWrapper.style.width = `${wrapperWidth}px`;
 });
 
 requestAnimationFrame(loop);
@@ -57,19 +74,19 @@ function loop(ellapsedTime: number) {
 
   ctx.save();
   ctx.translate(x, y);
-  ctx.scale(scale, scale);
+  ctx.scale(scale, 1);
 
   ctx.save();
   ctx.translate(-x, -y);
   
+  console.log(Math.floor(parseInt(canvas.style.width) / CELLSIZE))
   
   rotated.render(ctx);
   r.render(ctx);
-  renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
+  renderGrid(ctx, Math.floor(parseInt(canvas.style.width) / CELLSIZE), 3, CELLSIZE, CELLSIZE);
 
   ctx.restore();
   ctx.restore();
-
 
 
 
