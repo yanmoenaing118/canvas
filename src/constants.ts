@@ -1,5 +1,5 @@
-export const w = 1200;
-export const h = 580;
+export const w = screen.availWidth || window.innerWidth;
+export const h = screen.availHeight || window.innerHeight;
 export const oneLifeTime = 60; // in seconds
 
 export const girlImages = [

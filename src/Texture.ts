@@ -5,3 +5,8 @@ export default class Texture {
         this.img.src = url;
     }
 }
+
+export const textures = {
+    bg: new Texture("./assets/pyramid.jpg"),
+    
+}
