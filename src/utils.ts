@@ -85,3 +85,15 @@ export function hit(e1: Entity, e2: Entity) {
     b1.y + b1.w > b2.y
   );
 }
+
+
+
+export function setStyles(
+  el: HTMLElement,
+  styles: Partial<CSSStyleDeclaration>
+) {
+  for (let key in styles) {
+    el.style[key] = styles[key] || "";
+  }
+  return el;
+}

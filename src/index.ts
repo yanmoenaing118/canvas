@@ -1,4 +1,4 @@
-import { clamp } from "./utils";
+import { clamp, setStyles } from "./utils";
 
 const canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
@@ -12,8 +12,20 @@ canvas.height = h;
 
 setResolution(canvas, ctx);
 
+const scrollContainer = document.createElement("div");
+const scrollEl = document.createElement("div");
+scrollContainer.appendChild(scrollEl);
+setStyles(scrollContainer, {
+  maxWidth: `${window.innerWidth}px`,
+  overflow: "auto",
+});
+setStyles(scrollEl, {
+  height: "18px",
+});
+document.body.appendChild(scrollContainer);
+
 let unit = "s";
-let min = 2;
+let min = 3;
 let seconds = min * 60; // 1 min
 let secondGap = 10; // 10s
 let tenSecondGapLength = 100; // 100px
@@ -52,7 +64,7 @@ function loop() {
   timeLineLength = (seconds / secondGap) * tenSecondGapLength;
   totalBlock = Math.floor(timeLineLength / tenSecondGapLength);
 
-  console.log(`length: ${timeLineLength}, blocks: ${totalBlock}`)
+  console.log(`length: ${timeLineLength}, blocks: ${totalBlock}`);
 
   for (i = 0; i < totalBlock + 1; i++) {
     const x = i * tenSecondGapLength;
@@ -65,7 +77,7 @@ function loop() {
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(0, unitLgLineLength);
-    ctx.moveTo(tenSecondGapLength / 2,0);
+    ctx.moveTo(tenSecondGapLength / 2, 0);
     ctx.lineTo(tenSecondGapLength / 2, unitLgLineLength);
     ctx.stroke();
     ctx.closePath();
@@ -77,13 +89,20 @@ function loop() {
 
 requestAnimationFrame(loop);
 
-canvas.addEventListener("click", e => {
+canvas.addEventListener("wheel", (e) => {
   e.preventDefault();
   // secondGap += 2;
-  tenSecondGapLength += 2;
-  tenSecondGapLength = clamp(tenSecondGapLength, 100, 160);
-  console.log(`click: secondGap ${tenSecondGapLength}`)
-})
+  setStyles(scrollEl, {
+    width: `${timeLineLength}px`,
+  });
+  if (e.deltaY > 0) {
+    tenSecondGapLength -= 1;
+  } else {
+    tenSecondGapLength += 1;
+  }
+  tenSecondGapLength = clamp(tenSecondGapLength, 100, 200);
+  console.log(`click: secondGap ${tenSecondGapLength}`);
+});
 
 function setResolution(
   canvas: HTMLCanvasElement,
