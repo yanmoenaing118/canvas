@@ -341,10 +341,7 @@ function run(ellapsedTime: number) {
       // gunSound.reset();
       gunSound.play();
 
-  } else {
-    gunSound.stop();
-  }
-
+  } 
   lastSpwanTime += dt;
   if (lastSpwanTime > spwanRate) {
     createSpiders();

@@ -2,21 +2,16 @@ export default class Sound {
   sound: HTMLAudioElement;
   curr = 1.56;
   end = 2.5;
+  isFirst = true;
   constructor(src: string) {
     this.sound = new Audio(src);
   }
 
   play() {
-    if (this.curr > this.end) {
-      this.curr = 1.56;
-    } else {
-      this.curr += this.sound.currentTime;
+    if(this.isFirst) this.sound.play();
+    if(!this.isFirst && this.sound.ended) {
+        this.sound.play();
     }
-
-    this.sound.currentTime = this.curr;
-    this.sound.play();
-
-    console.log(this.sound.currentTime);
   }
 
   stop() {
@@ -24,7 +19,7 @@ export default class Sound {
   }
 
   isPaused() {
-    return this.sound.paused;
+    return this.sound.paused
   }
 
   reset() {
