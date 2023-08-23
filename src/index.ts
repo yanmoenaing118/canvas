@@ -163,7 +163,7 @@ function updateSpiders(dt: number, t: number) {
 let lastShotFrame = 0;
 let shotRate = 0.05;
 let bullets: Bullet[] = [];
-const gunSound = new Sound("./assets/gun-sound-1.wav");
+const gunSound = new Sound("./assets/AK-47-sound.wav");
 function createBullet() {
   const bullet = new Bullet();
   bullet.pos.x = soldier.pos.x + soldier.tileW + 16;
@@ -338,8 +338,11 @@ function run(ellapsedTime: number) {
   } 
 
   if(control.action){
-    gunSound.play();
+      // gunSound.reset();
+      gunSound.play();
 
+  } else {
+    gunSound.stop();
   }
 
   lastSpwanTime += dt;
