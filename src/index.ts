@@ -52,19 +52,23 @@ function getTimeFormat(timeGap: number, index: number, unit: string) {
   secStr = `${sec}`;
 
   if (min <= 9) minStr = `0${min}`;
-  if ((index * timeGap) % divider == 0) secStr = `0${sec}`;
+  if ((index * timeGap) / 10 < 1) secStr = `0${sec}`;
 
   return `${minStr}:${secStr}`;
 }
 
 let i = 0;
+let x = 0;
 function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   timeLineLength = (seconds / secondGap) * tenSecondGapLength;
   totalBlock = Math.floor(timeLineLength / tenSecondGapLength);
 
-  console.log(`length: ${timeLineLength}, blocks: ${totalBlock}`);
+  console.log(totalBlock);
+
+  ctx.save();
+  ctx.translate(-x, 0);
 
   for (i = 0; i < totalBlock + 1; i++) {
     const x = i * tenSecondGapLength;
@@ -73,16 +77,19 @@ function loop() {
     ctx.save();
     ctx.lineWidth = unitLgLineWidth;
     ctx.translate(x, y);
+    ctx.font = "14px arial";
     ctx.fillText(time, 0, unitLgLineLength * 2);
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(0, unitLgLineLength);
-    ctx.moveTo(tenSecondGapLength / 2, 0);
-    ctx.lineTo(tenSecondGapLength / 2, unitLgLineLength);
+    // ctx.moveTo(tenSecondGapLength / 2, 0);
+    // ctx.lineTo(tenSecondGapLength / 2, unitLgLineLength);
     ctx.stroke();
     ctx.closePath();
     ctx.restore();
   }
+
+  ctx.restore();
 
   requestAnimationFrame(loop);
 }
@@ -97,12 +104,28 @@ canvas.addEventListener("wheel", (e) => {
   });
   if (e.deltaY > 0) {
     tenSecondGapLength -= 1;
+    if(tenSecondGapLength % 20 == 0) {
+      console.log(tenSecondGapLength)
+      secondGap += 1;
+    }
   } else {
     tenSecondGapLength += 1;
+    if(tenSecondGapLength % 20 == 0) {
+      console.log(tenSecondGapLength)
+      secondGap -= 1;
+    }
   }
-  tenSecondGapLength = clamp(tenSecondGapLength, 100, 200);
-  console.log(`click: secondGap ${tenSecondGapLength}`);
+
+ 
+  tenSecondGapLength = clamp(tenSecondGapLength, 100, 300);
+  console.log(`click: tenSecondGapLength ${tenSecondGapLength}`);
 });
+
+scrollContainer.addEventListener("scroll", e => {
+  const scrollLef = scrollContainer.scrollLeft;
+  x = scrollLef;
+  console.log(scrollLef);
+})
 
 function setResolution(
   canvas: HTMLCanvasElement,
