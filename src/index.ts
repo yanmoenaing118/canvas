@@ -9,6 +9,8 @@ import Text from "./Text";
 import { hasCollide } from "./utils";
 import Heart from "./Heart";
 import { girlImages, h, w } from "./constants";
+import Sprite from "./Sprite";
+import Sound from "./Sound";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -62,7 +64,7 @@ const girls: Girl[] = [];
 (function createGirls() {
   girlImages.forEach(url => {
     const girl = new Girl(url);
-    girl.pos.y = h - girl.h;
+    girl.pos.y =  Math.random() *( h - girl.h * 3) + girl.h;
     girls.push(girl);
   })
 })()
@@ -76,12 +78,13 @@ function renderGirl() {
   context.restore();
   context.save();
   context.translate(girl.pos.x, girl.pos.y);
-  context.scale(girl.scale.x, girl.scale.y);
-  context.drawImage(girl.texture.img, girl.pos.x, girl.pos.y);
+  // context.scale(girl.scale.x, girl.scale.y);
+  context.drawImage(girl.texture.img, 0, 0);
   context.restore();
 }
 
 function updateGirlIndex() {
+  // return;
   girlIndex = girls.length - noOfLife;
   if(!girls[girlIndex]) return;
   girl = girls[girlIndex];
@@ -132,9 +135,7 @@ function renderSpiders() {
     context.save();
     context.fillStyle = "red";
     context.translate(spider.pos.x, spider.pos.y);
-    // context.translate(spider.anchor.x, spider.anchor.y);
     context.scale(spider.scale.x, spider.scale.y);
-    // context.strokeRec t(0, 0, spider.w, spider.h);
     context.drawImage(
       spider.texture.img,
       spider.tileH * spider.frame.x,
@@ -162,6 +163,7 @@ function updateSpiders(dt: number, t: number) {
 let lastShotFrame = 0;
 let shotRate = 0.05;
 let bullets: Bullet[] = [];
+const gunSound = new Sound("./assets/gun-sound-1.wav");
 function createBullet() {
   const bullet = new Bullet();
   bullet.pos.x = soldier.pos.x + soldier.tileW + 16;
@@ -227,10 +229,8 @@ function checkCollision() {
 
 function checkGirlHit() {
   spiders.forEach((spider) => {
-    if (spider.pos.x < girl.pos.x + girl.w) {
-      if (hasCollide(spider, girl, 100)) {
-        spider.speed = 0;
-      }
+    if (hasCollide(spider, girl, 0)) {
+      spider.speed = 0;
     }
   });
 }
@@ -312,9 +312,14 @@ function doGameOver() {
   context.translate(w / 2 - over.width(context) / 2.25, h / 2 + 34);
   context.fillText(score.text, 0, 0);
   context.restore();
+
+  context.save();
+
 }
 
+const test = new Sprite(new Texture(girlImages[0]));
 
+console.log(test);
 
 /** GAME LOOP starts here */
 function run(ellapsedTime: number) {
@@ -330,6 +335,11 @@ function run(ellapsedTime: number) {
   if (lastShotFrame > shotRate && control.action) {
     createBullet();
     lastShotFrame = 0;
+  } 
+
+  if(control.action){
+    gunSound.play();
+
   }
 
   lastSpwanTime += dt;
@@ -367,7 +377,7 @@ function run(ellapsedTime: number) {
    * render entites
    */
   renderBg();
-  renderGirl();
+  
   renderSoldier();
   if(!isGameOver) {
     renderSpiders();
@@ -375,7 +385,10 @@ function run(ellapsedTime: number) {
   }
   renderScore();
   renderLife();
+  renderGirl();
   renderGameOver();
+
+
   requestAnimationFrame(run);
 }
 
