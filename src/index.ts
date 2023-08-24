@@ -5,12 +5,15 @@ import Soldier from "./Soldier";
 import Spider from "./Spider";
 import Texture from "./Texture";
 import math from "./math";
-import Text from "./Text";
-import { hasCollide } from "./utils";
+import { clamp, hasCollide } from "./utils";
 import Heart from "./Heart";
 import { girlImages, h, w } from "./constants";
 import Sprite from "./Sprite";
 import Sound from "./Sound";
+import Score from "./Score";
+import GameOver from "./GameOver";
+import Background from "./Background";
+
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -18,19 +21,11 @@ context.imageSmoothingEnabled = true;
 
 canvas.width = w;
 canvas.height = h;
-
-// Get the DPR and size of the canvas
 const dpr = window.devicePixelRatio;
 const rect = canvas.getBoundingClientRect();
-
-// Set the "actual" size of the canvas
 canvas.width = rect.width * dpr;
 canvas.height = rect.height * dpr;
-
-// Scale the context to ensure correct drawing operations
 context.scale(dpr, dpr);
-
-// Set the "drawn" size of the canvas
 canvas.style.width = `${rect.width}px`;
 canvas.style.height = `${rect.height}px`;
 
@@ -52,12 +47,7 @@ let isGameOver = false;
 const sounds: HTMLAudioElement[] = [];
 
 /**Background */
-const bg = new Texture("./assets/bg1.png");
-function renderBg() {
-  context.save();
-  context.drawImage(bg.img, 0, 0, w, h);
-  context.restore();
-}
+const bg = new Background();
 
 /**Girl start */
 const girls: Girl[] = [];
@@ -71,17 +61,6 @@ const girls: Girl[] = [];
 // console.log(girls);
 let girlIndex = 0;
 let girl: Girl = girls[girlIndex];
-function renderGirl() {
-  context.save();
-  context.fillStyle = "pink";
-  // context.fillRect(girl.pos.x, 0, girl.w, h);
-  context.restore();
-  context.save();
-  context.translate(girl.pos.x, girl.pos.y);
-  // context.scale(girl.scale.x, girl.scale.y);
-  context.drawImage(girl.texture.img, 0, 0);
-  context.restore();
-}
 
 function updateGirlIndex() {
   // return;
@@ -94,22 +73,6 @@ function updateGirlIndex() {
 /** Soldier Start */
 const soldier = new Soldier();
 soldier.pos.x = girl.w;
-function renderSoldier() {
-  context.save();
-  context.translate(soldier.pos.x, soldier.pos.y);
-  context.drawImage(
-    soldier.texture.img,
-    soldier.tileH * soldier.frame.x,
-    soldier.tileH * soldier.frame.y,
-    soldier.tileW,
-    soldier.tileH,
-    0,
-    0,
-    soldier.tileW,
-    soldier.tileH
-  );
-  context.restore();
-}
 /** Soldier End */
 
 /** Spiders Start*/
@@ -131,23 +94,7 @@ createSpiders();
 
 function renderSpiders() {
   spiders.forEach((spider) => {
-    context.restore();
-    context.save();
-    context.fillStyle = "red";
-    context.translate(spider.pos.x, spider.pos.y);
-    context.scale(spider.scale.x, spider.scale.y);
-    context.drawImage(
-      spider.texture.img,
-      spider.tileH * spider.frame.x,
-      spider.tileH * spider.frame.y,
-      spider.tileW,
-      spider.tileH,
-      0,
-      0,
-      spider.tileW,
-      spider.tileH
-    );
-    context.restore();
+    spider.render(context);
   });
 }
 
@@ -161,7 +108,7 @@ function updateSpiders(dt: number, t: number) {
 
 // Bullet Starts
 let lastShotFrame = 0;
-let shotRate = 0.06 ;
+let shotRate = 0.06;
 let bullets: Bullet[] = [];
 const gunSound = new Sound("./assets/AK-47-sound.wav");
 function createBullet() {
@@ -173,11 +120,7 @@ function createBullet() {
 
 function renderBullets() {
   bullets.forEach((bullet) => {
-    context.save();
-    context.translate(bullet.pos.x, bullet.pos.y);
-    context.rotate(Math.PI / 2);
-    context.drawImage(bullet.texture.img, 0, 0);
-    context.restore();
+    bullet.render(context);
   });
 }
 
@@ -195,7 +138,6 @@ let life: Heart[] = [];
   for (let i = 0; i < noOfLife; i++) {
     const heart = new Heart();
     heart.pos.x = i * heart.w + (i * heart.w) / 2;
-    // heart.pos.x = i *
     life.push(heart);
   }
 })();
@@ -205,17 +147,10 @@ function updateLife() {
 }
 function renderLife() {
   life.forEach((l) => {
-    context.save();
-    context.translate(l.pos.x, l.pos.y);
-    context.scale(0.85, 0.85);
-    context.drawImage(l.texture.img, 0, 0);
-    context.restore();
+    l.render(context);
   });
 }
 
-// Girl life end
-
-// collisions
 function checkCollision() {
   bullets.forEach((bullet) => {
     spiders.forEach((spider) => {
@@ -257,67 +192,14 @@ function updateGirlHealth(time: number) {
 }
 
 // score text
-const score = new Text("Total Kill: 0");
-score.style.color = "white";
-function renderScore() {
-  context.save();
-  context.translate(w - score.width(context) * 2 - 1, 0);
-  context.fillStyle = "black";
-  context.fillRect(0, 0, score.width(context) * 2, 30);
-  context.restore();
-
-  context.save();
-  context.font = score.style.font as string;
-  context.fillStyle = score.style.color as string;
-  context.translate(w - score.width(context) - 4, 20);
-  context.fillText(score.text, 0, 0);
-
-  context.restore();
-}
-
-renderScore();
+const score = new Score("Total Kill: 0");
 
 function renderGameOver() {
   if (noOfLife <= 0) {
-    doGameOver();
+    new GameOver(score).render(context);
+    isGameOver = true;
   }
-  // doGameOver();
 }
-
-function doGameOver() {
-  isGameOver = true;
-  const over = new Text("Game Over!");
-  context.globalAlpha = 0.65;
-  context.save();
-  context.translate(0, 0);
-  context.fillStyle = "black";
-  context.fillRect(0, 0, w, h);
-  context.restore();
-
-  context.save();
-  context.fillStyle = "black";
-  context.font = "68px monospace";
-  context.strokeStyle = "white";
-  context.lineWidth = 3;
-  context.translate(w / 2 - over.width(context) / 2.25, h / 2 - 34);
-  context.fillText(over.text, 0, 0);
-  context.strokeText(over.text, 0, 0);
-  context.restore();
-
-  context.save();
-  context.fillStyle = "white";
-  context.font = "24px monospace";
-  context.strokeStyle = "white";
-  context.translate(w / 2 - over.width(context) / 2.25, h / 2 + 34);
-  context.fillText(score.text, 0, 0);
-  context.restore();
-
-  context.save();
-}
-
-const test = new Sprite(new Texture(girlImages[0]));
-
-console.log(test);
 
 function playSound() {
   let soundFound = false;
@@ -335,12 +217,12 @@ function playSound() {
     sound = sounds[idx];
     sound.setAttribute("src", "./assets/gun-sound-1.wav");
     sound.loop = false;
-    sound.volume = .5;
+    sound.volume = 0.2;
     sound.play();
   } else {
     sound = document.createElement("audio");
     sound.setAttribute("src", "./assets/gun-sound-1.wav");
-    sound.volume = .5;
+    sound.volume = 0.2;
     sound.play();
     sounds.push(sound);
   }
@@ -356,18 +238,18 @@ function run(ellapsedTime: number) {
     soldier.pos.y = Math.max(0, Math.min(h - 128, dy));
   }
 
-  if(control.x) {
+  if (control.x) {
     const dx = soldier.pos.x + soldier.speed * dt * control.x;
     soldier.pos.x = Math.max(0, Math.min(h - 128, dx));
   }
 
   lastShotFrame += dt;
   if (lastShotFrame > shotRate && control.action) {
-    createBullet(); 
+    createBullet();
+    soldier.frame.x = 1;
     lastShotFrame = 0;
     playSound();
   }
-
 
   lastSpwanTime += dt;
   if (lastSpwanTime > spwanRate) {
@@ -392,30 +274,198 @@ function run(ellapsedTime: number) {
   if (hasBiteGirl) {
     updateGirlHealth(second);
   }
-  if (control.y || control.x) {
+  if (control.action) {
     soldier.update(dt, second);
+  } else {
+    soldier.frame.x = 0;
   }
   updateSpiders(dt, second);
   updateBullets(dt, second);
   updateLife();
   updateGirlIndex();
+  updateControllerCircle(dt);
+  updatePlayer(dt);
 
   /**
    * render entites
    */
-  renderBg();
+  context.clearRect(0,0,canvas.width,canvas.height);
+  bg.render(context);
 
-  renderSoldier();
+  soldier.render(context);
   if (!isGameOver) {
     renderSpiders();
     renderBullets();
   }
-  renderScore();
+  score.render(context);
   renderLife();
-  renderGirl();
-  renderGameOver();
-
+  girl.render(context);
+  // drawControllerCircle();
+  drawPlayer();
+  // drawControlLine();
   requestAnimationFrame(run);
+  renderGameOver();
 }
 
 requestAnimationFrame(run);
+
+const controllerCircle = {
+  r: 50,
+  x: 100,
+  y: h - 80,
+  headPoint: {
+    x: 0,
+    y: 0,
+  },
+  speedScale: 0.4,
+};
+
+const controllerLine = {
+  length: 0,
+  x: controllerCircle.x,
+  y: controllerCircle.y,
+  headX: 0,
+  headY: 0,
+};
+
+const player = {
+  x: w / 3,
+  y: h / 3,
+  w: 32,
+  h: 40,
+  dir: 0,
+  speed: {
+    x: 0,
+    y: 0,
+  },
+};
+
+function distanceBetweenPoint(x1: number, y1: number, x2: number, y2: number) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  return Math.sqrt(dx * dx - dy * dy);
+}
+
+function iSinsideCirlce(x: number, y: number) {
+  return (
+    distanceBetweenPoint(x, y, controllerCircle.x, controllerCircle.y) <
+    controllerCircle.r
+  );
+}
+
+function drawControllerCircle() {
+  drawCircle(controllerCircle.r, controllerCircle.x, controllerCircle.y);
+}
+
+function drawControlLine() {
+  context.save();
+  context.translate(controllerLine.x, controllerLine.y);
+  context.strokeStyle = "red";
+  context.beginPath();
+  context.moveTo(0, 0);
+  context.lineTo(controllerLine.headX, controllerLine.headY);
+  context.stroke();
+  context.closePath();
+  context.restore();
+
+  drawCircle(
+    20,
+    controllerCircle.x + controllerLine.headX,
+    controllerCircle.y + controllerLine.headY
+  );
+}
+
+function drawCircle(r: number, x: number, y: number) {
+  context.save();
+  context.translate(x, y);
+  context.beginPath();
+  context.strokeStyle = "green";
+  context.lineWidth = 2;
+  context.arc(0, 0, r, 0, Math.PI * 2);
+  context.stroke();
+  context.fill();
+  context.closePath();
+  context.restore();
+}
+
+function angle(x1: number, y1: number, x2: number, y2: number) {
+  const dx = x1 - x2;
+  const dy = y1 - y2;
+  return Math.atan2(dy, dx);
+}
+
+function updateControllerCircle(dt: number) {}
+
+function drawPlayer() {
+  context.save();
+  context.translate(player.x, player.y);
+  context.translate(player.w / 2, player.h / 2);
+  context.rotate(player.dir);
+  context.translate(-player.w / 2, -player.h / 2);
+
+  context.fillStyle = "rgba(22,0,0,0.4)";
+  context.fillRect(0, 0, player.w, player.h);
+  context.restore();
+}
+
+function updatePlayer(dt: number) {
+  player.x += Math.cos(player.dir) * dt * player.speed.x;
+  player.y += Math.sin(player.dir) * dt * player.speed.y;
+
+  if (player.x == 0 || player.y == 0) {
+    player.x = player.x;
+    player.y = player.y;
+  } else {
+    player.x = clamp(player.x, 0, w - player.w);
+    player.y = clamp(player.y, 0, h - player.h);
+  }
+}
+
+
+canvas.addEventListener("touchend", (e) => {
+  controllerLine.length = 0;
+  controllerLine.headX = 0;
+  controllerLine.headY = 0;
+  player.speed.x = 0;
+  player.speed.y = 0;
+});
+
+canvas.addEventListener("touchstart", handle_touch);
+canvas.addEventListener("touchmove", handle_touch);
+
+function handle_touch(e: TouchEvent) {
+  e.preventDefault();
+  const touchList = e.changedTouches;
+
+  for (let i = 0; i < touchList.length; i++) {
+    const touch = touchList[i];
+    const { pageX: x1, pageY: y1 } = touch;
+
+    const distance = distanceBetweenPoint(
+      x1,
+      y1,
+      controllerCircle.x,
+      controllerCircle.y
+    );
+
+    controllerLine.length = distance;
+    controllerLine.headX = x1 - controllerCircle.x;
+    controllerLine.headY = y1 - controllerCircle.y;
+
+    controllerLine.headX = clamp(
+      controllerLine.headX,
+      -controllerCircle.r * controllerCircle.speedScale,
+      controllerCircle.r * controllerCircle.speedScale
+    );
+    controllerLine.headY = clamp(
+      controllerLine.headY,
+      -controllerCircle.r * controllerCircle.speedScale,
+      controllerCircle.r * controllerCircle.speedScale
+    );
+
+    const dir = angle(x1, y1, controllerCircle.x, controllerCircle.y);
+    player.dir = dir;
+    player.speed.x = 100 + Math.abs(controllerLine.headX);
+    player.speed.y = 100 + Math.abs(controllerLine.headY);
+  }
+}

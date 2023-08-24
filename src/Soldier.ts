@@ -4,14 +4,36 @@ import { FRAMES_SOLDIERS } from "./sprite-frames";
 
 export default class Soldier extends TileSprite {
     speed: number = 400;
+    gunRate = .05;
+    currentTime = 0;
+    frameIndex = 0;
     constructor() {
-        super(new Texture('./assets/soldier.png'))
+        super(new Texture('./assets/shooter.png'))
         this.frame.y = 1;
         this.frame.x = 1;
+
+        console.log(this.texture.img)
     }
 
     update(dt: number, t: number) {
-        const frameIndex = Math.floor(t / 0.15) % FRAMES_SOLDIERS ? Math.floor(t / 0.07 ) % FRAMES_SOLDIERS : 1;
-        this.frame.x = frameIndex;
+        this.frame.x = 1;
+    }
+
+    render(context: CanvasRenderingContext2D) {
+        context.save();
+        context.translate(this.pos.x, this.pos.y);
+        context.drawImage(
+          this.texture.img,
+          this.tileW * this.frame.x,
+          this.tileH * 0,
+          this.tileW,
+          this.tileH,
+          0,
+          0,
+          this.tileW,
+          this.tileH
+        );
+        // context.drawImage(this.texture.img, 0, 0); 
+        context.restore();
     }
 }

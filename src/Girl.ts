@@ -7,4 +7,16 @@ export default class Girl extends Sprite {
         this.w = 64;
         this.h = 128;
     }    
+
+    render(context: CanvasRenderingContext2D) {
+        context.save();
+        context.fillStyle = "pink";
+        // context.fillRect(girl.pos.x, 0, girl.w, h);
+        context.restore();
+        context.save();
+        context.translate(this.pos.x, this.pos.y);
+        // context.scale(this.scale.x, this.scale.y);
+        context.drawImage(this.texture.img, 0, 0);
+        context.restore();
+    }
 }
