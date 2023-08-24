@@ -361,11 +361,9 @@ function run(ellapsedTime: number) {
     createBullet(); 
     lastShotFrame = 0;
     playSound();
-
   }
 
-  if (control.action) {
-  }
+
   lastSpwanTime += dt;
   if (lastSpwanTime > spwanRate) {
     createSpiders();
