@@ -3,12 +3,10 @@ import Girl from "./Girl";
 import KeyControls from "./KeysControl";
 import Soldier from "./Soldier";
 import Spider from "./Spider";
-import Texture from "./Texture";
 import math from "./math";
 import { clamp, hasCollide } from "./utils";
 import Heart from "./Heart";
-import { girlImages, h, w } from "./constants";
-import Sprite from "./Sprite";
+import { girlH, girlImages, girlW, h, w } from "./constants";
 import Sound from "./Sound";
 import Score from "./Score";
 import GameOver from "./GameOver";
@@ -51,10 +49,11 @@ const bg = new Background();
 
 /**Girl start */
 const girls: Girl[] = [];
+const girly = h / 2;
 (function createGirls() {
   girlImages.forEach((url) => {
     const girl = new Girl(url);
-    girl.pos.y = Math.random() * (h - girl.h * 3) + girl.h;
+    girl.pos.y = girly;
     girls.push(girl);
   });
 })();
@@ -78,7 +77,7 @@ soldier.pos.x = girl.w;
 /** Spiders Start*/
 let spiders: Spider[] = [];
 let lastSpwanTime = 0;
-let spwanRate = 0.07;
+let spwanRate = 0.04;
 function createSpiders() {
   for (let i = 0; i < 1; i++) {
     const spider = new Spider();
@@ -108,14 +107,18 @@ function updateSpiders(dt: number, t: number) {
 
 // Bullet Starts
 let lastShotFrame = 0;
-let shotRate = 0.06;
+let shotRate = 0.04 ;
 let bullets: Bullet[] = [];
 const gunSound = new Sound("./assets/AK-47-sound.wav");
 function createBullet() {
   const bullet = new Bullet();
+  const bullet2 = new Bullet();
   bullet.pos.x = soldier.pos.x + soldier.tileW + 16;
+  bullet2.pos.x = soldier.pos.x + soldier.tileW + 16;
   bullet.pos.y = soldier.pos.y + 47;
+  bullet2.pos.y = soldier.pos.y ;
   bullets.push(bullet);
+  bullets.push(bullet2);
 }
 
 function renderBullets() {
@@ -155,8 +158,12 @@ function checkCollision() {
   bullets.forEach((bullet) => {
     spiders.forEach((spider) => {
       if (hasCollide(bullet, spider)) {
-        spider.dead = true;
+        spider.life--;
+        if(spider.life < 0) {
+          spider.dead = true;
         totalScore += 1;
+
+        }
       }
     });
   });
@@ -217,12 +224,12 @@ function playSound() {
     sound = sounds[idx];
     sound.setAttribute("src", "./assets/gun-sound-1.wav");
     sound.loop = false;
-    sound.volume = 0.2;
+    sound.volume = 0.1;
     sound.play();
   } else {
     sound = document.createElement("audio");
     sound.setAttribute("src", "./assets/gun-sound-1.wav");
-    sound.volume = 0.2;
+    sound.volume = 0.1;
     sound.play();
     sounds.push(sound);
   }
@@ -233,18 +240,18 @@ function run(ellapsedTime: number) {
   dt = (ellapsedTime - time) * 0.001;
   time = ellapsedTime; // to seconds
   second = time * 0.001;
-  if (control.y) {
+  if (control.y && !isGameOver) {
     const dy = soldier.pos.y + soldier.speed * dt * control.y;
     soldier.pos.y = Math.max(0, Math.min(h - 128, dy));
   }
 
-  if (control.x) {
+  if (control.x && !isGameOver) {
     const dx = soldier.pos.x + soldier.speed * dt * control.x;
     soldier.pos.x = Math.max(0, Math.min(h - 128, dx));
   }
 
   lastShotFrame += dt;
-  if (lastShotFrame > shotRate && control.action) {
+  if (lastShotFrame > shotRate && control.action && !isGameOver) {
     createBullet();
     soldier.frame.x = 1;
     lastShotFrame = 0;
@@ -293,13 +300,14 @@ function run(ellapsedTime: number) {
   bg.render(context);
 
   soldier.render(context);
+  girl.render(context);
   if (!isGameOver) {
     renderSpiders();
     renderBullets();
   }
   score.render(context);
   renderLife();
-  girl.render(context);
+ 
   // drawControllerCircle();
   drawPlayer();
   // drawControlLine();

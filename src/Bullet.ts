@@ -3,7 +3,7 @@ import Texture from "./Texture";
 import { w } from "./constants";
 
 export default class Bullet extends Sprite {
-  speed: number = 1500;
+  speed: number = 2500;
   constructor() {
     super(new Texture("./assets/bullet.png"));
     this.w = 16;

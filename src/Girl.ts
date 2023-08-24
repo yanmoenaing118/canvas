@@ -4,8 +4,8 @@ import Texture from "./Texture";
 export default class Girl extends Sprite {
     constructor(url: string) {
         super(new Texture(url));
-        this.w = 64;
-        this.h = 128;
+        this.w = 100;
+        this.h = 194;
     }    
 
     render(context: CanvasRenderingContext2D) {
