@@ -333,13 +333,13 @@ function playSound() {
 
   if (soundFound && idx) {
     sound = sounds[idx];
-    sound.setAttribute("src", "./assets/shot_03.ogg");
+    sound.setAttribute("src", "./assets/gun-sound-1.wav");
     sound.loop = false;
     sound.volume = .5;
     sound.play();
   } else {
     sound = document.createElement("audio");
-    sound.setAttribute("src", "./assets/shot_03.ogg");
+    sound.setAttribute("src", "./assets/gun-sound-1.wav");
     sound.volume = .5;
     sound.play();
     sounds.push(sound);
