@@ -22,7 +22,7 @@ export default class Spider extends TileSprite {
     if (this.speed == 0 ) {
       if(!this.bite) {
         this.pos.x -= math.randf(80);
-        this.pos.y += 180;
+        // this.pos.y += 180;
         this.bite = true;
       } else {
         this.pos.x = this.pos.x;
