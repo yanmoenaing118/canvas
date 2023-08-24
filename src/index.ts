@@ -34,7 +34,6 @@ context.scale(dpr, dpr);
 canvas.style.width = `${rect.width}px`;
 canvas.style.height = `${rect.height}px`;
 
-
 let dt = 1 / 60;
 let time = 0; // in millis
 let second = 0;
@@ -50,6 +49,7 @@ let hasBiteGirl = false; // to flag the Gril has been bitten
 let currBittenTime = 0;
 let healthRate = 0.01;
 let isGameOver = false;
+const sounds: HTMLAudioElement[] = [];
 
 /**Background */
 const bg = new Texture("./assets/pyramid.jpg");
@@ -62,12 +62,12 @@ function renderBg() {
 /**Girl start */
 const girls: Girl[] = [];
 (function createGirls() {
-  girlImages.forEach(url => {
+  girlImages.forEach((url) => {
     const girl = new Girl(url);
-    girl.pos.y =  Math.random() *( h - girl.h * 3) + girl.h;
+    girl.pos.y = Math.random() * (h - girl.h * 3) + girl.h;
     girls.push(girl);
-  })
-})()
+  });
+})();
 // console.log(girls);
 let girlIndex = 0;
 let girl: Girl = girls[girlIndex];
@@ -86,7 +86,7 @@ function renderGirl() {
 function updateGirlIndex() {
   // return;
   girlIndex = girls.length - noOfLife;
-  if(!girls[girlIndex]) return;
+  if (!girls[girlIndex]) return;
   girl = girls[girlIndex];
 }
 /** Girl End */
@@ -161,7 +161,7 @@ function updateSpiders(dt: number, t: number) {
 
 // Bullet Starts
 let lastShotFrame = 0;
-let shotRate = 0.05;
+let shotRate = 0.1 ;
 let bullets: Bullet[] = [];
 const gunSound = new Sound("./assets/AK-47-sound.wav");
 function createBullet() {
@@ -278,11 +278,10 @@ function renderScore() {
 renderScore();
 
 function renderGameOver() {
-  if(noOfLife <= 0) {
+  if (noOfLife <= 0) {
     doGameOver();
   }
   // doGameOver();
-
 }
 
 function doGameOver() {
@@ -290,36 +289,62 @@ function doGameOver() {
   const over = new Text("Game Over!");
   context.globalAlpha = 0.65;
   context.save();
-  context.translate(0,0);
-  context.fillStyle = 'black';
-  context.fillRect(0,0,w,h)
+  context.translate(0, 0);
+  context.fillStyle = "black";
+  context.fillRect(0, 0, w, h);
   context.restore();
 
   context.save();
-  context.fillStyle = 'black';
-  context.font = '68px monospace';
-  context.strokeStyle = 'white';
+  context.fillStyle = "black";
+  context.font = "68px monospace";
+  context.strokeStyle = "white";
   context.lineWidth = 3;
   context.translate(w / 2 - over.width(context) / 2.25, h / 2 - 34);
-  context.fillText(over.text, 0,0)
-  context.strokeText(over.text, 0,0)
+  context.fillText(over.text, 0, 0);
+  context.strokeText(over.text, 0, 0);
   context.restore();
 
   context.save();
-  context.fillStyle = 'white';
-  context.font = '24px monospace';
-  context.strokeStyle = 'white';
+  context.fillStyle = "white";
+  context.font = "24px monospace";
+  context.strokeStyle = "white";
   context.translate(w / 2 - over.width(context) / 2.25, h / 2 + 34);
   context.fillText(score.text, 0, 0);
   context.restore();
 
   context.save();
-
 }
 
 const test = new Sprite(new Texture(girlImages[0]));
 
 console.log(test);
+
+function playSound() {
+  let soundFound = false;
+  let idx: number | undefined;
+  let sound: HTMLAudioElement;
+  sounds.forEach((el, i) => {
+    if (el.ended) {
+      soundFound = true;
+      idx = i;
+      return;
+    }
+  });
+
+  if (soundFound && idx) {
+    sound = sounds[idx];
+    sound.setAttribute("src", "./assets/shot_03.ogg");
+    sound.loop = false;
+    sound.volume = .5;
+    sound.play();
+  } else {
+    sound = document.createElement("audio");
+    sound.setAttribute("src", "./assets/shot_03.ogg");
+    sound.volume = .5;
+    sound.play();
+    sounds.push(sound);
+  }
+}
 
 /** GAME LOOP starts here */
 function run(ellapsedTime: number) {
@@ -333,15 +358,14 @@ function run(ellapsedTime: number) {
 
   lastShotFrame += dt;
   if (lastShotFrame > shotRate && control.action) {
-    createBullet();
+    createBullet(); 
     lastShotFrame = 0;
-  } 
+    playSound();
 
-  if(control.action){
-      // gunSound.reset();
-      gunSound.play();
+  }
 
-  } 
+  if (control.action) {
+  }
   lastSpwanTime += dt;
   if (lastSpwanTime > spwanRate) {
     createSpiders();
@@ -377,9 +401,9 @@ function run(ellapsedTime: number) {
    * render entites
    */
   renderBg();
-  
+
   renderSoldier();
-  if(!isGameOver) {
+  if (!isGameOver) {
     renderSpiders();
     renderBullets();
   }
@@ -387,7 +411,6 @@ function run(ellapsedTime: number) {
   renderLife();
   renderGirl();
   renderGameOver();
-
 
   requestAnimationFrame(run);
 }
