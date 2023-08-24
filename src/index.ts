@@ -52,7 +52,7 @@ let isGameOver = false;
 const sounds: HTMLAudioElement[] = [];
 
 /**Background */
-const bg = new Texture("./assets/pyramid.jpg");
+const bg = new Texture("./assets/bg1.png");
 function renderBg() {
   context.save();
   context.drawImage(bg.img, 0, 0, w, h);
@@ -161,7 +161,7 @@ function updateSpiders(dt: number, t: number) {
 
 // Bullet Starts
 let lastShotFrame = 0;
-let shotRate = 0.1 ;
+let shotRate = 0.06 ;
 let bullets: Bullet[] = [];
 const gunSound = new Sound("./assets/AK-47-sound.wav");
 function createBullet() {
@@ -356,6 +356,11 @@ function run(ellapsedTime: number) {
     soldier.pos.y = Math.max(0, Math.min(h - 128, dy));
   }
 
+  if(control.x) {
+    const dx = soldier.pos.x + soldier.speed * dt * control.x;
+    soldier.pos.x = Math.max(0, Math.min(h - 128, dx));
+  }
+
   lastShotFrame += dt;
   if (lastShotFrame > shotRate && control.action) {
     createBullet(); 
@@ -387,7 +392,7 @@ function run(ellapsedTime: number) {
   if (hasBiteGirl) {
     updateGirlHealth(second);
   }
-  if (control.y) {
+  if (control.y || control.x) {
     soldier.update(dt, second);
   }
   updateSpiders(dt, second);
