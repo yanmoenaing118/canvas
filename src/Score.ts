@@ -5,13 +5,16 @@ export default class Score extends Text {
   constructor(score: string) {
     super(score);
     this.style.color = 'white';
+    this.style.font = "14px monospace";
   }
 
   render(context: CanvasRenderingContext2D) {
     context.save();
-    context.translate(w - this.width(context) * 2 - 1, 0);
-    context.fillStyle = "black";
-    context.fillRect(0, 0, this.width(context) * 2, 30);
+    context.translate(w - this.width(context) * 2.5 - 1, 0);
+    context.fillStyle = "rgba(0,225,0,0.1)";
+    context.strokeStyle = "white";
+    context.fillRect(0, 0, this.width(context) * 4, 30);
+    context.strokeRect(0,0,this.width(context) * 4, 30 )
     context.restore();
 
     context.save();

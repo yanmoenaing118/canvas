@@ -53,5 +53,11 @@ export default class Spider extends TileSprite {
       this.tileH
     );
     context.restore();
+
+    context.save();
+    context.fillStyle = "red";
+    context.translate(this.pos.x + 12, this.pos.y + 12);
+    context.fillRect(0,0,this.life * 4, 3);
+    context.restore();
   }
 }
