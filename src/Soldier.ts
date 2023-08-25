@@ -3,7 +3,7 @@ import TileSprite from "./TileSprite";
 import { FRAMES_SOLDIERS } from "./sprite-frames";
 
 export default class Soldier extends TileSprite {
-    speed: number = 400;
+    speed: number = 800;
     gunRate = .05;
     currentTime = 0;
     frameIndex = 0;
