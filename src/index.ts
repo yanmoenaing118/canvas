@@ -1,71 +1,70 @@
 import Circle from "./Circle";
 import { renderGrid } from "./DebugGrid";
 import KeyControls from "./KeyControls";
-import RotatedObject from "./RotatedObject";
-import State from "./State";
 
 import { CELLSIZE, HEIGHT, MAX_DELTA, WIDTH } from "./constants";
+import setResolution from "./resolution";
 import { clamp } from "./utils";
 
 const canvas = document.createElement("canvas") as HTMLCanvasElement;
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 document.body.appendChild(canvas);
 canvas.style.boxShadow = "0 0 3px rgba(0,0,0,0.3)";
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
-const dpr = window.devicePixelRatio;
-const rect = canvas.getBoundingClientRect();
-canvas.width = rect.width * dpr;
-canvas.height = rect.height * dpr;
-ctx.scale(dpr, dpr);
-canvas.style.width = `${rect.width}px`;
-canvas.style.height = `${rect.height}px`;
+setResolution(canvas, WIDTH, HEIGHT);
 
 let dt = 0;
 let t = 0;
 const controls = new KeyControls();
-const circle = new Circle({ x: 32, y: 32 }, 32, { fill: "pink" });
-const c2 = new Circle({ x: CELLSIZE * 3, y: 32 }, 32, { fill: "pink" });
 
-const gravity = 32;
+const gravity = 9.8;
 
-circle.update = (dt: number, t: number) => {
-  if (!circle.state.is("jumping") && controls.action) {
-    circle.vel.y = -100;
-    circle.state.set("jumping");
-  }
+const circles: Circle[] = new Array(2).fill(10).map((_) => {
+  const circle = new Circle(
+    { x: Math.random() * WIDTH, y: Math.random() * 64 },
+    32,
+    { fill: "pink" }
+  );
 
-  if (circle.pos.y == HEIGHT - circle.r) {
-    circle.vel.y = 0;
-    circle.state.set("idle");
-  }
+  circle.update = (dt: number, t: number) => {
+    if (circle.pos.y >= HEIGHT - circle.r) {
+      circle.vel.y = 0;
+      circle.jumping = false;
+      // circle.vel.y = -400 + gravity;
+    } else {
+      circle.vel.y += gravity;
+      circle.jumping = true;
+    }
+    if (controls.action && !circle.jumping) {
+      circle.vel.y = -((Math.random() * 300) + 400);
+      // circle.jumping = true;
+    }
+    if (controls.x) {
+      circle.pos.x += circle.vel.x * dt * controls.x;
+    }
+    circle.pos.y += circle.vel.y * dt;
+    circle.pos.y = clamp(circle.pos.y, 0, HEIGHT - circle.r);
+  };
+  return circle;
+});
 
-  circle.vel.y += gravity * dt;
-  circle.pos.y += circle.vel.y;
-
-  circle.pos.x += dt * controls.x * circle.speed;
-  circle.pos.y = clamp(circle.pos.y, 0, HEIGHT - circle.r);
-  console.log(circle.vel.y);
+const renderCircles = (ctx: CanvasRenderingContext2D) => {
+  circles.forEach((c) => c.render(ctx));
 };
 
-c2.update = (dt: number, t: number) => {
-  c2.pos.y += dt * circle.speed;
-  c2.pos.y = clamp(c2.pos.y, 0, HEIGHT - c2.r);
-};
+const updateCircles = (dt: number, t: number) =>
+  circles.forEach((c) => c.update(dt, t));
 
 function loop(ellapsedTime: number) {
   dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
   t = ellapsedTime;
 
-  circle.update(dt, t);
-  c2.update(dt, t);
-
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+  updateCircles(dt, t * 0.001);
 
   renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
 
-  circle.render(ctx);
-  c2.render(ctx);
+  renderCircles(ctx);
 
   requestAnimationFrame(loop);
 }

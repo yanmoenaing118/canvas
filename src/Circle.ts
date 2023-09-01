@@ -7,10 +7,11 @@ export default class Circle extends Entity {
     speed = 400;
     vel: Vec2;
     state: State;
+    jumping = false
     constructor(public pos: Vec2, public r: number, public styles: Partial<Styles> ) {
         super();
         this.vel = {
-            x: 0,
+            x: 400,
             y: 0
         }
         this.state = new State('idle');
