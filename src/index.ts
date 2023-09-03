@@ -17,33 +17,42 @@ let t = 0;
 const controls = new KeyControls();
 
 const gravity = 9.8;
+let vel = 0;
 
-const circles: Circle[] = new Array(2).fill(10).map((_) => {
+const circles: Circle[] = new Array(1).fill(10).map((_) => {
   const circle = new Circle(
-    { x: Math.random() * WIDTH, y: Math.random() * 64 },
+    { x: Math.random() * WIDTH, y: HEIGHT - 32 },
     32,
     { fill: "pink" }
   );
 
   circle.update = (dt: number, t: number) => {
-    if (circle.pos.y >= HEIGHT - circle.r) {
-      circle.vel.y = 0;
-      circle.jumping = false;
-      // circle.vel.y = -400 + gravity;
-    } else {
-      circle.vel.y += gravity;
+
+    const ox = controls.x * dt * 320;
+    let oy = 0;
+
+    if(!circle.jumping && controls.action) {
+      circle.vel.y = -10;
       circle.jumping = true;
     }
-    if (controls.action && !circle.jumping) {
-      circle.vel.y = -((Math.random() * 300) + 400);
-      // circle.jumping = true;
+
+    if(circle.jumping) {
+      circle.vel.y += dt * 32;
+      console.log(circle.vel.y);
+      oy += circle.vel.y;
     }
-    if (controls.x) {
-      circle.pos.x += circle.vel.x * dt * controls.x;
+
+    if(circle.pos.y >= HEIGHT - 32) {
+      circle.jumping = false;
+      circle.pos.y = HEIGHT - 32;
     }
-    circle.pos.y += circle.vel.y * dt;
-    circle.pos.y = clamp(circle.pos.y, 0, HEIGHT - circle.r);
-  };
+
+    circle.pos.x += ox;
+    circle.pos.y += oy;
+
+    circle.pos.x = clamp(circle.pos.x, circle.r, WIDTH - circle.r );
+  }
+
   return circle;
 });
 
