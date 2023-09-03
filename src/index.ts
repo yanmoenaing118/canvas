@@ -16,7 +16,7 @@ let dt = 0;
 let t = 0;
 const controls = new KeyControls();
 
-const gravity = 9.8;
+const gravity = 32;
 let vel = 0;
 
 const circles: Circle[] = new Array(1).fill(10).map((_) => {
@@ -32,13 +32,12 @@ const circles: Circle[] = new Array(1).fill(10).map((_) => {
     let oy = 0;
 
     if(!circle.jumping && controls.action) {
-      circle.vel.y = -10;
+      circle.vel.y = -15;
       circle.jumping = true;
     }
 
     if(circle.jumping) {
-      circle.vel.y += dt * 32;
-      console.log(circle.vel.y);
+      circle.vel.y += dt * gravity;
       oy += circle.vel.y;
     }
 
