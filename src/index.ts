@@ -7,16 +7,25 @@ const { ctx } = new Render();
 let dt = 0;
 let t = 0;
 
+let sum = []
+
+function cpuIntensive() {
+
+}
+
 function loop(ellapsedTime: number) {
-  dt = Math.min(MAX_DELTA, (ellapsedTime - t) * 0.001);
+  dt = (ellapsedTime - t) * 0.001;
   t = ellapsedTime;
 
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
 
+
   renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
 
 
+  cpuIntensive();
+  console.log(`${dt}`);
   requestAnimationFrame(loop);
 }
 
