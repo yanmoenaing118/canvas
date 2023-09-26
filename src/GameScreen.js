@@ -134,6 +134,11 @@ class GameScreen extends Container {
       }
       this.scoreText.text = this.score;
     });
+
+    if(player.pos.y > this.h / 2) {
+      player.pos.y = this.h / 2;
+      player.jumping = false;
+    }
   }
 }
 

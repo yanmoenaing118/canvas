@@ -17,10 +17,13 @@ class Player extends TileSprite {
     this.speed = 210;
     this.anchor = { x: 0, y: 0 };
     this.frame.x = 4;
+    this.jumping = false;
+    this.vel = 0;
   }
 
   update(dt, t) {
     const { pos, controls, map, speed, gameOver } = this;
+    
 
     if (gameOver) {
       this.rotation += dt * 5;
@@ -29,16 +32,29 @@ class Player extends TileSprite {
       return;
     }
 
+    if(!this.jumping && controls.action) {
+      this.vel = -10;
+      this.jumping = true;
+    }
+
+   
+
     let { x, y } = controls;
     const xo = x * dt * speed;
-    const yo = y * dt * speed;
+    let yo = 0;
+
+    if(this.jumping) {
+      this.vel += dt * 32;
+      yo += this.vel;
+    }
+
     const r = wallslide(this, map, xo, yo);
     if (r.x !== 0 && r.y !== 0) {
       r.x /= Math.sqrt(2);
       r.y /= Math.sqrt(2);
     }
     pos.x += r.x;
-    pos.y += r.y;
+    pos.y += yo;
 
     // Animate!
     if (r.x || r.y) {
