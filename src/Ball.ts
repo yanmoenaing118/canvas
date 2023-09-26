@@ -1,4 +1,6 @@
+import { h, w } from "./canvas";
 import { Vec2 } from "./classes";
+import { clamp } from "./utils";
 
 export default class Ball {
   pos: Vec2;
@@ -18,5 +20,9 @@ export default class Ball {
     ctx.restore();
   }
 
-  update(dt: number, t: number) {}
+  update(dt: number, t: number) {
+
+    this.pos.x = clamp(this.pos.x, this.size, w - this.size);
+    this.pos.y = clamp(this.pos.y, this.size, h - this.size);
+  }
 }
