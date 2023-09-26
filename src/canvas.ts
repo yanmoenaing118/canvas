@@ -4,7 +4,7 @@ export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 document.body.appendChild(canvas);
 export const w = 640;
-export const h = 320;
+export const h = 480;
 canvas.width = w;
 canvas.height = h;
 

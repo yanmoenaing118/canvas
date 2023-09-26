@@ -4,10 +4,26 @@ import { clamp } from "./utils";
 
 export default class Ball {
   pos: Vec2;
+  vel = 0;
+  jumping = false;
 
   constructor(public size: number, x: number, y: number, public color: string) {
     this.pos = new Vec2(x, y);
   }
+
+
+
+  update(dt: number, t: number) {
+
+    if(this.pos.y >= h - this.size ) {
+        this.jumping = false;
+    }
+
+    this.pos.x = clamp(this.pos.x, this.size, w - this.size);
+    this.pos.y = clamp(this.pos.y, this.size, h - this.size);
+  }
+
+
 
   render(ctx: CanvasRenderingContext2D) {
     ctx.save();
@@ -20,9 +36,4 @@ export default class Ball {
     ctx.restore();
   }
 
-  update(dt: number, t: number) {
-
-    this.pos.x = clamp(this.pos.x, this.size, w - this.size);
-    this.pos.y = clamp(this.pos.y, this.size, h - this.size);
-  }
 }
