@@ -1,24 +1,16 @@
-import { renderGrid } from "./DebugGrid";
-import Render from "./Render";
-import { CELLSIZE, HEIGHT, WIDTH } from "./constants";
+import Ball from "./Ball";
+import renderUpdate from "./loop";
 
-const { ctx } = new Render();
+let ball = new Ball(16, 16, 16, 'red');
 
-let dt = 0;
-let t = 0;
-
-function loop(ellapsedTime: number) {
-  dt = (ellapsedTime - t) * 0.001;
-  t = ellapsedTime;
-
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
-
-
-
-  renderGrid(ctx, HEIGHT / CELLSIZE, WIDTH / CELLSIZE, CELLSIZE, CELLSIZE);
-
-
-  requestAnimationFrame(loop);
+function render(ctx: CanvasRenderingContext2D) {
+    ball.render(ctx);
 }
 
-requestAnimationFrame(loop);
+
+function update(dt: number, t: number) {
+
+    
+}
+
+renderUpdate(render, update)
