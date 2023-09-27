@@ -17,10 +17,11 @@ export default class Ball {
 
     if(this.pos.y >= h - this.size ) {
         this.jumping = false;
+        this.pos.y = h - this.size;
     }
 
     this.pos.x = clamp(this.pos.x, this.size, w - this.size);
-    this.pos.y = clamp(this.pos.y, this.size, h - this.size);
+    // this.pos.y = clamp(this.pos.y, this.size, h - this.size);
   }
 
 
