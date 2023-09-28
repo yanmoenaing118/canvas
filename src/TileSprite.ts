@@ -2,7 +2,7 @@ import Sprite from "./Sprite";
 import Texture from "./Texture";
 import { Vec2 } from "./classes";
 
-class TileSprite extends Sprite {
+export default class TileSprite extends Sprite {
     constructor(
       public texture: Texture,
       public w: number,
