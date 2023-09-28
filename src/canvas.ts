@@ -3,8 +3,8 @@ export const canvas = document.createElement("canvas") as HTMLCanvasElement;
 export const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 document.body.appendChild(canvas);
-export const w = 640;
-export const h = 480;
+export const w = 10 * 64;
+export const h = 8 * 64;
 canvas.width = w;
 canvas.height = h;
 

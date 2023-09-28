@@ -3,3 +3,9 @@ export class Vec2 {
 
     }
 }
+
+export type TileSpriteFrame = {
+    x: number, 
+    y: number,
+    [key: string]: string | boolean | number
+}
