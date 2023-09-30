@@ -15,8 +15,8 @@ function getTile(char: string) {
       return { x: 4, y: 2 };
     case "D":
       return { x: 5, y: 1 };
-    case "E":
-      return { x: 4, y: 0 };
+    case "P":
+      return { x: 1, y: 7 };
     default:
       return { x: 1, y: 1 };
   }
@@ -27,14 +27,14 @@ export default class LevelMap extends TileMap {
     const tileH = 64;
 
     const ascii = `
-##########
-#        #
-#        #
-#        #
-#        #
-#        #
-#        #
-BBBBBBBBBB`;
+############
+#          #
+#          #
+#          #
+#          #
+#          #
+#P         #
+BBBBBBBBBBBB`;
 
     const mapW = w / tileW;
     const mapH = h / tileH;
