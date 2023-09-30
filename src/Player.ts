@@ -6,7 +6,7 @@ export default class Player extends TileSprite {
   jumping = false;
   constructor() {
     super(new Texture("spider10.png"), 64, 64, 64, 64, 0, 0, {
-      x: 2,
+      x: 0,
       y: 3,
     });
   }

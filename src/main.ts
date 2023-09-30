@@ -33,7 +33,8 @@ tile.update = function (dt: number, t: number) {
   if (this.pos.y > h - 64 * 2) {
     oy = 0;
     this.pos.y = h - 64 * 2;
-    this.jumping = false;
+    // this.jumping = false;
+    this.vel = -10;
   }
 
   this.pos.y += oy;
