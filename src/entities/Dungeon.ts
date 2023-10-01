@@ -2,8 +2,6 @@ import { js as EasyStar } from "easystarjs";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, TILE_SIZE } from "../constants";
 import Texture from "../pop/Texture";
 import TileMap from "../pop/TileMap";
-import math from "../pop/utils/math";
-
 
 const tileSize = TILE_SIZE;
 const texture = new Texture("images/bravedigger-tiles.png");
@@ -21,6 +19,12 @@ function getById(id: string | number): any {
 const path = new EasyStar();
 class Dungeon extends TileMap {
   path: EasyStar;
+  spawns: {
+    player: any;
+    totems: any[];
+    bats: any[];
+    pickups: any[];
+  } = { player: null, totems: [], bats: [], pickups: [] };
   constructor() {
     const ascii = `
 #########################
@@ -122,6 +126,13 @@ class Dungeon extends TileMap {
     );
 
     this.path = path;
+    // Map spawn points to pixel locations
+    this.spawns = {
+      player: this.mapPositionToPixel(spawns.player),
+      bats: spawns.bats.map((b: any) => this.mapPositionToPixel(b)),
+      totems: spawns.totems.map((t: any) => this.mapPositionToPixel(t)),
+      pickups: spawns.pickups.map((p: any) => this.mapPositionToPixel(p)),
+    };
   }
 }
 

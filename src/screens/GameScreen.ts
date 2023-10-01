@@ -14,8 +14,8 @@ export default class GameScreen extends Container {
 
     const dungeon = this.add(new Dungeon());
     const player = this.add(new Player(controls, dungeon));
-    player.pos.x = player.w;
-    player.pos.y = player.h;
+    player.pos.x = dungeon.spawns.player.x;
+    player.pos.y = dungeon.spawns.player.y;
 
     for (let i = 0; i < 4; i++) {
       this.add(new Bat(player));
