@@ -19,5 +19,8 @@ module.exports = {
     path: path.resolve(__dirname, "public"),
   },
   mode: "development",
-  devtool: "eval-cheap-source-map"
+  devtool: "eval-cheap-source-map",
+  devServer: {
+    port: 9000
+  }
 };

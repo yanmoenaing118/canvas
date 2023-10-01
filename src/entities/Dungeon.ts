@@ -4,78 +4,116 @@ import Texture from "../pop/Texture";
 import TileMap from "../pop/TileMap";
 import math from "../pop/utils/math";
 
-const mapW = CANVAS_WIDTH / TILE_SIZE;
-const mapH = CANVAS_HEIGHT / TILE_SIZE;
+
 const tileSize = TILE_SIZE;
 const texture = new Texture("images/bravedigger-tiles.png");
 
+// const tileSize = 48;
+const tileIndexes = [
+  { id: "empty", x: 0, y: 2, walkable: true },
+  { id: "wall", x: 2, y: 3 },
+  { id: "wall3D", x: 3, y: 3 },
+];
 function getById(id: string | number): any {
   return tileIndexes.find((frame) => frame.id === id);
 }
-
-const tileIndexes = [
-  { id: "empty", x: 0, y: 2, walkable: true },
-  { id: "wall", x: 2, y: 2, walkable: false },
-  { id: "wall_end", x: 3, y: 2, walkable: false },
-];
 
 const path = new EasyStar();
 class Dungeon extends TileMap {
   path: EasyStar;
   constructor() {
-    const level = new Array(mapW * mapH).fill("empty");
+    const ascii = `
+#########################
+#####                ####
+###                B  ###
+##                 ##  ##
+#       ########       ##
+#   ##       ###        #
+#B            ####      #
+###             ##      T
+####   ##T##    ####    #
+#####                  ##
+###                  ####
+##    ##                #
+#   #####        ########
+# ########    T##########
+#X          #############
+#########################`;
 
-  
-    for (let y = 0; y < mapH; y++) {
+    const spawns: any = {
+      player: null,
+      totems: [],
+      bats: [],
+      pickups: [],
+    };
+
+    const cells = ascii
+      .split("\n")
+      .slice(1)
+      .map((row) => {
+        return row.split("");
+      });
+    const mapH = cells.length;
+    const mapW = cells.reduce((max, row) => Math.max(max, row.length), 0);
+
+    // "pad out" the rows so they are all the same length
+    const padded = cells.map((row) => {
+      const extra = mapW - row.length;
+      return [...row, ...Array(extra).fill(" ")];
+    });
+
+    // Find spawns, and replace with correct tiles
+    const level: any = padded
+      .map((row, y) =>
+        row.map((cell, x) => {
+          switch (cell) {
+            case "#":
+              return 1;
+            case "T":
+              spawns.totems.push({ x, y });
+              return 1;
+            case "B":
+              spawns.bats.push({ x, y });
+              return 0;
+            case "X":
+              spawns.player = { x, y };
+              return 0;
+            default:
+              return 0;
+          }
+        })
+      )
+      .reduce((ac, el) => [...ac, ...el]);
+
+    // "3d-ify" if no wall below a tile
+    for (let y = 1; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
-        if (y == 0 || x == 0 || y == mapH - 1 || x == mapW - 1) {
-          level[y * mapW + x] = "wall";
-          continue;
-        }
-
-        if (y % 2 || x % 2 || math.randOneIn(4)) {
-          continue;
-        }
-
-        level[y * mapW + x] = "wall";
-
-        const [xo, yo] = math.randOneFrom([
-          [0, -1],
-          [0, 1],
-          [1, 0],
-          [-1, 0],
-        ]);
-        level[(y + yo) * mapW + (x + xo)] = "wall";
-      }
-    }
-
-    for (let y = 0; y < mapH - 1; y++) {
-      for (let x = 0; x < mapW; x++) {
-        const below = level[(y + 1) * mapW + x];
+        const above = level[(y - 1) * mapW + x];
         const me = level[y * mapW + x];
-        if (me === "wall" && below !== "wall") {
-          level[y * mapW + x] = "wall_end";
+        if (me === 1 && tileIndexes[above].walkable) {
+          level[y * mapW + x] = 2;
         }
       }
     }
-  
+
     let grid = [];
 
-    for(let i = 0; i < mapW * mapH; i+= mapW) {
-      grid.push(level.slice(i, i + mapW))
+    for (let i = 0; i < mapW * mapH; i += mapW) {
+      grid.push(level.slice(i, i + mapW));
     }
 
-    grid = grid.map( arr => arr.map(i => i))
- 
+    grid = grid.map((arr) => arr.map((i: any) => i));
+
     path.setGrid(grid);
 
-    const walkables = tileIndexes.map(({ walkable }, i) => walkable ? i : -1).filter(i => i != -1);
+    const walkables = tileIndexes
+      .map(({ walkable }, i) => (walkable ? i : -1))
+      .filter((i) => i != -1);
 
     path.setAcceptableTiles(walkables);
-    
 
     super(
-      level.map((i) => getById(i)),
+      level.map((i: any) => tileIndexes[i]),
       mapW,
       mapH,
       tileSize,
