@@ -17,6 +17,9 @@ class Player extends TileSprite {
     w: 0,
     h: 0,
   };
+
+  vel = 0;
+  jumping = false;
   constructor(controls: KeyControls, map: Dungeon) {
     const texture = new Texture("./images/bravedigger-tiles.png");
     super(texture, TILE_SIZE, TILE_SIZE);
@@ -59,9 +62,20 @@ class Player extends TileSprite {
     const { x, y } = this.controls;
 
     let mx = x * this.speed * dt;
-    let my = y * this.speed * dt;
+    let my = 0;
 
     const bounds = entities.bounds(this);
+
+    if(!this.jumping && this.controls.action) {
+      this.jumping = true;
+      this.vel = -10;
+    }
+
+    if(this.jumping) {
+      this.vel += 32 * dt;
+      my = this.vel;
+    }
+
 
     if (y) {
       const tilesAtCorners = this.map.tilesAtCorners(bounds, 0, my);
@@ -108,8 +122,13 @@ class Player extends TileSprite {
     this.pos.x += mx;
     this.pos.y += my;
 
+    if(this.pos.y >= CANVAS_HEIGHT - this.h) {
+      this.jumping = false;
+      this.pos.y = CANVAS_HEIGHT - this.h * 2;
+    }
+
     this.pos.x = math.clamp(this.pos.x, 0, CANVAS_WIDTH - this.w);
-    this.pos.y = math.clamp(this.pos.y, 0, CANVAS_HEIGHT - this.h);
+
   }
 }
 
