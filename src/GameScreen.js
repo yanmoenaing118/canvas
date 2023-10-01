@@ -5,7 +5,7 @@ import Player from "./entities/Player.js";
 import Pickup from "./entities/Pickup.js";
 import Bat from "./entities/Bat.js";
 import Totem from "./entities/Totem.js";
-import Ghost from "./entities/Ghost.js";
+// import Ghost from "./entities/Ghost.js";
 
 class GameScreen extends Container {
   constructor(game, controls, onGameOver) {
@@ -39,11 +39,11 @@ class GameScreen extends Container {
       t.pos.y = y;
     }
 
-    const ghost = this.add(new Ghost(player, map));
-    ghost.pos.x = 100;
-    ghost.pos.y = 100;
-    ghost.findPath();
-    this.ghost = ghost;
+    // const ghost = this.add(new Ghost(player, map));
+    // ghost.pos.x = 100;
+    // ghost.pos.y = 100;
+    // ghost.findPath();
+    // this.ghost = ghost;
 
     this.populate();
     this.score = 0;
