@@ -1,4 +1,5 @@
 import RectMap from "./RectMap";
+import { colors } from "./canvas";
 import { TileSpriteFrame } from "./classes";
 
 export default class RectLevel extends RectMap {
@@ -27,19 +28,7 @@ GGGGGGGGGGGG`;
     cells.forEach((cell, i: number) => {
       const x = (i % mapW) * tileSize;
       const y = ((i / mapW) | 0) * tileSize;
-      let color = "white";
-      switch (cell) {
-        case "R":
-            color = "red"
-            break;
-        case "G":
-            color = "gold";
-            break;
-        case "#":
-            color = "cyan";
-        default:
-            break;
-      }
+      let color = colors[cell];
       level[i] = {
         x,
         y,

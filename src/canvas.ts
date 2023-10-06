@@ -20,3 +20,12 @@ ctx.scale(dpr, dpr);
 canvas.style.width = `${rect.width}px`;
 canvas.style.height = `${rect.height}px`;
 
+
+export const colors: {[key: string]: string} = {
+    R: "red",
+    G: "green",
+    B: "black",
+    P: "pink",
+    C: "cyan",
+
+}
