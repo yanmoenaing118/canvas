@@ -9,12 +9,12 @@ export default class RectLevel extends RectMap {
     const mapH = (h / tileSize) | 0;
 
     const ascii = `
-############
-#        R #
-#    R     #
-#    R     #
-#R         #
-#R      R  #
+#####R###R##
+#    R   R #
+#R   R     #
+#R   R     #
+#          #
+# A   A R  #
 #    R    R#
 GGGGGGGGGGGG`;
 

@@ -27,5 +27,6 @@ export const colors: {[key: string]: string} = {
     B: "black",
     P: "pink",
     C: "cyan",
+    A: "gold"
 
 }

@@ -1,14 +1,11 @@
-import Texture from "./Texture";
-import TileSprite from "./TileSprite";
+import Rect from "./Rect";
 
-export default class Player extends TileSprite {
+export default class Player extends Rect {
   vel = 0;
   jumping = false;
   constructor() {
-    super(new Texture("spider10.png"), 64, 64, 64, 64, 0, 0, {
-      x: 0,
-      y: 3,
-    });
+    const size = 32;
+    super(0, 0,size, size, 'white')
   }
 
   update(dt: number, t: number) {}

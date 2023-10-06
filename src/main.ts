@@ -11,10 +11,11 @@ import { clamp } from "./utils";
 
 
 const map = new RectLevel(w, h);
-
+const player = new Player();
 
 function render(ctx: CanvasRenderingContext2D) {
   map.render(ctx);
+  player.render(ctx);
 }
 
 function update(dt: number, t: number) {
