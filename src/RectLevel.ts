@@ -10,10 +10,10 @@ export default class RectLevel extends RectMap {
 
     const ascii = `
 #####R###R##
-#    R   R #
+#  A R   R #
+#R   RR    #
 #R   R     #
-#R   R     #
-#          #
+#R         #
 # A   A R  #
 #    R    R#
 GGGGGGGGGGGG`;
