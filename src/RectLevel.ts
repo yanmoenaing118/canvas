@@ -9,12 +9,12 @@ export default class RectLevel extends RectMap {
 
     const ascii = `
 ############
-#          #
-#    RR    #
-#          #
-#RR        #
-#          #
-#         R#
+#        R #
+#    R     #
+#    R     #
+#R         #
+#R      R  #
+#    R    R#
 GGGGGGGGGGGG`;
 
     const level: TileSpriteFrame[] = [];
@@ -35,6 +35,8 @@ GGGGGGGGGGGG`;
         case "G":
             color = "gold";
             break;
+        case "#":
+            color = "cyan";
         default:
             break;
       }
