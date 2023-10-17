@@ -2,6 +2,7 @@ import { Vec2 } from "./classes";
 
 export default class Rect {
     pos: Vec2;
+    walkable = true;
     constructor(x: number, y: number, public w: number, public h: number, public color: string) {
         this.pos = new Vec2(x, y);
     }

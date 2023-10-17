@@ -20,7 +20,12 @@ export default class RectMap {
     this.children = [];
     level.forEach((tile, i) => {
       const color = (tile.color as string) || "black";
+
       const rect = new Rect(tile.x, tile.y, tileW, tileH, color);
+
+      if (color == "red") {
+        rect.walkable = false;
+      }
       this.children.push(rect);
     });
   }
@@ -38,7 +43,7 @@ export default class RectMap {
   tilesAtCorner(bounds: Bounds, ox: number, oy: number) {
     return [
       [bounds.x, bounds.y], // tl
-      [bounds.x, bounds.x + bounds.w], // tr
+      [bounds.x + bounds.w, bounds.y], // tr
       [bounds.x, bounds.y + bounds.h], // bl,
       [bounds.x + bounds.w, bounds.y + bounds.h], // br
     ].map(([x, y]) => {

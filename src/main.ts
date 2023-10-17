@@ -16,21 +16,22 @@ const player = new Player();
 player.pos = map.spwans["player"];
 
 player.update = function (dt) {
-  const mx = dt * controls.x * this.speed;
-  const my = dt * controls.y * this.speed;
+  let mx = dt * controls.x * this.speed;
+  let my = dt * controls.y * this.speed;
 
-  const tiles = map.tilesAtCorner(
-    {
-      x: this.pos.x,
-      y: this.pos.y,
-      w: this.w,
-      h: this.h,
-    },
-    mx,
-    my
-  );
+  const bounds = {
+    x: this.pos.x,
+    y: this.pos.y,
+    w: this.w,
+    h: this.h,
+  };
 
-  console.log(JSON.stringify(tiles));
+  if (controls.x) {
+    const [TL, TR, BL, BR] = map.tilesAtCorner(bounds, mx, 0);
+    if (!TL.walkable || !BL.walkable || !TR.walkable || !BR.walkable) {
+      mx = 0;
+    }
+  }
 
   this.pos.x += mx;
   this.pos.y += my;
