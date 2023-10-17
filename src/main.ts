@@ -1,3 +1,4 @@
+import renderGrid from "./Grid";
 import KeyControls from "./KeyControls";
 import LevelMap from "./LevelMap";
 import Player from "./Player";
@@ -18,10 +19,21 @@ player.update = function (dt) {
   const mx = dt * controls.x * this.speed;
   const my = dt * controls.y * this.speed;
 
+  const tiles = map.tilesAtCorner(
+    {
+      x: this.pos.x,
+      y: this.pos.y,
+      w: this.w,
+      h: this.h,
+    },
+    mx,
+    my
+  );
+
+  console.log(JSON.stringify(tiles));
+
   this.pos.x += mx;
   this.pos.y += my;
-
-  const rect = map.tileAtPixelPosition(this.pos.x, this.pos.y);
 
   this.pos.x = clamp(this.pos.x, 0, w - this.w);
   this.pos.y = clamp(this.pos.y, 0, h - this.h * 2);
@@ -30,6 +42,7 @@ player.update = function (dt) {
 function render(ctx: CanvasRenderingContext2D) {
   map.render(ctx);
   player.render(ctx);
+  renderGrid(ctx, w, h, 64);
 }
 
 function update(dt: number, t: number) {

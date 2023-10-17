@@ -33,10 +33,9 @@ GGGGGGGGGGGG`;
     cells.forEach((cell, i: number) => {
       const x = (i % mapW) * tileSize;
       const y = ((i / mapW) | 0) * tileSize;
-      let color = colors[cell];
+      let color = colors[cell] || "white";
       if (cell === "P") {
         spwans["player"] = new Vec2(x, y);
-        color = "black";
       }
       level[i] = {
         x,
