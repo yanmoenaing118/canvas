@@ -20,7 +20,7 @@ export default class RectLevel extends RectMap {
 #R        R#
 # R      R #
 #  R    R  #
-####RRRR###`;
+####RRRR####`;
 
     let spwans: { [key: string]: Vec2 } = {};
     const level: TileSpriteFrame[] = [];
