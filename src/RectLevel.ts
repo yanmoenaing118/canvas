@@ -1,8 +1,12 @@
 import RectMap from "./RectMap";
 import { colors } from "./canvas";
-import { TileSpriteFrame } from "./classes";
+import { TileSpriteFrame, Vec2 } from "./classes";
 
 export default class RectLevel extends RectMap {
+  spwans: {
+    [key: string]: Vec2;
+  } = {};
+
   constructor(public w: number, public h: number) {
     const tileSize = 64;
     const mapW = (w / tileSize) | 0;
@@ -10,14 +14,15 @@ export default class RectLevel extends RectMap {
 
     const ascii = `
 #####R###R##
-#  A R   R #
+#    R   R #
 #R   RR    #
 #R   R     #
 #R         #
-# A   A R  #
-#    R    R#
+#       R  #
+#P   R    R#
 GGGGGGGGGGGG`;
 
+    let spwans: { [key: string]: Vec2 } = {};
     const level: TileSpriteFrame[] = [];
     const cells = ascii
       .split("\n")
@@ -29,6 +34,10 @@ GGGGGGGGGGGG`;
       const x = (i % mapW) * tileSize;
       const y = ((i / mapW) | 0) * tileSize;
       let color = colors[cell];
+      if (cell === "P") {
+        spwans["player"] = new Vec2(x, y);
+        color = 'black';
+      }
       level[i] = {
         x,
         y,
@@ -36,5 +45,6 @@ GGGGGGGGGGGG`;
       };
     });
     super(level, mapW, mapH, tileSize, tileSize);
+    this.spwans = spwans;
   }
 }

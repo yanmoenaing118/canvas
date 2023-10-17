@@ -12,6 +12,7 @@ import { clamp } from "./utils";
 
 const map = new RectLevel(w, h);
 const player = new Player();
+player.pos = map.spwans['player'];
 
 function render(ctx: CanvasRenderingContext2D) {
   map.render(ctx);
