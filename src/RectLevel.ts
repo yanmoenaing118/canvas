@@ -19,7 +19,7 @@ export default class RectLevel extends RectMap {
 #R   R     #
 #R         #
 #       R  #
-#P   R    R#
+P    R    R#
 GGGGGGGGGGGG`;
 
     let spwans: { [key: string]: Vec2 } = {};
@@ -36,7 +36,7 @@ GGGGGGGGGGGG`;
       let color = colors[cell];
       if (cell === "P") {
         spwans["player"] = new Vec2(x, y);
-        color = 'black';
+        color = "black";
       }
       level[i] = {
         x,
