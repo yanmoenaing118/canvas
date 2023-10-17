@@ -23,4 +23,8 @@ export default class RectMap {
   render(ctx: CanvasRenderingContext2D) {
     this.children.forEach((rect) => rect.render(ctx));
   }
+
+  tileAtPixelPosition(x: number, y: number) {
+    return this.children[Math.floor(y / this.tileH) * this.mapW + Math.floor(x / this.tileW)]
+  }
 }

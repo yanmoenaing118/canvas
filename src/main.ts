@@ -21,6 +21,8 @@ player.update = function (dt) {
   this.pos.x += mx;
   this.pos.y += my;
 
+  const rect = map.tileAtPixelPosition(this.pos.x, this.pos.y);
+
   this.pos.x = clamp(this.pos.x, 0, w - this.w);
   this.pos.y = clamp(this.pos.y, 0, h - this.h * 2);
 };
