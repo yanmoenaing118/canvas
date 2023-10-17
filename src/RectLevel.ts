@@ -13,14 +13,14 @@ export default class RectLevel extends RectMap {
     const mapH = (h / tileSize) | 0;
 
     const ascii = `
-#####R###R##
-#    R   R #
-#R   RR    #
-#R   R     #
-#R         #
-#       R  #
-P    R    R#
-GGGGGGGGGGGG`;
+##R######R##
+#R R    R R#
+#R  R  R  R#
+#R   RR   R#
+#R        R#
+# R      R #
+#  R    R  #
+####RRRR###`;
 
     let spwans: { [key: string]: Vec2 } = {};
     const level: TileSpriteFrame[] = [];
