@@ -56,7 +56,7 @@ export default class HeartForYou extends RectMap {
     super(level, mapW, mapH, tileSize, tileSize);
     this.spwans = spwans;
 
-    const moveBack = 80;
+    const moveBack = 90;
     this.children.forEach((rect) => {
       rect.pos.x -= moveBack;
       rect.pos.y -= moveBack;
@@ -65,8 +65,8 @@ export default class HeartForYou extends RectMap {
 
   renderText(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.translate(w * 0.25, 100);
-    ctx.font = "28px arial";
+    ctx.translate(w * 0.2, 100);
+    ctx.font = "38px monospace";
     ctx.fillStyle = "green";
     ctx.fillText(this.msg, 0, 0);
     ctx.restore();
@@ -92,7 +92,7 @@ export default class HeartForYou extends RectMap {
     /**
      * Seeing you
      */
-    this.shake(dt, t);
+    // this.shake(dt, t);
   }
 
 
