@@ -10,6 +10,7 @@ export default class HeartForYou extends RectMap {
   rate = 1;
   crrRate = 0;
   msg = "Seeing Others 😃";
+  canRender = false;
 
   constructor(public w: number, public h: number) {
     const tileSize = 32;
@@ -73,27 +74,29 @@ export default class HeartForYou extends RectMap {
   }
 
   render(ctx: CanvasRenderingContext2D) {
-    this.renderText(ctx)
-    super.render(ctx);
+    if (this.canRender) {
+      this.renderText(ctx);
+      super.render(ctx);
+    }
   }
-
-
-
-
-
-
 
   update(dt: number, t: number) {
     /**
-     * Seeing Others
+     * Seeing Other
      */
     // this.calm();
 
     /**
-     * Seeing you
+     * Seeing You
      */
-    // this.shake(dt, t);
+    this.shake(dt, t);
+
+
   }
+
+
+
+
 
 
 
@@ -106,6 +109,7 @@ export default class HeartForYou extends RectMap {
 
 
   calm() {
+    this.canRender = true;
     this.msg = "Seeing Others 😃";
     this.children.forEach((item) => {
       item.scale.x = 1;
@@ -114,6 +118,7 @@ export default class HeartForYou extends RectMap {
   }
 
   shake(dt: number, t: number) {
+    this.canRender = true;
     this.msg = "Seeing you 💖";
     if ((this.crrRate += dt) < this.rate) {
       this.children.forEach((item) => {
