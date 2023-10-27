@@ -82,16 +82,14 @@ export default class HeartForYou extends RectMap {
   update(dt: number, t: number) {
 
     /**
-     * Seeing Others
+     * Seeing Other
      */
-    // this.calm();
+    this.calm();
 
     /**
      * Seeing You
      */
-    this.shake(dt, t);
-
-
+    this.shake(dt,t);
 
   }
 
