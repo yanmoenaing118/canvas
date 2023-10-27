@@ -1,11 +1,15 @@
 import RectMap from "./RectMap";
-import { colors } from "./canvas";
+import { colors, w } from "./canvas";
 import { TileSpriteFrame, Vec2 } from "./classes";
 
 export default class RectLevel extends RectMap {
   spwans: {
     [key: string]: Vec2;
   } = {};
+
+  rate = 1;
+  crrRate = 0;
+  msg = "Seeing Others 😃";
 
   constructor(public w: number, public h: number) {
     const tileSize = 32;
@@ -59,36 +63,37 @@ export default class RectLevel extends RectMap {
     });
   }
 
+  renderText(ctx: CanvasRenderingContext2D) {
+    ctx.save();
+    ctx.translate(w * 0.25, 100);
+    ctx.font = "28px arial";
+    ctx.fillStyle = "green";
+    ctx.fillText(this.msg, 0, 0);
+    ctx.restore();
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-    
-
-  update(dt: number, t: number) {
-
-    /**
-     * My Calm and Steady Heart
-     */
-    this.calm();
-
-
-    /**
-     * My Heart beating 
-     * when I see your photos
-     */
-    this.shake(dt, t);
+  render(ctx: CanvasRenderingContext2D) {
+    this.renderText(ctx)
+    super.render(ctx);
   }
 
 
+
+
+
+  
+
+  update(dt: number, t: number) {
+    /**
+     * Seeing Others
+     */
+    // this.calm();
+
+    /**
+     * Seeing you
+     */
+    // this.shake(dt, t);
+  }
 
 
 
@@ -101,6 +106,7 @@ export default class RectLevel extends RectMap {
 
 
   calm() {
+    this.msg = "Seeing Others 😃";
     this.children.forEach((item) => {
       item.scale.x = 1;
       item.scale.y = 1;
@@ -108,9 +114,14 @@ export default class RectLevel extends RectMap {
   }
 
   shake(dt: number, t: number) {
-    this.children.forEach((item) => {
-      item.scale.x = Math.sin(t * -3) + 0.5;
-      item.scale.y = Math.cos(t * 0.5);
-    });
+    this.msg = "Seeing you 💖";
+    if ((this.crrRate += dt) < this.rate) {
+      this.children.forEach((item) => {
+        item.scale.x = Math.sin(t * 0.05) + 0.5;
+        item.scale.y = Math.cos(t * 0.05) + 0.5;
+      });
+    } else {
+      this.crrRate -= this.rate;
+    }
   }
 }
