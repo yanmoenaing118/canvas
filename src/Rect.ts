@@ -8,7 +8,9 @@ export default class Rect {
     }
 
     render(ctx: CanvasRenderingContext2D) {
+
         const { pos, w, h, color } = this;
+        if(!pos || !w || !h || !color) return;
         ctx.save();
         ctx.translate(pos.x, pos.y);
         ctx.fillStyle = color;
