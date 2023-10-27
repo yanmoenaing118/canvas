@@ -67,7 +67,7 @@ export default class HeartForYou extends RectMap {
   renderText(ctx: CanvasRenderingContext2D) {
     ctx.save();
     ctx.translate(w * 0.2, 100);
-    ctx.font = "38px monospace";
+    ctx.font = "48px monospace";
     ctx.fillStyle = "green";
     ctx.fillText(this.msg, 0, 0);
     ctx.restore();
@@ -80,7 +80,11 @@ export default class HeartForYou extends RectMap {
     }
   }
 
+
+
+
   update(dt: number, t: number) {
+
     /**
      * Seeing Other
      */
@@ -89,10 +93,18 @@ export default class HeartForYou extends RectMap {
     /**
      * Seeing You
      */
-    this.shake(dt, t);
+    this.shake(dt,t);
+
 
 
   }
+
+
+
+
+
+
+
 
 
 
@@ -119,11 +131,11 @@ export default class HeartForYou extends RectMap {
 
   shake(dt: number, t: number) {
     this.canRender = true;
-    this.msg = "Seeing you 💖";
+    this.msg = "Seeing you 💓";
     if ((this.crrRate += dt) < this.rate) {
       this.children.forEach((item) => {
-        item.scale.x = Math.sin(t * 0.05) + 0.5;
-        item.scale.y = Math.cos(t * 0.05) + 0.5;
+        item.scale.x = Math.sin(t * 0.4);
+        item.scale.y = Math.cos(t * 0.4);
       });
     } else {
       this.crrRate -= this.rate;
