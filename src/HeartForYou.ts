@@ -2,7 +2,7 @@ import RectMap from "./RectMap";
 import { colors, w } from "./canvas";
 import { TileSpriteFrame, Vec2 } from "./classes";
 
-export default class RectLevel extends RectMap {
+export default class HeartForYou extends RectMap {
   spwans: {
     [key: string]: Vec2;
   } = {};
