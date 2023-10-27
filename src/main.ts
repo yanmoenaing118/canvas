@@ -42,11 +42,10 @@ player.update = function (dt) {
 
 function render(ctx: CanvasRenderingContext2D) {
   map.render(ctx);
-  player.render(ctx);
   renderGrid(ctx, w, h, 32);
 }
 
 function update(dt: number, t: number) {
-  player.update(dt, t);
+  console.log(dt, t);
 }
 renderUpdate(render, update);
