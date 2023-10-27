@@ -46,6 +46,6 @@ function render(ctx: CanvasRenderingContext2D) {
 }
 
 function update(dt: number, t: number) {
-  console.log(dt, t);
+  map.update(dt, t);
 }
 renderUpdate(render, update);

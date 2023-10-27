@@ -54,4 +54,12 @@ export default class RectLevel extends RectMap {
     super(level, mapW, mapH, tileSize, tileSize);
     this.spwans = spwans;
   }
+
+  update(dt: number, t: number) {
+    this.children.forEach((item) => {
+      item.scale.x = Math.cos(dt);
+      item.scale.y = Math.cos(dt);
+
+    })
+  }
 }
