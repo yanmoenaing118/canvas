@@ -49,17 +49,68 @@ export default class RectLevel extends RectMap {
       }
     });
 
-    console.log(level);
-
     super(level, mapW, mapH, tileSize, tileSize);
     this.spwans = spwans;
+
+    const moveBack = 80;
+    this.children.forEach((rect) => {
+      rect.pos.x -= moveBack;
+      rect.pos.y -= moveBack;
+    });
   }
 
-  update(dt: number, t: number) {
-    this.children.forEach((item) => {
-      item.scale.x = Math.cos(dt);
-      item.scale.y = Math.cos(dt);
 
-    })
+
+
+
+
+
+
+
+
+
+
+
+    
+
+  update(dt: number, t: number) {
+
+    /**
+     * My Calm and Steady Heart
+     */
+    this.calm();
+
+
+    /**
+     * My Heart beating 
+     * when I see your photos
+     */
+    this.shake(dt, t);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  calm() {
+    this.children.forEach((item) => {
+      item.scale.x = 1;
+      item.scale.y = 1;
+    });
+  }
+
+  shake(dt: number, t: number) {
+    this.children.forEach((item) => {
+      item.scale.x = Math.sin(t * -3) + 0.5;
+      item.scale.y = Math.cos(t * 0.5);
+    });
   }
 }

@@ -2,7 +2,7 @@ import renderGrid from "./Grid";
 import KeyControls from "./KeyControls";
 import LevelMap from "./LevelMap";
 import Player from "./Player";
-import RectLevel from "./RectLevel";
+import RectLevel from "./HeartForYou";
 import Texture from "./Texture";
 import TileSprite from "./TileSprite";
 import { h, w } from "./canvas";
@@ -42,7 +42,7 @@ player.update = function (dt) {
 
 function render(ctx: CanvasRenderingContext2D) {
   map.render(ctx);
-  renderGrid(ctx, w, h, 32);
+  // renderGrid(ctx, w, h, 32);
 }
 
 function update(dt: number, t: number) {
