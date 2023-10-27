@@ -81,7 +81,7 @@ export default class RectLevel extends RectMap {
 
 
 
-  
+
 
   update(dt: number, t: number) {
     /**
@@ -92,7 +92,7 @@ export default class RectLevel extends RectMap {
     /**
      * Seeing you
      */
-    // this.shake(dt, t);
+    this.shake(dt, t);
   }
 
 
