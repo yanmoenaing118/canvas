@@ -9,7 +9,7 @@ export default class HeartForYou extends RectMap {
 
   rate = 1;
   crrRate = 0;
-  msg = "Seeing Others 😃";
+  msg = "  😃";
   canRender = false;
 
   constructor(public w: number, public h: number) {
@@ -80,16 +80,15 @@ export default class HeartForYou extends RectMap {
 
 
   update(dt: number, t: number) {
-
     /**
-     * Seeing Other
+     * My Steady heart
      */
-    this.calm();
+    // this.calm();
 
     /**
      * Seeing You
      */
-    this.shake(dt,t);
+    this.shake(dt, t);
 
   }
 
@@ -116,7 +115,7 @@ export default class HeartForYou extends RectMap {
 
   calm() {
     this.canRender = true;
-    this.msg = "Seeing Others 😃";
+    this.msg = "Steady Heart 😃";
     this.children.forEach((item) => {
       item.scale.x = 1;
       item.scale.y = 1;
