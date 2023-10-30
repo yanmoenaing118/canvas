@@ -20,6 +20,7 @@ function angle(a, b) {
 }
 
 function bounds(entity) {
+  if(!entity)return;
   const { w, h, pos, hitBox } = entity;
   const hit = hitBox || { x: 0, y: 0, w, h };
   return {
@@ -45,6 +46,7 @@ function distance(a, b) {
 function hit(e1, e2) {
   const a = bounds(e1);
   const b = bounds(e2);
+  if(!a || !b) return false;
   return (
     a.x + a.w >= b.x &&
     a.x <= b.x + b.w &&
