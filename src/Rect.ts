@@ -1,12 +1,13 @@
+import Vec from "./Vec";
 import { Vec2 } from "./classes";
 
 export default class Rect {
-    pos: Vec2;
+    pos: Vec;
     walkable = true;
-    scale: Vec2;
+    scale: Vec;
     constructor(x: number, y: number, public w: number, public h: number, public color: string) {
-        this.pos = new Vec2(x, y);
-        this.scale = new Vec2(1,1);
+        this.pos = new Vec(x, y);
+        this.scale = new Vec(1,1);
     }
 
     render(ctx: CanvasRenderingContext2D) {
