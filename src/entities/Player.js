@@ -14,16 +14,14 @@ class Player extends TileSprite {
       w: 28,
       h: 38
     };
-    this.speed = 210;
-    this.anchor = { x: 0, y: 0 };
     this.frame.x = 4;
-    this.jumping = false;
+    this.speed = 250;
+    this.jumping = true;
     this.vel = 0;
   }
 
   update(dt, t) {
     const { pos, controls, map, speed, gameOver } = this;
-    
 
     if (gameOver) {
       this.rotation += dt * 5;
@@ -32,43 +30,49 @@ class Player extends TileSprite {
       return;
     }
 
-    if(!this.jumping && controls.action) {
+    const { x } = controls;
+    const xo = x * dt * speed;
+    let yo = 0;
+
+    if (!this.jumping && controls.action) {
       this.vel = -10;
       this.jumping = true;
     }
 
-   
-
-    let { x, y } = controls;
-    const xo = x * dt * speed;
-    let yo = 0;
-
-    if(this.jumping) {
-      this.vel += dt * 32;
+    if (this.jumping) {
       yo += this.vel;
+      this.vel += 32 * dt;
     }
 
     const r = wallslide(this, map, xo, yo);
-    if (r.x !== 0 && r.y !== 0) {
-      r.x /= Math.sqrt(2);
-      r.y /= Math.sqrt(2);
-    }
-    pos.x += r.x;
-    pos.y += yo;
 
-    // Animate!
-    if (r.x || r.y) {
-      this.frame.x = ((t / 0.08) | 0) % 4;
-      if (r.x < 0) {
-        this.scale.x = -1;
-        this.anchor.x = 48;
-      }
-      if (r.x > 0) {
-        this.scale.x = 1;
+    if (r.hits.down) {
+      this.jumping = false;
+      this.vel = 0;
+    }
+    if (r.hits.up) {
+      this.vel = 0;
+    }
+
+    // Check if falling
+    if (!this.jumping && !r.hits.down) {
+      this.jumping = true;
+      this.vel = 3;
+    }
+
+    pos.x += r.x;
+    pos.y += r.y;
+
+    // Animations
+    if (x && !this.jumping) {
+      this.frame.x = ((t / 0.1) | 0) % 4;
+      if (x > 0) {
         this.anchor.x = 0;
+        this.scale.x = 1;
+      } else if (x < 0){
+        this.anchor.x = this.w;
+        this.scale.x = -1;
       }
-    } else {
-      this.frame.x = ((t / 0.2) | 0) % 2 + 4;
     }
   }
 }
