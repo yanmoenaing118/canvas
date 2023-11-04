@@ -8,17 +8,23 @@ import { clamp } from "./utils";
 
 const size = 64;
 
-const rect = new Rect(size,size,size * 0.1,size * 0.1, "green");
 
-rect.pos.add(new Vec(size,size/2))
+const r1 = new Rect(size,size,size, size, 'green');
+const r2 = new Rect(size*4,size *4, size, size, 'pink');
 
-console.log(rect)
 // console.log('rectVecMagnitude ', rectVecMagnitude);
+// midpoint = (x1 + x2) / 2 , (y1 + y2) / 2
+
+const midPoint = r1.pos.clone().add(r2.pos).multiply(0.5);
+
+const r3 = new Rect(midPoint.x, midPoint.y, size, size, 'blue');
 
 function render(ctx: CanvasRenderingContext2D) {
 
   renderGrid(ctx, w, h, 64);
-  rect.render(ctx);
+  r1.render(ctx);
+  r2.render(ctx);
+  r3.render(ctx);
 }
 
 function update(dt: number, t: number) {
