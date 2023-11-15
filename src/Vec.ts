@@ -46,4 +46,15 @@ export default class Vec {
     this.y *= s;
     return this;
   }
+
+  normalize() {
+    const mag = this.mag();
+
+    if(mag > 0 ) {
+      this.x /= mag;
+      this.y /= mag;
+    }
+
+    return this;
+  }
 }
