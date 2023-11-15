@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Heart</title>
+  <style>
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="animatedHeartCanvas" width="300" height="300"></canvas>
+
+  <script>
+    const canvas = document.getElementById('animatedHeartCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    let angle = 0;
+
+    function drawHeart() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const x = 150 + 16 * Math.pow(Math.sin(angle), 3);
+      const y = 150 - 13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle);
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + 2, y); // Add a small line to close the shape
+      ctx.fillStyle = 'red';
+      ctx.fill();
+      ctx.closePath();
+
+      angle += 0.02;
+
+      requestAnimationFrame(drawHeart);
+    }
+
+    drawHeart();
+  </script>
+</body>
+</html>
