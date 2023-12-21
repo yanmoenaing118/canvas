@@ -1,19 +1,31 @@
+import Circle from "./Circle";
 import renderGrid from "./Grid";
+import Vec from "./Vec";
 import Walker from "./Walker";
 import { h, w } from "./canvas";
 import renderUpdate from "./loop";
-import { SimpleRandomGenerator } from "./utils";
+import randomColor from "randomcolor";
 
-const walker = new Walker(h / 2, w / 2);
-const random = new SimpleRandomGenerator(100);
+const circles: Circle[] = [];
+
+
+for(let i = 0 ; i < 25; i++ ) {
+  const circle = new Circle();
+  circle.fill = randomColor({
+    format: 'rgba'
+  });
+  circle.radius = 10;
+  circles.push(circle);
+}
+
 
 function update(dt: number, t: number) {
-  walker.update(dt);
+  circles.forEach(circle => circle.update(dt))
 }
 
 function render(ctx: CanvasRenderingContext2D) {
   // renderGrid(ctx, w, h, 64 * 0.5);
-  walker.render(ctx);
+  circles.forEach(circle => circle.render(ctx));
 }
 
-renderUpdate(render, update, false);
+renderUpdate(render, update, true);
