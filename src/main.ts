@@ -9,12 +9,12 @@ import randomColor from "randomcolor";
 const circles: Circle[] = [];
 
 
-for(let i = 0 ; i < 25; i++ ) {
+for(let i = 0 ; i < 5000; i++ ) {
   const circle = new Circle();
   circle.fill = randomColor({
     format: 'rgba'
   });
-  circle.radius = 10;
+  circle.radius = 5;
   circles.push(circle);
 }
 

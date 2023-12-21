@@ -3,12 +3,12 @@ import { h, w } from "./canvas";
 
 export default class Circle {
     pos: Vec;
-    radius = 4;
+    radius = 1;
     _fill = "black";
      vel: Vec;
     constructor() {
-        this.pos = new Vec(w / 2, h/2);
-        this.vel = new Vec(Math.random() * 1.5,Math.random() * 3);
+        this.pos = new Vec(Math.random() * w , this.radius * 10);
+        this.vel = new Vec(Math.random() * Math.random(),Math.random() * Math.random());
     }
 
     set fill(value: string) {
@@ -32,11 +32,11 @@ export default class Circle {
 
     update(dt: number) {
         this.pos.add(this.vel);
-        if(this.pos.x > w - this.radius || this.pos.x < 0) {
-            this.vel.set(this.vel.x * -1, this.vel.y)
+        if(this.pos.x > w - this.radius || this.pos.x < this.radius) {
+            this.vel.set(this.vel.x * -1, this.vel.y);
         } 
-        if(this.pos.y > h - this.radius || this.pos.y < 0) {
-            this.vel.set(this.vel.y, this.vel.y * -1)
+        if(this.pos.y > h - this.radius || this.pos.y < this.radius) {
+            this.vel.set(this.vel.y, this.vel.y * -1);
         }
     }
 }
