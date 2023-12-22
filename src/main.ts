@@ -1,31 +1,33 @@
 import Circle from "./Circle";
 import renderGrid from "./Grid";
+import Line from "./Line";
 import Vec from "./Vec";
 import Walker from "./Walker";
-import { h, w } from "./canvas";
+import { canvas, h, w } from "./canvas";
 import renderUpdate from "./loop";
 import randomColor from "randomcolor";
 
-const circles: Circle[] = [];
 
 
-for(let i = 0 ; i < 5000; i++ ) {
-  const circle = new Circle();
-  circle.fill = randomColor({
-    format: 'rgba'
-  });
-  circle.radius = 5;
-  circles.push(circle);
-}
 
+const line = new Line();
+let mouseVec = new Vec(0,0);
+
+line.startPoint.set(32 * 10, 32 * 10);
+
+canvas.addEventListener('mousemove', (e) => {
+    mouseVec.set(e.pageX, e.pageY);
+    mouseVec.sub(line.startPoint);
+    line.endPoint.set(mouseVec.x, mouseVec.y);
+})
 
 function update(dt: number, t: number) {
-  circles.forEach(circle => circle.update(dt))
+    
 }
 
 function render(ctx: CanvasRenderingContext2D) {
-  // renderGrid(ctx, w, h, 64 * 0.5);
-  circles.forEach(circle => circle.render(ctx));
+    line.render(ctx);
+    renderGrid(ctx, w, h, 32);
 }
 
 renderUpdate(render, update, true);

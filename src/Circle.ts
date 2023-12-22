@@ -7,8 +7,8 @@ export default class Circle {
     _fill = "black";
      vel: Vec;
     constructor() {
-        this.pos = new Vec(Math.random() * w , this.radius * 10);
-        this.vel = new Vec(Math.random() * Math.random(),Math.random() * Math.random());
+        this.pos = new Vec(Math.random() * w , Math.random() * h);
+        this.vel = new Vec(Math.random() * 1.5,Math.random() * Math.random() + 1.2);
     }
 
     set fill(value: string) {
