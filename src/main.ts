@@ -20,11 +20,11 @@ function clipToHeart(ctx: CanvasRenderingContext2D) {
   ctx.restore();
 }
 
-for (let i = 0; i < 15000; i++) {
+for (let i = 0; i < 10000; i++) {
   const circle = new Circle();
   //   circle.pos.set(0, 0);
-  circle.vel.set(Math.random(),0);
-  circle.radius = 1;
+  circle.vel.set(Math.random() + 0.2,0);
+  circle.radius = 1.5;
   circle.fill = "red";
   circles.push(circle);
 }
