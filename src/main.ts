@@ -13,13 +13,7 @@ import randomColor from "randomcolor";
 const line = new Line();
 let mouseVec = new Vec(0,0);
 
-line.startPoint.set(32 * 10, 32 * 10);
 
-canvas.addEventListener('mousemove', (e) => {
-    mouseVec.set(e.pageX, e.pageY);
-    mouseVec.sub(line.startPoint);
-    line.endPoint.set(mouseVec.x, mouseVec.y);
-})
 
 function update(dt: number, t: number) {
     

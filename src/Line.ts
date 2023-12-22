@@ -1,4 +1,5 @@
 import Vec from "./Vec";
+import { canvas } from "./canvas";
 
 export default class Line {
   startPoint: Vec;
@@ -6,6 +7,15 @@ export default class Line {
   constructor() {
     this.startPoint = new Vec(0, 0);
     this.endPoint = new Vec(0, 0);
+    this.startPoint.set(32 * 10, 32 * 10);
+
+    let mouseVec = new Vec(0, 0);
+
+    canvas.addEventListener("mousemove", (e) => {
+      mouseVec.set(e.pageX, e.pageY);
+      mouseVec.sub(this.startPoint);
+      this.endPoint.set(mouseVec.x, mouseVec.y);
+    });
   }
 
   render(ctx: CanvasRenderingContext2D) {
