@@ -3,7 +3,7 @@ import { h, w } from "./canvas";
 
 export default class Circle {
     pos: Vec;
-    radius = 1;
+    radius = 0;
     _fill = "black";
      vel: Vec;
     constructor() {
